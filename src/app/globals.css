@@ -1,0 +1,61 @@
+@import "tailwindcss";
+
+/*
+ * Aven Studio brand tokens.
+ * Components use these utilities (bg-ink, text-paper, font-display …), never raw hex values.
+ */
+@theme {
+  /* Core palette */
+  --color-ink: #111318; /* Midnight black */
+  --color-ink-soft: #1c1f26; /* Raised surfaces on dark */
+  --color-paper: #f5f5f2; /* Off-white */
+  --color-paper-dim: #e9e9e4; /* Subtle fills and dividers on light */
+  --color-silver: #a6a8ad;
+  --color-silver-deep: #6b6d73; /* Silver tuned for text contrast on paper */
+  --color-sage: #a8b9a5; /* Accent — use sparingly */
+  --color-sage-deep: #5a7456; /* Sage tuned for text contrast on paper */
+
+  /* Typography */
+  --font-sans: var(--font-inter), ui-sans-serif, system-ui, sans-serif;
+  --font-display: var(--font-manrope), ui-sans-serif, system-ui, sans-serif;
+
+  /* Fluid display sizes for headings */
+  --text-display-xl: clamp(2.75rem, 6vw + 1rem, 6rem);
+  --text-display-xl--line-height: 1.02;
+  --text-display-xl--letter-spacing: -0.035em;
+  --text-display-lg: clamp(2.25rem, 4vw + 1rem, 4.25rem);
+  --text-display-lg--line-height: 1.05;
+  --text-display-lg--letter-spacing: -0.03em;
+  --text-display-md: clamp(1.75rem, 2vw + 1rem, 2.75rem);
+  --text-display-md--line-height: 1.1;
+  --text-display-md--letter-spacing: -0.02em;
+
+  /* Layout & motion */
+  --container-site: 82rem;
+  --ease-out-soft: cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+@layer base {
+  html {
+    -webkit-text-size-adjust: 100%;
+  }
+
+  body {
+    @apply bg-paper font-sans text-ink antialiased;
+  }
+
+  h1,
+  h2,
+  h3,
+  h4 {
+    @apply font-display font-semibold text-balance;
+  }
+
+  ::selection {
+    @apply bg-sage text-ink;
+  }
+
+  :focus-visible {
+    @apply outline-2 outline-offset-2 outline-sage-deep;
+  }
+}
