@@ -2,7 +2,7 @@
 
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { useEffect, useId, useState } from "react";
+import { useEffect, useId, useRef, useState } from "react";
 import type { Locale } from "@/i18n/config";
 import { cn } from "@/lib/cn";
 import { Button } from "@/components/ui/Button";
@@ -24,16 +24,42 @@ export function MobileNav({ locale, items, navLabel, labels, languageLabels, cla
   const [open, setOpen] = useState(false);
   const pathname = usePathname();
   const panelId = useId();
+  const toggleRef = useRef<HTMLButtonElement>(null);
+  const panelRef = useRef<HTMLDivElement>(null);
   const close = () => setOpen(false);
 
+  // While open: lock scroll, make the page behind inert, and keep Tab focus inside the menu.
   useEffect(() => {
     if (!open) return;
     const root = document.documentElement;
+    const behind = document.querySelectorAll<HTMLElement>("#main, body > footer");
     root.style.overflow = "hidden";
-    const onKey = (e: KeyboardEvent) => e.key === "Escape" && setOpen(false);
+    behind.forEach((el) => (el.inert = true));
+
+    const focusables = () => [
+      toggleRef.current,
+      ...(panelRef.current?.querySelectorAll<HTMLElement>("a[href], button") ?? []),
+    ].filter((el): el is HTMLElement => !!el);
+    focusables()[1]?.focus();
+
+    const onKey = (e: KeyboardEvent) => {
+      if (e.key === "Escape") {
+        setOpen(false);
+        toggleRef.current?.focus();
+        return;
+      }
+      if (e.key !== "Tab") return;
+      const items = focusables();
+      const index = items.indexOf(document.activeElement as HTMLElement);
+      const next = e.shiftKey ? (index <= 0 ? items.length - 1 : index - 1) : (index + 1) % items.length;
+      e.preventDefault();
+      items[next]?.focus();
+    };
     window.addEventListener("keydown", onKey);
+
     return () => {
       root.style.overflow = "";
+      behind.forEach((el) => (el.inert = false));
       window.removeEventListener("keydown", onKey);
     };
   }, [open]);
@@ -41,6 +67,7 @@ export function MobileNav({ locale, items, navLabel, labels, languageLabels, cla
   return (
     <div className={className}>
       <button
+        ref={toggleRef}
         type="button"
         aria-expanded={open}
         aria-controls={panelId}
@@ -68,6 +95,7 @@ export function MobileNav({ locale, items, navLabel, labels, languageLabels, cla
       </button>
 
       <div
+        ref={panelRef}
         id={panelId}
         hidden={!open}
         className="fixed inset-0 z-40 flex flex-col bg-ink px-5 pt-24 pb-8 text-paper sm:px-8"

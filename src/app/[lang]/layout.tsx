@@ -1,24 +1,30 @@
-import type { Metadata } from "next";
+import type { Metadata, Viewport } from "next";
 import { lang } from "next/root-params";
 import { Footer } from "@/components/layout/Footer";
 import { Header } from "@/components/layout/Header";
 import { locales } from "@/i18n/config";
-import { getDictionary } from "@/i18n/get-dictionary";
+import { getDictionary, getLocale } from "@/i18n/get-dictionary";
 import { inter, manrope } from "@/lib/fonts";
+import { buildMetadata } from "@/lib/page-metadata";
+import { siteName, siteUrl } from "@/lib/site";
 import "../globals.css";
 
 export function generateStaticParams() {
   return locales.map((locale) => ({ lang: locale }));
 }
 
+export const viewport: Viewport = {
+  themeColor: "#f5f5f2", // --color-paper
+};
+
+/** Site-wide defaults; also the home page's metadata. Inner pages override via pageMetadata(). */
 export async function generateMetadata(): Promise<Metadata> {
-  const dict = await getDictionary();
+  const [dict, locale] = await Promise.all([getDictionary(), getLocale()]);
   return {
-    title: { default: dict.meta.title, template: "%s — Aven Studio" },
-    description: dict.meta.description,
-    alternates: {
-      languages: Object.fromEntries(locales.map((l) => [l, `/${l}`])),
-    },
+    metadataBase: new URL(siteUrl),
+    title: { default: dict.meta.title, template: `%s — ${siteName}` },
+    applicationName: siteName,
+    ...buildMetadata({ locale, title: dict.meta.title, description: dict.meta.description }),
   };
 }
 
