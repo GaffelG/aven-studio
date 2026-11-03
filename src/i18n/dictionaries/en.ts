@@ -14,6 +14,23 @@ const en: Dictionary = {
     about: "About",
     contact: "Contact",
   },
+  header: {
+    home: "Aven Studio – home",
+    cta: "Book a call",
+    menuOpen: "Menu",
+    menuClose: "Close",
+    skipToContent: "Skip to content",
+  },
+  footer: {
+    statement: "Have a project in mind?",
+    cta: "Start a project",
+    navigation: "Navigation",
+    contact: "Contact",
+    email: "hello@avenstudio.se",
+    location: "Sweden",
+    tagline: "Web design and digital solutions for growing businesses.",
+    rights: "All rights reserved.",
+  },
   languageSwitcher: {
     label: "Language",
     sv: "Svenska",

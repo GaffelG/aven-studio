@@ -12,6 +12,23 @@ const sv = {
     about: "Om oss",
     contact: "Kontakt",
   },
+  header: {
+    home: "Aven Studio – till startsidan",
+    cta: "Boka ett samtal",
+    menuOpen: "Meny",
+    menuClose: "Stäng",
+    skipToContent: "Hoppa till innehållet",
+  },
+  footer: {
+    statement: "Har du ett projekt i tankarna?",
+    cta: "Starta ett projekt",
+    navigation: "Navigering",
+    contact: "Kontakt",
+    email: "hello@avenstudio.se",
+    location: "Sverige",
+    tagline: "Webbdesign och digitala lösningar för växande företag.",
+    rights: "Alla rättigheter förbehållna.",
+  },
   languageSwitcher: {
     label: "Språk",
     sv: "Svenska",
