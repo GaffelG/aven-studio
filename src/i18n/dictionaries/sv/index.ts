@@ -30,7 +30,7 @@ const sv = {
     cta: "Starta ett projekt",
     navigation: "Navigering",
     contact: "Kontakt",
-    email: "hello@avenstudio.se",
+    email: "aavenstudio@gmail.com",
     location: "Sverige",
     tagline: "Webbdesign och digitala lösningar för växande företag.",
     rights: "Alla rättigheter förbehållna.",

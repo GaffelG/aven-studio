@@ -31,7 +31,7 @@ const en: Dictionary = {
     cta: "Start a project",
     navigation: "Navigation",
     contact: "Contact",
-    email: "hello@avenstudio.se",
+    email: "aavenstudio@gmail.com",
     location: "Sweden",
     tagline: "Web design and digital solutions for growing businesses.",
     rights: "All rights reserved.",
