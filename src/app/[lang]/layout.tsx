@@ -26,7 +26,11 @@ export default async function RootLayout({ children }: LayoutProps<"/[lang]">) {
   const dict = await getDictionary();
 
   return (
-    <html lang={await lang()} className={`${manrope.variable} ${inter.variable}`}>
+    <html lang={await lang()} className={`${manrope.variable} ${inter.variable}`} suppressHydrationWarning>
+      <head>
+        {/* Flags JS support before paint so reveal animations never hide content without JS. */}
+        <script dangerouslySetInnerHTML={{ __html: "document.documentElement.classList.add('js')" }} />
+      </head>
       <body className="flex min-h-dvh flex-col">
         <a
           href="#main"

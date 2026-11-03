@@ -33,6 +33,14 @@
   /* Layout & motion */
   --container-site: 82rem;
   --ease-out-soft: cubic-bezier(0.22, 1, 0.36, 1);
+  --animate-rise: rise 0.9s var(--ease-out-soft) 0.15s both;
+
+  @keyframes rise {
+    from {
+      opacity: 0;
+      transform: translateY(1rem);
+    }
+  }
 }
 
 @layer base {
@@ -57,5 +65,21 @@
 
   :focus-visible {
     @apply outline-2 outline-offset-2 outline-sage-deep;
+  }
+}
+
+/* Scroll reveal (see components/ui/Reveal.tsx). Content stays visible without JS. */
+@media (prefers-reduced-motion: no-preference) {
+  .js [data-reveal] {
+    opacity: 0;
+    transform: translateY(1.25rem);
+    transition:
+      opacity 0.9s var(--ease-out-soft),
+      transform 0.9s var(--ease-out-soft);
+  }
+
+  .js [data-reveal="visible"] {
+    opacity: 1;
+    transform: none;
   }
 }
