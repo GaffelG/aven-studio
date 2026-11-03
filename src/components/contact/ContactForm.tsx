@@ -2,7 +2,9 @@
 
 import { cloneElement, useActionState, useEffect, useRef, useState, type ReactElement } from "react";
 import { submitEnquiry, type ContactField, type ContactState } from "@/app/[lang]/contact/actions";
+import { honeypotField } from "@/app/[lang]/contact/form-fields";
 import { Button } from "@/components/ui/Button";
+import type { Locale } from "@/i18n/config";
 import type { Dictionary } from "@/i18n/get-dictionary";
 import { cn } from "@/lib/cn";
 
@@ -13,7 +15,9 @@ const initialState: ContactState = { status: "idle" };
 const inputClass =
   "mt-2 w-full rounded-none border-0 border-b border-ink/20 bg-transparent px-0 py-3 text-base text-ink transition-colors duration-300 placeholder:text-silver-deep focus:border-ink focus:ring-0 focus:outline-none aria-invalid:border-error";
 
-export function ContactForm({ labels }: { labels: Labels }) {
+type Props = { labels: Labels; locale: Locale; fallbackEmail: string };
+
+export function ContactForm({ labels, locale, fallbackEmail }: Props) {
   const [state, formAction, pending] = useActionState(submitEnquiry, initialState);
   // Remounts the form after "send another", clearing the previous values.
   const [formKey, setFormKey] = useState(0);
@@ -23,11 +27,11 @@ export function ContactForm({ labels }: { labels: Labels }) {
 
   const showSuccess = state.status === "success" && !dismissed;
   const errors = state.status === "error" ? state.errors : {};
-  const values = state.status === "error" ? state.values : {};
+  const values = state.status === "error" || state.status === "failed" ? state.values : {};
 
   useEffect(() => {
     if (showSuccess) successRef.current?.focus();
-    else if (state.status === "error") summaryRef.current?.focus();
+    else if (state.status === "error" || state.status === "failed") summaryRef.current?.focus();
   }, [state, showSuccess]);
 
   if (showSuccess) {
@@ -70,16 +74,34 @@ export function ContactForm({ labels }: { labels: Labels }) {
       noValidate
       className="grid gap-8 sm:grid-cols-2 sm:gap-x-8"
     >
-      {state.status === "error" && (
+      {(state.status === "error" || state.status === "failed") && (
         <p
           ref={summaryRef}
           tabIndex={-1}
           role="alert"
-          className="border-l-2 border-error pl-4 text-sm text-error outline-none sm:col-span-2"
+          className="border-l-2 border-error pl-4 text-sm leading-relaxed text-error outline-none sm:col-span-2"
         >
-          {labels.errors.summary}
+          {state.status === "error" ? (
+            labels.errors.summary
+          ) : (
+            <>
+              {labels.errors.delivery}{" "}
+              <a href={`mailto:${fallbackEmail}`} className="underline underline-offset-4">
+                {fallbackEmail}
+              </a>
+            </>
+          )}
         </p>
       )}
+
+      <input type="hidden" name="locale" value={locale} />
+      {/* Honeypot: hidden from people and assistive technology, often filled in by bots. */}
+      <div aria-hidden className="absolute -left-[9999px] h-px w-px overflow-hidden">
+        <label>
+          Website
+          <input type="text" name={honeypotField} tabIndex={-1} autoComplete="off" />
+        </label>
+      </div>
 
       <Field id="name" label={labels.name} error={errorText("name")}>
         <input name="name" autoComplete="name" defaultValue={values.name} required />

@@ -1,13 +1,13 @@
 import { ContactForm } from "@/components/contact/ContactForm";
 import { Container } from "@/components/ui/Container";
 import { Eyebrow } from "@/components/ui/Eyebrow";
-import { getDictionary } from "@/i18n/get-dictionary";
+import { getDictionary, getLocale } from "@/i18n/get-dictionary";
 import { pageMetadata } from "@/lib/page-metadata";
 
 export const generateMetadata = () => pageMetadata("contact");
 
 export default async function ContactPage() {
-  const dict = await getDictionary();
+  const [dict, locale] = await Promise.all([getDictionary(), getLocale()]);
   const t = dict.contact;
 
   return (
@@ -44,7 +44,7 @@ export default async function ContactPage() {
 
       <section aria-label={t.form.title} className="lg:col-span-6 lg:col-start-7 lg:pt-4">
         <div className="rounded-md bg-paper-bright p-6 ring-1 ring-ink/8 sm:p-10">
-          <ContactForm labels={t.form} />
+          <ContactForm labels={t.form} locale={locale} fallbackEmail={dict.footer.email} />
         </div>
       </section>
     </Container>

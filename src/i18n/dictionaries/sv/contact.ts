@@ -57,6 +57,8 @@ const contact = {
       required: "Fyll i det här fältet.",
       email: "Ange en giltig e-postadress.",
       consent: "Du behöver godkänna för att vi ska kunna svara dig.",
+      tooLong: "Texten är för lång. Korta ner den lite.",
+      delivery: "Förfrågan kunde inte skickas just nu. Försök igen om en stund eller mejla oss direkt på",
       summary: "Något saknas. Kontrollera de markerade fälten.",
     },
     success: {

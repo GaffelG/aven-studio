@@ -59,6 +59,8 @@ const contact: Dictionary["contact"] = {
       required: "Please fill in this field.",
       email: "Please enter a valid email address.",
       consent: "We need your consent to be able to reply.",
+      tooLong: "This is too long. Please shorten it a little.",
+      delivery: "Your enquiry couldn’t be sent right now. Please try again shortly or email us directly at",
       summary: "Something is missing. Please check the highlighted fields.",
     },
     success: {
