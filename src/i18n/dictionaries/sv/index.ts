@@ -1,3 +1,9 @@
+import about from "./about";
+import contact from "./contact";
+import pricing from "./pricing";
+import services from "./services";
+import work from "./work";
+
 const sv = {
   meta: {
     title: "Aven Studio — Webbdesign för växande företag",
@@ -33,10 +39,6 @@ const sv = {
     label: "Språk",
     sv: "Svenska",
     en: "English",
-  },
-  placeholder: {
-    eyebrow: "Under uppbyggnad",
-    body: "Den här sidan lanseras snart.",
   },
   home: {
     hero: {
@@ -111,6 +113,11 @@ const sv = {
     body: "Sidan du letar efter finns inte eller har flyttats.",
     back: "Till startsidan",
   },
+  services,
+  work,
+  pricing,
+  about,
+  contact,
 };
 
 export default sv;

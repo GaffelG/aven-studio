@@ -1,4 +1,9 @@
-import type { Dictionary } from "../get-dictionary";
+import type { Dictionary } from "../../get-dictionary";
+import about from "./about";
+import contact from "./contact";
+import pricing from "./pricing";
+import services from "./services";
+import work from "./work";
 
 const en: Dictionary = {
   meta: {
@@ -35,10 +40,6 @@ const en: Dictionary = {
     label: "Language",
     sv: "Svenska",
     en: "English",
-  },
-  placeholder: {
-    eyebrow: "In progress",
-    body: "This page is launching soon.",
   },
   home: {
     hero: {
@@ -113,6 +114,11 @@ const en: Dictionary = {
     body: "The page you are looking for doesn’t exist or has moved.",
     back: "Back to home",
   },
+  services,
+  work,
+  pricing,
+  about,
+  contact,
 };
 
 export default en;
