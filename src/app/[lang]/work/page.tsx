@@ -33,8 +33,9 @@ export default async function WorkPage() {
           return (
             <section
               key={concept.id}
+              id={concept.id}
               aria-labelledby={`${concept.id}-title`}
-              className="not-first:mt-28 sm:not-first:mt-36 lg:not-first:mt-48"
+              className="scroll-mt-28 not-first:mt-28 sm:not-first:mt-36 lg:scroll-mt-32 lg:not-first:mt-48"
             >
               <Container className="grid gap-10 lg:grid-cols-12 lg:items-center lg:gap-8">
                 <Reveal className={cn("lg:col-span-7", flipped && "lg:order-2 lg:col-start-6")}>

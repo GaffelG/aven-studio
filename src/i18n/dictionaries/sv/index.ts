@@ -48,6 +48,8 @@ const sv = {
       primaryCta: "Boka ett samtal",
       secondaryCta: "Se våra tjänster",
       pillars: ["Webbdesign", "Utveckling", "Digitala lösningar"],
+      showcaseLabel: "Utvalda konceptprojekt – fiktiva företag",
+      showcaseLink: "Se koncepten",
     },
     statement: {
       eyebrow: "Vår inriktning",
@@ -78,6 +80,12 @@ const sv = {
           badge: "Växande område",
         },
       ],
+    },
+    concepts: {
+      eyebrow: "Koncept",
+      title: "Så kan ditt företag ta plats på nätet.",
+      cta: "Alla koncept",
+      note: "Konceptprojekt med fiktiva företag – framtagna av Aven Studio för att visa vårt arbete.",
     },
     principles: {
       eyebrow: "Därför Aven",

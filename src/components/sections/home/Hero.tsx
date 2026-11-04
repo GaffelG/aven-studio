@@ -3,6 +3,7 @@ import { Container } from "@/components/ui/Container";
 import { Eyebrow } from "@/components/ui/Eyebrow";
 import { getDictionary, getLocale } from "@/i18n/get-dictionary";
 import { localizedHref, pagePaths } from "@/lib/routes";
+import { HeroShowcase } from "./HeroShowcase";
 
 // The headline renders without animation so it can paint immediately (it is the LCP element).
 export async function Hero() {
@@ -10,8 +11,8 @@ export async function Hero() {
   const t = dict.home.hero;
 
   return (
-    <section className="border-b border-ink/8">
-      <Container className="pt-16 pb-14 sm:pt-24 lg:pt-32 lg:pb-20">
+    <section className="overflow-x-clip border-b border-ink/8">
+      <Container className="pt-16 pb-14 sm:pt-24 sm:pb-16 lg:pt-32 lg:pb-20">
         <Eyebrow>{t.eyebrow}</Eyebrow>
         <h1 className="mt-8 max-w-[13ch] text-display-xl">
           {t.headline}
@@ -29,6 +30,8 @@ export async function Hero() {
             </Button>
           </div>
         </div>
+
+        <HeroShowcase />
       </Container>
 
       <Container>

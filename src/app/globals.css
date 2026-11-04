@@ -85,3 +85,32 @@
     transform: none;
   }
 }
+
+/* Scroll-linked parallax (CSS only). Unsupported browsers keep the static composition. */
+@supports (animation-timeline: view()) {
+  @media (prefers-reduced-motion: no-preference) {
+    .parallax-slow,
+    .parallax-fast {
+      animation: parallax linear both;
+      animation-timeline: view();
+      animation-range: cover;
+    }
+
+    .parallax-slow {
+      --parallax-distance: 2.5rem;
+    }
+
+    .parallax-fast {
+      --parallax-distance: 5rem;
+    }
+  }
+}
+
+@keyframes parallax {
+  from {
+    transform: translateY(calc(var(--parallax-distance) * 0.5));
+  }
+  to {
+    transform: translateY(calc(var(--parallax-distance) * -0.5));
+  }
+}

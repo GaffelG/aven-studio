@@ -1,3 +1,4 @@
+import { ConceptsShowcase } from "@/components/sections/home/ConceptsShowcase";
 import { Hero } from "@/components/sections/home/Hero";
 import { Principles } from "@/components/sections/home/Principles";
 import { Process } from "@/components/sections/home/Process";
@@ -12,6 +13,7 @@ export default function Home() {
       <Hero />
       <Statement />
       <ServicesOverview />
+      <ConceptsShowcase />
       <Principles />
       <Process />
     </>

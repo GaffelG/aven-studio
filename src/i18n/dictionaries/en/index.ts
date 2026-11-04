@@ -49,6 +49,8 @@ const en: Dictionary = {
       primaryCta: "Book a call",
       secondaryCta: "Explore our services",
       pillars: ["Web design", "Development", "Digital solutions"],
+      showcaseLabel: "Selected concept projects – fictional companies",
+      showcaseLink: "View the concepts",
     },
     statement: {
       eyebrow: "Our focus",
@@ -79,6 +81,12 @@ const en: Dictionary = {
           badge: "Growing area",
         },
       ],
+    },
+    concepts: {
+      eyebrow: "Concepts",
+      title: "How your business could show up online.",
+      cta: "All concepts",
+      note: "Concept projects with fictional companies – created by Aven Studio to show our work.",
     },
     principles: {
       eyebrow: "Why Aven",

@@ -4,6 +4,7 @@ import { Logo } from "@/components/ui/Logo";
 import { getDictionary, getLocale } from "@/i18n/get-dictionary";
 import { localizedHref, pageKeys, pagePaths } from "@/lib/routes";
 import { DesktopNav } from "./DesktopNav";
+import { HeaderShell } from "./HeaderShell";
 import { LanguageSwitcher } from "./LanguageSwitcher";
 import { MobileNav } from "./MobileNav";
 
@@ -13,7 +14,7 @@ export async function Header() {
   const contactHref = localizedHref(locale, pagePaths.contact);
 
   return (
-    <header className="group/header sticky top-0 z-40 border-b border-ink/8 bg-paper">
+    <HeaderShell>
       <Container className="flex h-16 items-center justify-between gap-8 lg:h-20">
         <Logo
           href={localizedHref(locale)}
@@ -39,6 +40,6 @@ export async function Header() {
           languageLabels={dict.languageSwitcher}
         />
       </Container>
-    </header>
+    </HeaderShell>
   );
 }
