@@ -18,7 +18,7 @@ Requires Node.js 20.9 or later. See [DEPLOYMENT.md](DEPLOYMENT.md) for hosting, 
 
 | Variable | Purpose | Default |
 | --- | --- | --- |
-| `NEXT_PUBLIC_SITE_URL` | Public origin for canonical URLs, sitemap and share images | `https://avenstudio.se` |
+| `NEXT_PUBLIC_SITE_URL` | Public origin for canonical URLs, sitemap and share images | Vercel production domain, else `https://avenstudio.se` |
 | `RESEND_API_KEY` | Resend API key for contact form delivery | – |
 | `CONTACT_TO_EMAIL` | Inbox that receives enquiries (comma-separated for several) | – |
 | `CONTACT_FROM_EMAIL` | Sender on a domain verified in Resend | – |

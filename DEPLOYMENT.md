@@ -22,7 +22,7 @@ The CI workflow in `.github/workflows/ci.yml` runs lint, type checking and a pro
 
 | Variable | Value | Environments |
 | --- | --- | --- |
-| `NEXT_PUBLIC_SITE_URL` | `https://avenstudio.se` (your final domain, no trailing slash) | Production |
+| `NEXT_PUBLIC_SITE_URL` | Optional. Leave unset to use Vercel's production domain automatically (the `.vercel.app` address, or your custom domain once connected) | Production |
 | `RESEND_API_KEY` | From Resend → API Keys | Production, Preview |
 | `CONTACT_TO_EMAIL` | `aavenstudio@gmail.com` | Production, Preview |
 | `CONTACT_FROM_EMAIL` | See step 4 | Production, Preview |
