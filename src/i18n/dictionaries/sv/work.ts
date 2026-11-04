@@ -12,6 +12,7 @@ const work = {
   },
   previewLabel: "Förhandsvisning av konceptet",
   status: "Demosajt under utveckling",
+  demoCta: "Öppna demosajten",
   labels: {
     sector: "Bransch",
     challenge: "Utmaningen",

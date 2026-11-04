@@ -19,6 +19,8 @@ export type Concept = {
   name: string;
   /** Typeface family used inside the preview. */
   typeface: "display" | "serif";
+  /** Path to the live demo site, once built. */
+  demoHref?: string;
   palette: ConceptPalette;
 };
 
@@ -26,6 +28,7 @@ export const concepts: Concept[] = [
   {
     id: "automotive",
     name: "Ferrum Verkstad",
+    demoHref: "/demo/ferrum",
     typeface: "display",
     palette: { background: "#15171a", surface: "#22262b", text: "#f1f0ec", muted: "#8a8f97", accent: "#e0612c" },
   },

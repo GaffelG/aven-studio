@@ -14,6 +14,7 @@ const work: Dictionary["work"] = {
   },
   previewLabel: "Preview of the concept",
   status: "Demo site in progress",
+  demoCta: "Open the demo site",
   labels: {
     sector: "Industry",
     challenge: "The challenge",

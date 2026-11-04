@@ -45,6 +45,24 @@
   }
 }
 
+/*
+ * Demo: Ferrum Verkstad (fictional client concept at /demo/ferrum).
+ * Kept separate from the Aven brand; mirrors the automotive palette in src/content/projects.ts.
+ */
+@theme {
+  --color-ferrum-ink: #15171a;
+  --color-ferrum-surface: #1e2125;
+  --color-ferrum-raised: #272b30;
+  --color-ferrum-line: #2f343a;
+  --color-ferrum-text: #f1f0ec;
+  --color-ferrum-muted: #8a8f97;
+  --color-ferrum-accent: #e0612c;
+  --color-ferrum-accent-deep: #b84a1d; /* Accent tuned for text on the light paper section */
+  --color-ferrum-paper: #eceae5;
+
+  --font-ferrum: var(--font-barlow-condensed), "Arial Narrow", sans-serif;
+}
+
 @layer base {
   html {
     -webkit-text-size-adjust: 100%;

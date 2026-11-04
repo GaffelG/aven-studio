@@ -1,4 +1,5 @@
 import { PageHero } from "@/components/sections/PageHero";
+import { Button } from "@/components/ui/Button";
 import { Container } from "@/components/ui/Container";
 import { Reveal } from "@/components/ui/Reveal";
 import { ConceptPreview } from "@/components/work/ConceptPreview";
@@ -93,10 +94,16 @@ export default async function WorkPage() {
                           ))}
                         </dd>
                       </div>
-                      <p className="flex items-center gap-2 text-xs text-silver-deep">
-                        <span aria-hidden className="size-1.5 rounded-full bg-sage motion-safe:animate-pulse" />
-                        {t.status}
-                      </p>
+                      {concept.demoHref ? (
+                        <Button href={concept.demoHref} size="sm" arrow>
+                          {t.demoCta}
+                        </Button>
+                      ) : (
+                        <p className="flex items-center gap-2 text-xs text-silver-deep">
+                          <span aria-hidden className="size-1.5 rounded-full bg-sage motion-safe:animate-pulse" />
+                          {t.status}
+                        </p>
+                      )}
                     </div>
                   </dl>
                 </Reveal>
