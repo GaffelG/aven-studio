@@ -11,10 +11,10 @@ const dictionaries: Record<Locale, () => Promise<Dictionary>> = {
   en: () => import("./dictionaries/en").then((m) => m.default),
 };
 
-/** Resolves the current locale from the route segment. */
+/** Resolves the current locale from the route segment (undefined outside app/[lang], e.g. demo sites). */
 export async function getLocale(): Promise<Locale> {
   const locale = await lang();
-  if (!hasLocale(locale)) notFound();
+  if (!locale || !hasLocale(locale)) notFound();
   return locale;
 }
 
