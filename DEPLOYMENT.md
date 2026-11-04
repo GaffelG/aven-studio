@@ -60,7 +60,7 @@ The CI workflow in `.github/workflows/ci.yml` runs lint, type checking and a pro
 
 ## Self-hosting instead
 
-Any Node.js 20.9+ host works:
+Any Node.js 22 host works:
 
 ```bash
 npm ci

@@ -12,7 +12,7 @@ npm run dev      # http://localhost:3000 → redirects to /sv or /en
 npm run check    # lint + typecheck + production build
 ```
 
-Requires Node.js 20.9 or later. See [DEPLOYMENT.md](DEPLOYMENT.md) for hosting, domain and email setup.
+Requires Node.js 22 (pinned via `engines` in package.json). See [DEPLOYMENT.md](DEPLOYMENT.md) for hosting, domain and email setup.
 
 ## Configuration
 
