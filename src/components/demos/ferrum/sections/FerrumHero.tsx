@@ -1,4 +1,5 @@
-import { ferrum } from "@/demos/ferrum/content";
+import Link from "next/link";
+import { ferrum, ferrumPaths } from "@/demos/ferrum/content";
 
 const t = ferrum.hero;
 
@@ -26,21 +27,21 @@ export function FerrumHero() {
           <p className="mt-8 max-w-lg text-lg leading-relaxed text-ferrum-text/75">{t.lead}</p>
 
           <div className="mt-10 flex flex-wrap gap-3">
-            <a
-              href="#boka"
+            <Link
+              href={ferrumPaths.booking}
               className="group inline-flex items-center gap-3 bg-ferrum-accent px-7 py-4 font-ferrum text-xl font-bold tracking-wide text-ferrum-ink uppercase transition-colors hover:bg-ferrum-text"
             >
               {t.primaryCta}
               <span aria-hidden className="transition-transform group-hover:translate-x-1">
                 →
               </span>
-            </a>
-            <a
-              href="#priser"
+            </Link>
+            <Link
+              href={ferrumPaths.prices}
               className="inline-flex items-center border border-ferrum-text/25 px-7 py-4 font-ferrum text-xl font-bold tracking-wide uppercase transition-colors hover:border-ferrum-text"
             >
               {t.secondaryCta}
-            </a>
+            </Link>
           </div>
 
           <ul className="mt-12 flex flex-wrap gap-x-8 gap-y-3 text-sm text-ferrum-text/80">
@@ -65,12 +66,12 @@ export function FerrumHero() {
             <ul className="mt-6 grid grid-cols-3 gap-2 text-center text-xs">
               {t.quick.map((item) => (
                 <li key={item}>
-                  <a
-                    href="#boka"
+                  <Link
+                    href={ferrumPaths.booking}
                     className="block border border-ferrum-line px-2 py-3 transition-colors hover:border-ferrum-accent hover:text-ferrum-accent"
                   >
                     {item}
-                  </a>
+                  </Link>
                 </li>
               ))}
             </ul>

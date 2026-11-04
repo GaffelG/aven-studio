@@ -1,4 +1,5 @@
-import { ferrum } from "@/demos/ferrum/content";
+import Link from "next/link";
+import { ferrum, ferrumPaths } from "@/demos/ferrum/content";
 
 const t = ferrum.booking;
 
@@ -13,13 +14,12 @@ export function FerrumBooking() {
           <p className="mt-5 max-w-md text-lg text-ferrum-ink/80">{t.lead}</p>
         </div>
         <div className="flex flex-wrap gap-3">
-          {/* The booking flow is built in the next demo stage; until then this leads to contact details. */}
-          <a
-            href="#kontakt"
+          <Link
+            href={ferrumPaths.booking}
             className="inline-flex items-center gap-3 bg-ferrum-ink px-7 py-4 font-ferrum text-xl font-bold tracking-wide text-ferrum-text uppercase transition-colors hover:bg-ferrum-raised"
           >
             {t.cta} <span aria-hidden>→</span>
-          </a>
+          </Link>
           <a
             href={ferrum.phone.href}
             className="inline-flex items-center border-2 border-ferrum-ink px-7 py-4 font-ferrum text-xl font-bold tracking-wide uppercase transition-colors hover:bg-ferrum-ink hover:text-ferrum-text"

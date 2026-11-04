@@ -1,6 +1,7 @@
+import Link from "next/link";
 import { Reveal } from "@/components/ui/Reveal";
 import { formatPrice } from "@/content/pricing";
-import { ferrum } from "@/demos/ferrum/content";
+import { ferrum, ferrumPaths } from "@/demos/ferrum/content";
 import { FerrumHeading } from "../FerrumHeading";
 
 const t = ferrum.services;
@@ -15,8 +16,8 @@ export function FerrumServices() {
           {t.items.map((item, i) => (
             <li key={item.title} className="bg-ferrum-ink">
               <Reveal delay={(i % 3) * 80} className="h-full">
-                <a
-                  href="#boka"
+                <Link
+                  href={`${ferrumPaths.services}#${item.id}`}
                   className="group flex h-full flex-col p-7 transition-colors duration-300 hover:bg-ferrum-surface sm:p-9"
                 >
                   <span className="font-ferrum text-lg font-semibold text-ferrum-accent tabular-nums">
@@ -37,7 +38,7 @@ export function FerrumServices() {
                       →
                     </span>
                   </p>
-                </a>
+                </Link>
               </Reveal>
             </li>
           ))}

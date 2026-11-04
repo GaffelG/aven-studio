@@ -1,13 +1,17 @@
 "use client";
 
+import Link from "next/link";
+import { usePathname } from "next/navigation";
 import { useId, useState } from "react";
-import { ferrum } from "@/demos/ferrum/content";
+import { ferrum, ferrumPaths } from "@/demos/ferrum/content";
 import { cn } from "@/lib/cn";
 import { FerrumLogo } from "./FerrumLogo";
 
 export function FerrumHeader() {
   const [open, setOpen] = useState(false);
+  const pathname = usePathname();
   const panelId = useId();
+  const isActive = (href: string) => pathname === href || pathname.startsWith(`${href}/`);
 
   return (
     <header className="sticky top-0 z-40 border-b border-ferrum-line bg-ferrum-ink/95">
@@ -18,9 +22,13 @@ export function FerrumHeader() {
           <ul className="flex gap-8 font-ferrum text-lg font-semibold tracking-wide uppercase">
             {ferrum.nav.map((item) => (
               <li key={item.href}>
-                <a href={item.href} className="text-ferrum-text/75 transition-colors hover:text-ferrum-accent">
+                <Link
+                  href={item.href}
+                  aria-current={isActive(item.href) ? "page" : undefined}
+                  className="relative py-2 text-ferrum-text/75 transition-colors hover:text-ferrum-accent aria-[current=page]:text-ferrum-text aria-[current=page]:after:absolute aria-[current=page]:after:inset-x-0 aria-[current=page]:after:-bottom-0.5 aria-[current=page]:after:h-0.5 aria-[current=page]:after:bg-ferrum-accent"
+                >
                   {item.label}
-                </a>
+                </Link>
               </li>
             ))}
           </ul>
@@ -30,12 +38,12 @@ export function FerrumHeader() {
           <a href={ferrum.phone.href} className="text-sm text-ferrum-muted transition-colors hover:text-ferrum-text">
             {ferrum.phone.label}
           </a>
-          <a
-            href="#boka"
+          <Link
+            href={ferrumPaths.booking}
             className="bg-ferrum-accent px-5 py-2.5 font-ferrum text-lg font-bold tracking-wide text-ferrum-ink uppercase transition-colors hover:bg-ferrum-text"
           >
             {ferrum.hero.primaryCta}
-          </a>
+          </Link>
         </div>
 
         <button
@@ -57,13 +65,14 @@ export function FerrumHeader() {
         <ul className="px-5 py-4 sm:px-8">
           {ferrum.nav.map((item) => (
             <li key={item.href} className="border-b border-ferrum-line last:border-b-0">
-              <a
+              <Link
                 href={item.href}
                 onClick={() => setOpen(false)}
-                className="block py-4 font-ferrum text-3xl font-bold tracking-wide uppercase"
+                aria-current={isActive(item.href) ? "page" : undefined}
+                className="block py-4 font-ferrum text-3xl font-bold tracking-wide uppercase aria-[current=page]:text-ferrum-accent"
               >
                 {item.label}
-              </a>
+              </Link>
             </li>
           ))}
         </ul>
@@ -71,13 +80,13 @@ export function FerrumHeader() {
           <a href={ferrum.phone.href} className="text-sm text-ferrum-muted">
             {ferrum.phone.label}
           </a>
-          <a
-            href="#boka"
+          <Link
+            href={ferrumPaths.booking}
             onClick={() => setOpen(false)}
             className="bg-ferrum-accent px-5 py-2.5 font-ferrum text-lg font-bold tracking-wide text-ferrum-ink uppercase"
           >
             {ferrum.hero.primaryCta}
-          </a>
+          </Link>
         </div>
       </nav>
     </header>

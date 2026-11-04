@@ -1,6 +1,7 @@
+import Link from "next/link";
 import { Reveal } from "@/components/ui/Reveal";
 import { formatPrice } from "@/content/pricing";
-import { ferrum } from "@/demos/ferrum/content";
+import { ferrum, ferrumPaths } from "@/demos/ferrum/content";
 import { FerrumHeading } from "../FerrumHeading";
 
 const t = ferrum.prices;
@@ -12,12 +13,12 @@ export function FerrumPrices() {
         <div className="lg:col-span-5">
           <FerrumHeading eyebrow={t.eyebrow} title={t.title} id="priser-title" tone="light" />
           <p className="mt-8 max-w-sm text-lg leading-relaxed text-ferrum-ink/70">{t.lead}</p>
-          <a
-            href="#boka"
+          <Link
+            href={ferrumPaths.booking}
             className="mt-10 inline-flex items-center gap-3 bg-ferrum-ink px-7 py-4 font-ferrum text-xl font-bold tracking-wide text-ferrum-text uppercase transition-colors hover:bg-ferrum-accent hover:text-ferrum-ink"
           >
             {ferrum.hero.primaryCta} <span aria-hidden>→</span>
-          </a>
+          </Link>
         </div>
 
         <Reveal className="lg:col-span-6 lg:col-start-7">
@@ -42,7 +43,15 @@ export function FerrumPrices() {
               ))}
             </tbody>
           </table>
-          <p className="mt-6 text-xs text-ferrum-ink/55">{t.note}</p>
+          <div className="mt-6 flex flex-wrap items-center justify-between gap-4">
+            <p className="text-xs text-ferrum-ink/55">{t.note}</p>
+            <Link
+              href={ferrumPaths.prices}
+              className="font-ferrum text-lg font-bold tracking-wide text-ferrum-accent-deep uppercase underline-offset-4 hover:underline"
+            >
+              {t.allPrices} →
+            </Link>
+          </div>
         </Reveal>
       </div>
     </section>

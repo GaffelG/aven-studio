@@ -12,7 +12,7 @@ export const viewport: Viewport = {
 };
 
 export const metadata: Metadata = {
-  title: `${ferrum.name} — Konceptdemo av Aven Studio`,
+  title: { default: `${ferrum.name} — Konceptdemo av Aven Studio`, template: `%s — ${ferrum.name} (demo)` },
   description: "Konceptdemo av en webbplats för en bilverkstad, skapad av Aven Studio. Företaget är fiktivt.",
   // Demo sites are fictional and must not appear in search results.
   robots: { index: false, follow: false },
