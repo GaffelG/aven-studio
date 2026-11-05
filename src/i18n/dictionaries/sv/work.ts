@@ -4,7 +4,7 @@ const work = {
   hero: {
     eyebrow: "Arbeten",
     title: "Koncept som visar vad vi kan skapa.",
-    lead: "Tre branscher, tre helt olika uttryck. Varje koncept utgår från verkliga behov hos små och medelstora företag – och kommer att byggas ut till kompletta demonstrationssajter.",
+    lead: "Tre branscher, tre helt olika uttryck. Varje koncept utgår från verkliga behov hos små och medelstora företag – och finns som en komplett demosajt att klicka runt i.",
   },
   disclaimer: {
     label: "Konceptprojekt",

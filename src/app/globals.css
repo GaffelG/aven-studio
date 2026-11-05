@@ -63,6 +63,35 @@
   --font-ferrum: var(--font-barlow-condensed), "Arial Narrow", sans-serif;
 }
 
+/* Demo: Bergsten Bygg (fictional construction company at /demo/bergsten). */
+@theme {
+  --color-bergsten-sand: #ebe6dc;
+  --color-bergsten-stone: #dbd2c2;
+  --color-bergsten-paper: #f6f3ed;
+  --color-bergsten-ink: #1d2822;
+  --color-bergsten-muted: #5f5a51; /* Tuned for text contrast on sand */
+  --color-bergsten-line: #c9bfad;
+  --color-bergsten-green: #2f5c45;
+  --color-bergsten-green-light: #9fbaa8;
+
+  --font-bergsten: var(--font-archivo), "Helvetica Neue", sans-serif;
+}
+
+/* Demo: Salong Sora (fictional hair salon at /demo/sora). */
+@theme {
+  --color-sora-cream: #f4ece5;
+  --color-sora-shell: #faf6f2;
+  --color-sora-blush: #e7d7ca;
+  --color-sora-espresso: #2c221e;
+  --color-sora-muted: #6e5f56; /* Tuned for text contrast on cream */
+  --color-sora-line: #dccbbd;
+  --color-sora-clay: #ad785c;
+  --color-sora-clay-deep: #8a5a41; /* Clay tuned for text on cream */
+
+  --font-sora-serif: var(--font-cormorant), Georgia, serif;
+  --font-sora: var(--font-jost), "Helvetica Neue", sans-serif;
+}
+
 @layer base {
   html {
     -webkit-text-size-adjust: 100%;

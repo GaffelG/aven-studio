@@ -3,6 +3,7 @@
 import { useEffect, useMemo, useRef, useState, type ReactNode } from "react";
 import { formatPrice } from "@/content/pricing";
 import { ferrum, type FerrumServiceId } from "@/demos/ferrum/content";
+import { dayKey, hoursToSlots, isTaken, longDate, shortDate, upcomingDays } from "@/demos/shared/schedule";
 import { cn } from "@/lib/cn";
 
 const t = ferrum.booking;
@@ -16,34 +17,13 @@ const phonePattern = /^[0-9 +()-]{7,}$/;
 const emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 const platePattern = /^[A-ZÅÄÖ]{3}\s?\d{2}[A-Z0-9]$/i;
 
-const dateFormat = new Intl.DateTimeFormat("sv-SE", { weekday: "short", day: "numeric", month: "short" });
-const longDateFormat = new Intl.DateTimeFormat("sv-SE", { weekday: "long", day: "numeric", month: "long" });
+const dateFormat = shortDate;
+const longDateFormat = longDate;
 
-/** The next ten opening days (Mon–Sat), starting tomorrow. Only called client-side, after step 1. */
-function upcomingDays(): Date[] {
-  const days: Date[] = [];
-  const day = new Date();
-  day.setHours(12, 0, 0, 0);
-  while (days.length < 10) {
-    day.setDate(day.getDate() + 1);
-    if (day.getDay() !== 0) days.push(new Date(day));
-  }
-  return days;
-}
-
+/** Workshop hours: shorter on Saturdays. */
 function slotsFor(day: Date): string[] {
-  const hours = day.getDay() === 6 ? [9, 10, 11, 12] : [7, 8, 9, 10, 11, 13, 14, 15, 16];
-  return hours.map((h) => `${String(h).padStart(2, "0")}.00`);
+  return hoursToSlots(day.getDay() === 6 ? [9, 10, 11, 12] : [7, 8, 9, 10, 11, 13, 14, 15, 16]);
 }
-
-/** Deterministic "already booked" pattern so the calendar looks realistic without a backend. */
-function isTaken(dayKey: string, slot: string): boolean {
-  let hash = 0;
-  for (const char of dayKey + slot) hash = (hash * 31 + char.charCodeAt(0)) >>> 0;
-  return hash % 3 === 0;
-}
-
-const dayKey = (day: Date) => day.toISOString().slice(0, 10);
 
 export function BookingFlow() {
   const [step, setStep] = useState(0);

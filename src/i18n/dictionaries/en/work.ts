@@ -6,7 +6,7 @@ const work: Dictionary["work"] = {
   hero: {
     eyebrow: "Work",
     title: "Concepts that show what we can create.",
-    lead: "Three industries, three entirely different expressions. Each concept starts from the real needs of small and medium-sized businesses – and will be developed into a complete demonstration website.",
+    lead: "Three industries, three entirely different expressions. Each concept starts from the real needs of small and medium-sized businesses – and is available as a complete demo site to click through.",
   },
   disclaimer: {
     label: "Concept projects",

@@ -35,12 +35,14 @@ export const concepts: Concept[] = [
   {
     id: "construction",
     name: "Bergsten Bygg",
+    demoHref: "/demo/bergsten",
     typeface: "display",
     palette: { background: "#ebe6dc", surface: "#dbd2c2", text: "#1d2822", muted: "#6c675d", accent: "#2f5c45" },
   },
   {
     id: "salon",
     name: "Salong Sora",
+    demoHref: "/demo/sora",
     typeface: "serif",
     palette: { background: "#f4ece5", surface: "#e7d7ca", text: "#2c221e", muted: "#8b7b71", accent: "#ad785c" },
   },
