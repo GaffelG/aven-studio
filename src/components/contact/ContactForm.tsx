@@ -17,6 +17,54 @@ const inputClass =
 
 type Props = { labels: Labels; locale: Locale; fallbackEmail: string };
 
+/*
+ * Draft kept in sessionStorage so typed values survive a language switch (/sv ↔ /en are separate pages).
+ * It never leaves the browser, ends with the tab and is cleared after a successful send.
+ * Consent is deliberately not stored: it should be given actively each time.
+ */
+const draftKey = "aven-contact-draft";
+const draftFields = ["name", "email", "company", "phone", "projectType", "budget", "message"] as const;
+
+function saveDraft(form: HTMLFormElement) {
+  try {
+    const data = new FormData(form);
+    const draft = Object.fromEntries(draftFields.map((key) => [key, String(data.get(key) ?? "")]));
+    sessionStorage.setItem(draftKey, JSON.stringify(draft));
+  } catch {
+    // Storage can be unavailable (private mode, blocked site data); the form still works without it.
+  }
+}
+
+function restoreDraft(form: HTMLFormElement) {
+  try {
+    const draft = JSON.parse(sessionStorage.getItem(draftKey) ?? "null") as Record<string, string> | null;
+    if (!draft) return;
+    // Always apply the latest draft: Next keeps the previous language's page alive in the background,
+    // so a form that was shown before must pick up edits made on the other page.
+    for (const key of draftFields) {
+      const value = draft[key] ?? "";
+      if (key === "projectType") {
+        form.querySelectorAll<HTMLInputElement>('input[name="projectType"]').forEach((radio) => {
+          radio.checked = radio.value === value;
+        });
+        continue;
+      }
+      const field = form.elements.namedItem(key) as HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement | null;
+      if (field) field.value = value;
+    }
+  } catch {
+    // Ignore unreadable drafts.
+  }
+}
+
+function clearDraft() {
+  try {
+    sessionStorage.removeItem(draftKey);
+  } catch {
+    // Nothing to clear.
+  }
+}
+
 export function ContactForm({ labels, locale, fallbackEmail }: Props) {
   const [state, formAction, pending] = useActionState(submitEnquiry, initialState);
   // Remounts the form after "send another", clearing the previous values.
@@ -24,15 +72,23 @@ export function ContactForm({ labels, locale, fallbackEmail }: Props) {
   const [dismissed, setDismissed] = useState(false);
   const successRef = useRef<HTMLHeadingElement>(null);
   const summaryRef = useRef<HTMLParagraphElement>(null);
+  const formRef = useRef<HTMLFormElement>(null);
 
   const showSuccess = state.status === "success" && !dismissed;
   const errors = state.status === "error" ? state.errors : {};
   const values = state.status === "error" || state.status === "failed" ? state.values : {};
 
   useEffect(() => {
-    if (showSuccess) successRef.current?.focus();
-    else if (state.status === "error" || state.status === "failed") summaryRef.current?.focus();
+    if (showSuccess) {
+      clearDraft();
+      successRef.current?.focus();
+    } else if (state.status === "error" || state.status === "failed") summaryRef.current?.focus();
   }, [state, showSuccess]);
+
+  // Bring back what the visitor typed on the other language's page.
+  useEffect(() => {
+    if (formRef.current) restoreDraft(formRef.current);
+  }, [formKey]);
 
   if (showSuccess) {
     return (
@@ -67,6 +123,8 @@ export function ContactForm({ labels, locale, fallbackEmail }: Props) {
   return (
     <form
       key={formKey}
+      ref={formRef}
+      onChange={(e) => saveDraft(e.currentTarget)}
       action={(data) => {
         setDismissed(false);
         return formAction(data);
@@ -151,7 +209,14 @@ export function ContactForm({ labels, locale, fallbackEmail }: Props) {
       </Field>
 
       <Field id="message" label={labels.message} hint={labels.messageHint} error={errorText("message")} className="sm:col-span-2">
-        <textarea name="message" rows={5} defaultValue={values.message} required className="resize-y" />
+        {/* A full frame (not just an underline) makes the multi-line area easy to spot. */}
+        <textarea
+          name="message"
+          rows={5}
+          defaultValue={values.message}
+          required
+          className="mt-3! resize-y rounded-[3px]! border! border-ink/20 bg-paper px-4! py-3 focus:border-ink"
+        />
       </Field>
 
       <div className="sm:col-span-2">
