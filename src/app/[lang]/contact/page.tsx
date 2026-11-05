@@ -3,6 +3,7 @@ import { Container } from "@/components/ui/Container";
 import { Eyebrow } from "@/components/ui/Eyebrow";
 import { getDictionary, getLocale } from "@/i18n/get-dictionary";
 import { pageMetadata } from "@/lib/page-metadata";
+import { localizedHref } from "@/lib/routes";
 
 export const generateMetadata = () => pageMetadata("contact");
 
@@ -44,7 +45,12 @@ export default async function ContactPage() {
 
       <section aria-label={t.form.title} className="lg:col-span-6 lg:col-start-7 lg:pt-4">
         <div className="rounded-md bg-paper-bright p-6 ring-1 ring-ink/8 sm:p-10">
-          <ContactForm labels={t.form} locale={locale} fallbackEmail={dict.footer.email} />
+          <ContactForm
+            labels={t.form}
+            locale={locale}
+            fallbackEmail={dict.footer.email}
+            privacy={{ href: localizedHref(locale, "/privacy"), label: dict.privacy.consentLink }}
+          />
         </div>
       </section>
     </Container>

@@ -3,7 +3,7 @@ import { defaultLocale, locales } from "@/i18n/config";
 import { localizedHref, pageKeys, pagePaths } from "@/lib/routes";
 import { siteUrl } from "@/lib/site";
 
-const paths = ["/", ...pageKeys.map((key) => pagePaths[key])];
+const paths = ["/", ...pageKeys.map((key) => pagePaths[key]), "/privacy"];
 
 export default function sitemap(): MetadataRoute.Sitemap {
   return paths.flatMap((path) =>

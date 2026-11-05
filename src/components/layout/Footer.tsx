@@ -57,7 +57,10 @@ export async function Footer() {
 
         <div className="flex flex-col-reverse gap-4 border-t border-paper/10 pt-8 text-xs text-paper/50 sm:flex-row sm:items-center sm:justify-between">
           <p>
-            © {year} Aven Studio. {dict.footer.rights}
+            © {year} Aven Studio. {dict.footer.rights}{" "}
+            <Link href={localizedHref(locale, "/privacy")} className="ml-3 underline-offset-4 hover:text-paper hover:underline">
+              {dict.privacy.linkLabel}
+            </Link>
           </p>
           <LanguageSwitcher locale={locale} labels={dict.languageSwitcher} className="text-paper" />
         </div>

@@ -1,6 +1,7 @@
 import about from "./about";
 import contact from "./contact";
 import pricing from "./pricing";
+import privacy from "./privacy";
 import services from "./services";
 import work from "./work";
 
@@ -126,6 +127,7 @@ const sv = {
   pricing,
   about,
   contact,
+  privacy,
 };
 
 export default sv;

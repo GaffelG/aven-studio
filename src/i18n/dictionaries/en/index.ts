@@ -2,6 +2,7 @@ import type { Dictionary } from "../../get-dictionary";
 import about from "./about";
 import contact from "./contact";
 import pricing from "./pricing";
+import privacy from "./privacy";
 import services from "./services";
 import work from "./work";
 
@@ -127,6 +128,7 @@ const en: Dictionary = {
   pricing,
   about,
   contact,
+  privacy,
 };
 
 export default en;

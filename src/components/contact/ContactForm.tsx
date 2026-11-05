@@ -1,5 +1,6 @@
 "use client";
 
+import Link from "next/link";
 import { cloneElement, useActionState, useEffect, useRef, useState, type ReactElement } from "react";
 import { submitEnquiry, type ContactField, type ContactState } from "@/app/[lang]/contact/actions";
 import { honeypotField } from "@/app/[lang]/contact/form-fields";
@@ -15,7 +16,7 @@ const initialState: ContactState = { status: "idle" };
 const inputClass =
   "mt-2 w-full rounded-none border-0 border-b border-ink/20 bg-transparent px-0 py-3 text-base text-ink transition-colors duration-300 placeholder:text-silver-deep focus:border-ink focus:ring-0 focus:outline-none aria-invalid:border-error";
 
-type Props = { labels: Labels; locale: Locale; fallbackEmail: string };
+type Props = { labels: Labels; locale: Locale; fallbackEmail: string; privacy: { href: string; label: string } };
 
 /*
  * Draft kept in sessionStorage so typed values survive a language switch (/sv ↔ /en are separate pages).
@@ -65,7 +66,7 @@ function clearDraft() {
   }
 }
 
-export function ContactForm({ labels, locale, fallbackEmail }: Props) {
+export function ContactForm({ labels, locale, fallbackEmail, privacy }: Props) {
   const [state, formAction, pending] = useActionState(submitEnquiry, initialState);
   // Remounts the form after "send another", clearing the previous values.
   const [formKey, setFormKey] = useState(0);
@@ -230,6 +231,11 @@ export function ContactForm({ labels, locale, fallbackEmail }: Props) {
           />
           {labels.consent}
         </label>
+        <p className="mt-2 pl-7 text-sm">
+          <Link href={privacy.href} target="_blank" className="text-ink/75 underline underline-offset-4 hover:text-sage-deep">
+            {privacy.label}
+          </Link>
+        </p>
         {errors.consent && (
           <p id="consent-error" className="mt-2 pl-7 text-sm text-error">
             {labels.errors.consent}
