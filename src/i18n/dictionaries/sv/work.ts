@@ -29,12 +29,6 @@ const work = {
       approach:
         "Ett robust, mörkt uttryck med tydliga tjänstekort och en bokningsknapp som alltid är nära till hands. Fokus på förtroende: tydliga priser, garantier och öppettider.",
       features: ["Onlinebokning per tjänst", "Prisguide för vanliga jobb", "Öppettider och vägbeskrivning", "Kundomdömen"],
-      mock: {
-        nav: ["Tjänster", "Priser", "Kontakt"],
-        headline: "Service du kan lita på.",
-        cta: "Boka tid",
-        items: ["Service", "Däck", "Diagnos"],
-      },
     },
     construction: {
       sector: "Byggföretag",
@@ -44,12 +38,6 @@ const work = {
       approach:
         "Ett stramt, arkitektoniskt uttryck med stora projektbilder, tydlig process och en offertförfrågan som samlar rätt information från start.",
       features: ["Projektportfölj med filter", "Process steg för steg", "Offertformulär", "Certifieringar och försäkringar"],
-      mock: {
-        nav: ["Projekt", "Tjänster", "Om oss"],
-        headline: "Vi bygger det som håller.",
-        cta: "Begär offert",
-        items: ["Nybyggnation", "Renovering", "Tillbyggnad"],
-      },
     },
     salon: {
       sector: "Frisörsalong",
@@ -59,12 +47,6 @@ const work = {
       approach:
         "Ett varmt och elegant uttryck med mjuka former, generös typografi och en tydlig väg från behandling till bokning.",
       features: ["Behandlingar och priser", "Bokning direkt på sajten", "Presentation av stylister", "Galleri och inspiration"],
-      mock: {
-        nav: ["Behandlingar", "Salongen", "Boka"],
-        headline: "Tid för dig.",
-        cta: "Boka behandling",
-        items: ["Klippning", "Färg", "Styling"],
-      },
     },
   },
 };

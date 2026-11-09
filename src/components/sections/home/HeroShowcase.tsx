@@ -34,8 +34,8 @@ export async function HeroShowcase() {
             <div className={layout[concept.id].motion}>
               <ConceptPreview
                 concept={concept}
-                mock={dict.work.projects[concept.id].mock}
                 label={dict.work.previewLabel}
+                priority
               />
             </div>
           </div>

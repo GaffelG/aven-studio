@@ -10,7 +10,7 @@ const en: Dictionary = {
   meta: {
     title: "Aven Studio — Web design for growing businesses",
     description:
-      "Aven Studio designs modern, fast and considered websites for small and medium-sized businesses.",
+      "Swedish web design studio building modern, fast websites for small and medium-sized businesses. Design, development and SEO — see examples and pricing.",
   },
   nav: {
     home: "Home",

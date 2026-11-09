@@ -17,8 +17,8 @@ export type ConceptPalette = {
 export type Concept = {
   id: ProjectId;
   name: string;
-  /** Typeface family used inside the preview. */
-  typeface: "display" | "serif";
+  /** Screenshot file name in /public/work (without .png). */
+  screenshot: string;
   /** Path to the live demo site, once built. */
   demoHref?: string;
   palette: ConceptPalette;
@@ -29,21 +29,21 @@ export const concepts: Concept[] = [
     id: "automotive",
     name: "Ferrum Verkstad",
     demoHref: "/demo/ferrum",
-    typeface: "display",
+    screenshot: "ferrum",
     palette: { background: "#15171a", surface: "#22262b", text: "#f1f0ec", muted: "#8a8f97", accent: "#e0612c" },
   },
   {
     id: "construction",
     name: "Bergsten Bygg",
     demoHref: "/demo/bergsten",
-    typeface: "display",
+    screenshot: "bergsten",
     palette: { background: "#ebe6dc", surface: "#dbd2c2", text: "#1d2822", muted: "#6c675d", accent: "#2f5c45" },
   },
   {
     id: "salon",
     name: "Salong Sora",
     demoHref: "/demo/sora",
-    typeface: "serif",
+    screenshot: "sora",
     palette: { background: "#f4ece5", surface: "#e7d7ca", text: "#2c221e", muted: "#8b7b71", accent: "#ad785c" },
   },
 ];

@@ -40,7 +40,7 @@ export default async function WorkPage() {
             >
               <Container className="grid gap-10 lg:grid-cols-12 lg:items-center lg:gap-8">
                 <Reveal className={cn("lg:col-span-7", flipped && "lg:order-2 lg:col-start-6")}>
-                  <ConceptPreview concept={concept} mock={project.mock} label={t.previewLabel} />
+                  <ConceptPreview concept={concept} label={t.previewLabel} />
                 </Reveal>
 
                 <Reveal delay={120} className={cn("lg:col-span-4", flipped ? "lg:order-1 lg:col-start-1" : "lg:col-start-9")}>

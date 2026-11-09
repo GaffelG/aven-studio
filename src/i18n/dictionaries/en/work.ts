@@ -31,12 +31,6 @@ const work: Dictionary["work"] = {
       approach:
         "A robust, dark expression with clear service cards and a booking button always within reach. The focus is on trust: clear prices, guarantees and opening hours.",
       features: ["Online booking per service", "Price guide for common jobs", "Opening hours and directions", "Customer reviews"],
-      mock: {
-        nav: ["Services", "Prices", "Contact"],
-        headline: "Service you can trust.",
-        cta: "Book now",
-        items: ["Service", "Tyres", "Diagnostics"],
-      },
     },
     construction: {
       sector: "Construction company",
@@ -46,12 +40,6 @@ const work: Dictionary["work"] = {
       approach:
         "A clean, architectural expression with large project imagery, a clear process and a quote request that gathers the right information from the start.",
       features: ["Filterable project portfolio", "Step-by-step process", "Quote request form", "Certifications and insurance"],
-      mock: {
-        nav: ["Projects", "Services", "About"],
-        headline: "We build what lasts.",
-        cta: "Request a quote",
-        items: ["New builds", "Renovation", "Extensions"],
-      },
     },
     salon: {
       sector: "Hair salon",
@@ -61,12 +49,6 @@ const work: Dictionary["work"] = {
       approach:
         "A warm, elegant expression with soft shapes, generous typography and a clear path from treatment to booking.",
       features: ["Treatments and prices", "Booking directly on the site", "Stylist profiles", "Gallery and inspiration"],
-      mock: {
-        nav: ["Treatments", "The salon", "Book"],
-        headline: "Time for you.",
-        cta: "Book a treatment",
-        items: ["Cuts", "Colour", "Styling"],
-      },
     },
   },
 };

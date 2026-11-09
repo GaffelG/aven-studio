@@ -24,6 +24,11 @@ export async function generateMetadata(): Promise<Metadata> {
     metadataBase: new URL(siteUrl),
     title: { default: dict.meta.title, template: `%s — ${siteName}` },
     applicationName: siteName,
+    // Ownership tokens for Google Search Console and Bing Webmaster Tools (set on the host).
+    verification: {
+      google: process.env.GOOGLE_SITE_VERIFICATION || undefined,
+      other: process.env.BING_SITE_VERIFICATION ? { "msvalidate.01": process.env.BING_SITE_VERIFICATION } : undefined,
+    },
     ...buildMetadata({ locale, title: dict.meta.title, description: dict.meta.description }),
   };
 }

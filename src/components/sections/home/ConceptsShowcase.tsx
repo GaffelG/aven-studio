@@ -35,7 +35,7 @@ export async function ConceptsShowcase() {
                 <Reveal delay={i * 100}>
                   <Link href={`${workHref}#${concept.id}`} className="group block">
                     <div className="transition-transform duration-700 ease-out-soft group-hover:-translate-y-1.5">
-                      <ConceptPreview concept={concept} mock={project.mock} label={dict.work.previewLabel} />
+                      <ConceptPreview concept={concept} label={dict.work.previewLabel} />
                     </div>
                     <p className="mt-6 flex items-center gap-3 text-xs text-silver-deep">
                       <span className="font-display text-sm text-sage-deep tabular-nums">

@@ -7,9 +7,9 @@ import work from "./work";
 
 const sv = {
   meta: {
-    title: "Aven Studio — Webbdesign för växande företag",
+    title: "Aven Studio — Webbyrå & hemsidor för småföretag",
     description:
-      "Aven Studio skapar moderna, snabba och genomtänkta webbplatser för små och medelstora företag.",
+      "Webbyrå som skapar moderna, snabba hemsidor för små och medelstora företag i hela Sverige. Webbdesign, utveckling och SEO — se exempel och priser.",
   },
   nav: {
     home: "Hem",
