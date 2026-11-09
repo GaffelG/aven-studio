@@ -42,7 +42,7 @@ export function BoVoucher() {
       <button
         type="button"
         onClick={() => setOpen(true)}
-        className="mt-8 rounded-full bg-[var(--bo-cream)] px-6 py-3 font-medium text-[var(--bo-plum)] hover:bg-white"
+        className="mt-8 rounded-full bg-[var(--bo-cream)] px-6 py-3 font-medium text-[var(--bo-beet)] hover:bg-white"
       >
         Gutschein kaufen →
       </button>
@@ -65,7 +65,7 @@ export function BoVoucher() {
               key={value}
               className={cn(
                 "relative cursor-pointer rounded-lg border border-white/25 py-2.5 text-center tabular-nums hover:border-white/60",
-                "has-checked:border-[var(--bo-cream)] has-checked:bg-[var(--bo-cream)] has-checked:text-[var(--bo-plum)]",
+                "has-checked:border-[var(--bo-cream)] has-checked:bg-[var(--bo-cream)] has-checked:text-[var(--bo-beet)]",
                 "has-focus-visible:outline-2 has-focus-visible:outline-offset-2 has-focus-visible:outline-[var(--bo-cream)]",
               )}
             >
@@ -84,7 +84,7 @@ export function BoVoucher() {
         onChange={(e) => setRecipient(e.target.value)}
         className="mt-2 w-full rounded-lg border border-white/25 bg-white/10 px-4 py-2.5 text-[var(--bo-cream)] focus:border-[var(--bo-cream)] focus:outline-none"
       />
-      <button type="submit" className="mt-5 w-full rounded-full bg-[var(--bo-cream)] px-6 py-3 font-medium text-[var(--bo-plum)] hover:bg-white">
+      <button type="submit" className="mt-5 w-full rounded-full bg-[var(--bo-cream)] px-6 py-3 font-medium text-[var(--bo-beet)] hover:bg-white">
         Weiter zur Bezahlung →
       </button>
     </form>

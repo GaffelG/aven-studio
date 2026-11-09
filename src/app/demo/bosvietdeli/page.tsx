@@ -1,3 +1,4 @@
+import Link from "next/link";
 import { BoBooking } from "@/components/demos/bosvietdeli/BoBooking";
 import { BoVoucher } from "@/components/demos/bosvietdeli/BoVoucher";
 import { bo } from "@/demos/bosvietdeli/content";
@@ -9,17 +10,21 @@ const eyebrow = "text-xs font-medium tracking-[0.22em] uppercase";
 export default function BoPage() {
   return (
     <>
-      <header className="border-b border-[var(--bo-line)]">
-        <div className={`${container} flex items-center justify-between py-5`}>
-          <a href="#top" className="text-2xl font-semibold tracking-tight" style={serif}>
-            bo´s <span className="text-[var(--bo-matcha)] italic">viet deli</span>
+      <header className="bg-[var(--bo-ink)] text-[var(--bo-cream)]">
+        <div className={`${container} flex items-center justify-between py-3`}>
+          <a href="#top" className="flex items-center gap-3">
+            {/* eslint-disable-next-line @next/next/no-img-element -- small static logo, white on transparent */}
+            <img src="/demos/bosvietdeli/logo.webp" alt={bo.name} width={42} height={60} className="h-14 w-auto" />
+            <span className="hidden text-xl font-semibold tracking-tight sm:inline" style={serif}>
+              bo´s <span className="text-[var(--bo-sprout)] italic">viet deli</span>
+            </span>
           </a>
-          <nav className="hidden gap-8 text-sm sm:flex">
-            <a href="#speisen" className="hover:text-[var(--bo-coral)]">Speisen</a>
-            <a href="#zeiten" className="hover:text-[var(--bo-coral)]">Öffnungszeiten</a>
-            <a href="#gutscheine" className="hover:text-[var(--bo-coral)]">Gutscheine</a>
+          <nav className="hidden gap-8 text-sm md:flex">
+            <a href="#speisen" className="hover:text-[var(--bo-sprout)]">Speisen</a>
+            <a href="#zeiten" className="hover:text-[var(--bo-sprout)]">Öffnungszeiten</a>
+            <a href="#gutscheine" className="hover:text-[var(--bo-sprout)]">Gutscheine</a>
           </nav>
-          <a href="#reservieren" className="rounded-full bg-[var(--bo-ink)] px-5 py-2.5 text-sm font-medium text-[var(--bo-cream)] hover:bg-[var(--bo-coral)]">
+          <a href="#reservieren" className="rounded-full bg-[var(--bo-sprout)] px-5 py-2.5 text-sm font-medium text-[var(--bo-ink)] hover:bg-white">
             Tisch reservieren
           </a>
         </div>
@@ -31,14 +36,14 @@ export default function BoPage() {
           <div className="lg:col-span-7">
             <p className={`${eyebrow} text-[var(--bo-matcha)]`}>100 % pflanzlich · München-Giesing</p>
             <h1 className="mt-6 text-6xl leading-[0.95] font-semibold tracking-[-0.03em] sm:text-7xl lg:text-8xl" style={serif}>
-              Sushi, das <em className="text-[var(--bo-coral)]">vorbeirollt</em>.
+              Sushi, das <em className="text-[var(--bo-accent)]">vorbeirollt</em>.
             </h1>
             <p className="mt-8 max-w-xl text-lg leading-relaxed text-[var(--bo-muted)]">
               Veganes Running Sushi – 90 Minuten all you can eat, direkt vom Band. Reserviere deinen Platz jetzt online, in
               unter einer Minute.
             </p>
             <div className="mt-10 flex flex-wrap gap-3">
-              <a href="#reservieren" className="rounded-full bg-[var(--bo-coral)] px-7 py-4 font-medium text-white hover:bg-[var(--bo-ink)]">
+              <a href="#reservieren" className="rounded-full bg-[var(--bo-accent)] px-7 py-4 font-medium text-white hover:bg-[var(--bo-ink)]">
                 Platz reservieren →
               </a>
               <a href="#speisen" className="rounded-full border border-[var(--bo-ink)]/25 px-7 py-4 font-medium hover:border-[var(--bo-ink)]">
@@ -72,7 +77,7 @@ export default function BoPage() {
           <ol className="mt-10 grid gap-10 sm:grid-cols-3">
             {bo.steps.map((step, i) => (
               <li key={step.title} className="border-t border-[var(--bo-ink)]/20 pt-6">
-                <span className="text-sm text-[var(--bo-coral)] tabular-nums">0{i + 1}</span>
+                <span className="text-sm text-[var(--bo-accent)] tabular-nums">0{i + 1}</span>
                 <h2 className="mt-3 text-2xl font-semibold" style={serif}>{step.title}</h2>
                 <p className="mt-3 leading-relaxed text-[var(--bo-muted)]">{step.body}</p>
               </li>
@@ -83,9 +88,9 @@ export default function BoPage() {
         {/* Booking */}
         <section id="reservieren" className="scroll-mt-6 bg-[var(--bo-ink)] py-20 text-[var(--bo-cream)] lg:py-28">
           <div className={container}>
-            <p className={`${eyebrow} text-[#a9c79a]`}>Online reservieren</p>
+            <p className={`${eyebrow} text-[var(--bo-sprout)]`}>Online reservieren</p>
             <h2 className="mt-4 max-w-2xl text-5xl leading-none font-semibold tracking-[-0.02em] sm:text-6xl" style={serif}>
-              Dein Platz am Band – <em className="text-[var(--bo-coral)]">sofort bestätigt</em>.
+              Dein Platz am Band – <em className="text-[var(--bo-sprout)]">sofort bestätigt</em>.
             </h2>
             <p className="mt-6 max-w-xl text-[var(--bo-cream)]/70">
               Kein Warten auf eine Antwort im Chat. Wähle deinen Slot, und du bekommst direkt eine Bestätigung.
@@ -138,11 +143,11 @@ export default function BoPage() {
                 <br />
                 {bo.address.city}
               </address>
-              <a href={bo.phoneHref} className="mt-6 inline-block underline decoration-[var(--bo-coral)] underline-offset-4">
+              <a href={bo.phoneHref} className="mt-6 inline-block underline decoration-[var(--bo-accent)] underline-offset-4">
                 {bo.phone}
               </a>
             </div>
-            <div id="gutscheine" className="rounded-2xl bg-[var(--bo-plum)] p-8 text-[var(--bo-cream)]">
+            <div id="gutscheine" className="rounded-2xl bg-[var(--bo-beet)] p-8 text-[var(--bo-cream)]">
               <p className={`${eyebrow} text-[var(--bo-cream)]/70`}>Gutscheine</p>
               <p className="mt-6 text-3xl leading-tight font-semibold" style={serif}>
                 Verschenke 90 Minuten <em>Sushi-Glück</em>.
@@ -153,10 +158,21 @@ export default function BoPage() {
         </section>
       </main>
 
-      <footer className="border-t border-[var(--bo-line)]">
-        <div className={`${container} flex flex-wrap justify-between gap-4 py-8 text-sm text-[var(--bo-muted)]`}>
-          <span>© {bo.name}</span>
-          <span>Entwurf: Aven Studio</span>
+      <footer className="bg-[var(--bo-ink)] text-[var(--bo-cream)]/70">
+        <div className={`${container} flex flex-wrap items-center justify-between gap-6 py-10 text-sm`}>
+          <div className="flex items-center gap-4">
+            {/* eslint-disable-next-line @next/next/no-img-element -- small static logo, white on transparent */}
+            <img src="/demos/bosvietdeli/logo.webp" alt="" width={42} height={60} className="h-16 w-auto opacity-90" />
+            <span>
+              © {bo.name}
+              <br />
+              {bo.address.street}, {bo.address.city}
+            </span>
+          </div>
+          <span className="flex gap-6">
+            <Link href="/demo/bosvietdeli/admin" className="underline-offset-4 hover:underline">Für das Team</Link>
+            <span>Entwurf: Aven Studio</span>
+          </span>
         </div>
       </footer>
     </>
@@ -165,11 +181,11 @@ export default function BoPage() {
 
 /** Decorative running-sushi belt drawn in CSS; pauses for visitors who prefer reduced motion. */
 function ConveyorBelt() {
-  const plates = ["#d9643f", "#4a6b3a", "#6d3f6b", "#e8b04a", "#d9643f", "#4a6b3a", "#6d3f6b", "#e8b04a"];
+  const plates = ["#8fbf5a", "#8e2f55", "#e8893a", "#e8b04a", "#8fbf5a", "#8e2f55", "#e8893a", "#e8b04a"];
   const row = [...plates, ...plates];
 
   return (
-    <div aria-hidden className="overflow-hidden border-y-[10px] border-[#cfc4b1] bg-[#e7dfd0] py-6">
+    <div aria-hidden className="overflow-hidden border-y-[10px] border-[#cdc8a2] bg-[#e9e6cc] py-6">
       <style>{`@keyframes bo-belt{to{transform:translateX(-50%)}}@media (prefers-reduced-motion:reduce){.bo-belt{animation:none!important}}`}</style>
       <div className="bo-belt flex w-max gap-10 px-5" style={{ animation: "bo-belt 40s linear infinite" }}>
         {row.map((color, i) => (

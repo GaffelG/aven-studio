@@ -5,7 +5,7 @@ import { bo } from "@/demos/bosvietdeli/content";
 import { fraunces, outfit } from "@/demos/bosvietdeli/fonts";
 import "../../globals.css";
 
-export const viewport: Viewport = { themeColor: "#f6f1e7" };
+export const viewport: Viewport = { themeColor: "#1c3324" };
 
 export const metadata: Metadata = {
   title: `Entwurf für ${bo.name} — Aven Studio`,
@@ -14,15 +14,17 @@ export const metadata: Metadata = {
   robots: { index: false, follow: false },
 };
 
+/** Plant-based palette: oat, forest, leaf and sprout greens, with beetroot for vouchers. */
 const palette = {
-  "--bo-cream": "#f6f1e7",
-  "--bo-paper": "#fffaf2",
-  "--bo-ink": "#1f2a22",
-  "--bo-muted": "#5f6a5f",
-  "--bo-line": "#ddd3c2",
-  "--bo-matcha": "#4a6b3a",
-  "--bo-coral": "#d9643f",
-  "--bo-plum": "#6d3f6b",
+  "--bo-cream": "#f4f2e4",
+  "--bo-paper": "#fbfaf1",
+  "--bo-ink": "#1c3324",
+  "--bo-muted": "#5a6a56",
+  "--bo-line": "#d8dbc1",
+  "--bo-matcha": "#4f7d2f",
+  "--bo-accent": "#3d7a2a",
+  "--bo-sprout": "#b9de87",
+  "--bo-beet": "#8e2f55",
 } as CSSProperties;
 
 export default function BoLayout({ children }: LayoutProps<"/demo/bosvietdeli">) {
@@ -30,7 +32,7 @@ export default function BoLayout({ children }: LayoutProps<"/demo/bosvietdeli">)
     <html lang="de" className={`${fraunces.variable} ${outfit.variable}`} suppressHydrationWarning>
       <body
         style={{ ...palette, fontFamily: "var(--font-outfit), sans-serif" }}
-        className="min-h-dvh bg-[var(--bo-cream)] text-[var(--bo-ink)] selection:bg-[var(--bo-coral)] selection:text-white"
+        className="min-h-dvh bg-[var(--bo-cream)] text-[var(--bo-ink)] selection:bg-[var(--bo-accent)] selection:text-white"
       >
         <DemoBanner {...bo.banner} />
         {children}

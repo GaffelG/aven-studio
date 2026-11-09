@@ -1,17 +1,19 @@
 "use client";
 
+import Link from "next/link";
 import { useEffect, useRef, useState } from "react";
+import { addBooking, type Seat } from "@/demos/bosvietdeli/bookings";
 import { bo, seatingsFor } from "@/demos/bosvietdeli/content";
 import { dayKey, isTaken, upcomingDays } from "@/demos/shared/schedule";
 import { cn } from "@/lib/cn";
 
 const longDate = new Intl.DateTimeFormat("de-DE", { weekday: "long", day: "numeric", month: "long" });
 const serif = { fontFamily: "var(--font-fraunces), serif" };
-const label = "text-xs font-medium tracking-[0.22em] text-[#a9c79a] uppercase";
+const label = "text-xs font-medium tracking-[0.22em] text-[var(--bo-sprout)] uppercase";
 const choice =
-  "relative cursor-pointer border border-white/15 transition-colors hover:border-white/50 has-checked:border-[var(--bo-coral)] has-checked:bg-[var(--bo-coral)] has-checked:text-white has-focus-visible:outline-2 has-focus-visible:outline-offset-2 has-focus-visible:outline-[var(--bo-coral)]";
+  "relative cursor-pointer border border-white/15 transition-colors hover:border-white/50 has-checked:border-[var(--bo-sprout)] has-checked:bg-[var(--bo-sprout)] has-checked:text-[var(--bo-ink)] has-focus-visible:outline-2 has-focus-visible:outline-offset-2 has-focus-visible:outline-[var(--bo-sprout)]";
 const inputClass =
-  "mt-2 w-full rounded-lg border border-white/20 bg-white/5 px-4 py-3 text-base text-[var(--bo-cream)] focus:border-[var(--bo-coral)] focus:outline-none aria-invalid:border-[#ff8f7a]";
+  "mt-2 w-full rounded-lg border border-white/20 bg-white/5 px-4 py-3 text-base text-[var(--bo-cream)] focus:border-[var(--bo-sprout)] focus:outline-none aria-invalid:border-[#ff8f7a]";
 
 const guestOptions = [1, 2, 3, 4, 5, 6];
 const seats = [
@@ -63,7 +65,10 @@ function BookingForm({ days }: { days: Date[] }) {
     if (!name.trim()) next.name = "Bitte gib deinen Namen an.";
     if (!/^[0-9 +()/-]{6,}$/.test(phone.trim())) next.phone = "Bitte gib eine gültige Telefonnummer an.";
     setErrors(next);
-    if (Object.keys(next).length === 0) setDone(true);
+    if (Object.keys(next).length === 0) {
+      addBooking({ day: key, time: time!, guests, seat: seat as Seat, name: name.trim(), phone: phone.trim() });
+      setDone(true);
+    }
   };
 
   const reset = () => {
@@ -90,7 +95,13 @@ function BookingForm({ days }: { days: Date[] }) {
         <p className="mx-auto mt-4 max-w-md text-[var(--bo-muted)]">
           Die Bestätigung kommt per SMS. Euer Slot dauert 90 Minuten.
         </p>
-        <p className="mx-auto mt-8 max-w-md border-t border-[var(--bo-line)] pt-6 text-sm text-[var(--bo-muted)]">{bo.notice}</p>
+        <p className="mx-auto mt-8 max-w-md border-t border-[var(--bo-line)] pt-6 text-sm text-[var(--bo-muted)]">
+          {bo.notice} Im{" "}
+          <Link href="/demo/bosvietdeli/admin" className="underline underline-offset-4">
+            Team-Bereich
+          </Link>{" "}
+          siehst du, wie die Reservierung beim Restaurant ankommt.
+        </p>
         <button type="button" onClick={reset} className="mt-6 rounded-full border border-[var(--bo-ink)]/30 px-6 py-3 text-sm hover:border-[var(--bo-ink)]">
           Neue Reservierung
         </button>
@@ -188,7 +199,7 @@ function BookingForm({ days }: { days: Date[] }) {
         )}
 
         <div className="mt-10 flex flex-wrap items-center gap-4">
-          <button type="submit" className="rounded-full bg-[var(--bo-coral)] px-8 py-4 font-medium text-white hover:bg-white hover:text-[var(--bo-ink)]">
+          <button type="submit" className="rounded-full bg-[var(--bo-sprout)] px-8 py-4 font-medium text-[var(--bo-ink)] hover:bg-white hover:text-[var(--bo-ink)]">
             {step === 0 ? "Weiter →" : "Verbindlich reservieren"}
           </button>
           {step === 1 && (

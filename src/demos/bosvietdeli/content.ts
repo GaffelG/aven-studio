@@ -12,7 +12,7 @@ export const bo = {
   phoneHref: "tel:+498989546034",
   banner: {
     label: "Entwurf von Aven Studio",
-    body: "Unverbindlicher Vorschlag für bo´s viet deli – keine offizielle Seite, Reservierungen werden nicht gespeichert.",
+    body: "Unverbindlicher Vorschlag für bo´s viet deli – keine offizielle Seite, Reservierungen sind nur Demo-Daten.",
     back: "avenstudio.se",
     backHref: "/en",
   },
@@ -32,7 +32,7 @@ export const bo = {
     { title: "90 Minuten genießen", body: "Am Band oder am Tisch: Sushi und warme Häppchen, so viel ihr wollt." },
     { title: "Bestätigung erhalten", body: "Sofort per SMS oder E-Mail – ganz ohne Chat hin und her." },
   ],
-  notice: "Dies ist ein Entwurf. Es wird keine echte Reservierung angelegt.",
+  notice: "Dies ist ein Entwurf – die Reservierung wird nur in deinem Browser gespeichert.",
 };
 
 /** Start times every 30 minutes, from opening until the last full 90-minute round before closing. */
