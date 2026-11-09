@@ -1,4 +1,5 @@
 import { BoBooking } from "@/components/demos/bosvietdeli/BoBooking";
+import { BoVoucher } from "@/components/demos/bosvietdeli/BoVoucher";
 import { bo } from "@/demos/bosvietdeli/content";
 
 const container = "mx-auto w-full max-w-6xl px-5 sm:px-8";
@@ -48,7 +49,7 @@ export default function BoPage() {
           <dl className="grid grid-cols-2 gap-px overflow-hidden rounded-2xl bg-[var(--bo-line)] lg:col-span-4 lg:col-start-9">
             {[
               ["90 min", "All you can eat"],
-              ["3×", "Slots pro Abend"],
+              ["30 Tage", "im Voraus buchbar"],
               ["0 %", "Tierisches"],
               ["7 Tage", "geöffnet"],
             ].map(([value, label]) => (
@@ -146,9 +147,7 @@ export default function BoPage() {
               <p className="mt-6 text-3xl leading-tight font-semibold" style={serif}>
                 Verschenke 90 Minuten <em>Sushi-Glück</em>.
               </p>
-              <span className="mt-8 inline-block rounded-full bg-[var(--bo-cream)] px-6 py-3 font-medium text-[var(--bo-plum)]">
-                Gutschein kaufen →
-              </span>
+              <BoVoucher />
             </div>
           </div>
         </section>

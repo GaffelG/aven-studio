@@ -10,21 +10,22 @@ const longDate = new Intl.DateTimeFormat("de-DE", { weekday: "long", day: "numer
 const serif = { fontFamily: "var(--font-fraunces), serif" };
 const label = "text-xs font-medium tracking-[0.22em] text-[#a9c79a] uppercase";
 const choice =
-  "cursor-pointer border border-white/15 transition-colors hover:border-white/50 has-checked:border-[var(--bo-coral)] has-checked:bg-[var(--bo-coral)] has-checked:text-white has-focus-visible:outline-2 has-focus-visible:outline-offset-2 has-focus-visible:outline-[var(--bo-coral)]";
+  "relative cursor-pointer border border-white/15 transition-colors hover:border-white/50 has-checked:border-[var(--bo-coral)] has-checked:bg-[var(--bo-coral)] has-checked:text-white has-focus-visible:outline-2 has-focus-visible:outline-offset-2 has-focus-visible:outline-[var(--bo-coral)]";
 const inputClass =
   "mt-2 w-full rounded-lg border border-white/20 bg-white/5 px-4 py-3 text-base text-[var(--bo-cream)] focus:border-[var(--bo-coral)] focus:outline-none aria-invalid:border-[#ff8f7a]";
 
 const guestOptions = [1, 2, 3, 4, 5, 6];
 const seats = [
-  { id: "band", name: "Am Band", note: "Meist frei beim ersten Slot" },
-  { id: "tisch", name: "Am Tisch", note: "Ideal für Gruppen" },
+  { id: "band", name: "Direkt am Sushi-Band", short: "Am Band", note: "Die Teller fahren direkt an dir vorbei." },
+  { id: "tisch", name: "Am Tisch", short: "Am Tisch", note: "Gemütlicher und ideal für Gruppen – das Band ist in Reichweite." },
+  { id: "egal", name: "Egal", short: "Egal", note: "Wir geben euch den besten freien Platz." },
 ];
 
 /** Dates depend on the visitor's "today", so the calendar only renders in the browser. */
 export function BoBooking() {
   const [days, setDays] = useState<Date[] | null>(null);
   // eslint-disable-next-line react-hooks/set-state-in-effect -- one-time read of the visitor's clock after hydration
-  useEffect(() => setDays(upcomingDays(10, [])), []);
+  useEffect(() => setDays(upcomingDays(30, [])), []);
   if (!days) return <div className="h-[34rem] animate-pulse rounded-2xl bg-white/[0.04]" />;
   return <BookingForm days={days} />;
 }
@@ -85,7 +86,7 @@ function BookingForm({ days }: { days: Date[] }) {
         <p className="mt-6 text-lg">
           <span className="first-letter:uppercase">{longDate.format(day)}</span>, {time} Uhr
           <br />
-          {guests} {guests === 1 ? "Person" : "Personen"} · {seats.find((s) => s.id === seat)?.name}
+          {guests} {guests === 1 ? "Person" : "Personen"} · {seats.find((s) => s.id === seat)?.short}
         </p>
         <p className="mx-auto mt-4 max-w-md text-[var(--bo-muted)]">
           Die Bestätigung kommt per SMS. Euer Slot dauert 90 Minuten.
@@ -129,7 +130,7 @@ function BookingForm({ days }: { days: Date[] }) {
 
             <fieldset className="min-w-0">
               <legend className={label}>Tag</legend>
-              <div className="mt-3 flex gap-2 overflow-x-auto pb-2">
+              <div className="mt-3 flex gap-2 overflow-x-auto pb-3 [scrollbar-color:rgba(255,255,255,0.25)_transparent] [scrollbar-width:thin]">
                 {days.map((d, i) => (
                   <label key={dayKey(d)} className={cn(choice, "shrink-0 rounded-full px-4 py-2.5 text-sm")}>
                     <input
@@ -149,13 +150,13 @@ function BookingForm({ days }: { days: Date[] }) {
             </fieldset>
 
             <fieldset className="min-w-0">
-              <legend className={label}>Slot (90 Minuten)</legend>
-              <div className="mt-3 grid grid-cols-3 gap-2">
+              <legend className={label}>Uhrzeit – ihr habt 90 Minuten</legend>
+              <div className="mt-3 grid grid-cols-3 gap-2 sm:grid-cols-4 lg:grid-cols-5">
                 {seatingsFor(day).map((slot, i) => {
                   // The first seating is usually free at the belt, so it is never shown as full.
                   const taken = i > 0 && isTaken(key, slot, `bo${guests}`);
                   return (
-                    <label key={slot} className={cn(choice, "rounded-xl px-3 py-4 text-center", taken && "pointer-events-none opacity-35")}>
+                    <label key={slot} className={cn(choice, "rounded-xl px-3 py-3 text-center", taken && "pointer-events-none opacity-35")}>
                       <input
                         type="radio"
                         name="time"
@@ -168,7 +169,7 @@ function BookingForm({ days }: { days: Date[] }) {
                         className="sr-only"
                       />
                       <span className="block text-xl tabular-nums" style={serif}>{slot}</span>
-                      <span className="block text-xs opacity-75">{taken ? "ausgebucht" : i === 0 ? "viel frei am Band" : "frei"}</span>
+                      <span className="block text-xs opacity-75">{taken ? "ausgebucht" : i === 0 ? "viele Plätze frei" : "frei"}</span>
                     </label>
                   );
                 })}
@@ -177,8 +178,8 @@ function BookingForm({ days }: { days: Date[] }) {
             </fieldset>
 
             <fieldset className="min-w-0">
-              <legend className={label}>Platz</legend>
-              <div className="mt-3 grid gap-2 sm:grid-cols-2">
+              <legend className={label}>Wo möchtet ihr sitzen?</legend>
+              <div className="mt-3 grid gap-2 sm:grid-cols-3">
                 {seats.map((s) => (
                   <label key={s.id} className={cn(choice, "rounded-xl px-5 py-4")}>
                     <input type="radio" name="seat" checked={seat === s.id} onChange={() => setSeat(s.id)} className="sr-only" />
@@ -216,7 +217,7 @@ function BookingForm({ days }: { days: Date[] }) {
             <Row term="Tag" value={longDate.format(day)} />
             <Row term="Uhrzeit" value={time ? `${time} Uhr · 90 min` : "–"} />
             <Row term="Personen" value={String(guests)} />
-            <Row term="Platz" value={seats.find((s) => s.id === seat)?.name ?? "–"} />
+            <Row term="Sitzplatz" value={seats.find((s) => s.id === seat)?.short ?? "–"} />
           </dl>
         </div>
       </aside>

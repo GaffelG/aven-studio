@@ -35,10 +35,13 @@ export const bo = {
   notice: "Dies ist ein Entwurf. Es wird keine echte Reservierung angelegt.",
 };
 
-/** Seatings: three 90-minute rounds per day, aligned with opening hours. */
+/** Start times every 30 minutes, from opening until the last full 90-minute round before closing. */
 export function seatingsFor(day: Date): string[] {
   const weekday = day.getDay();
-  if (weekday === 0) return ["15:30", "17:15", "19:00"];
-  if (weekday === 6) return ["16:30", "18:15", "20:00"];
-  return ["17:00", "18:45", "20:30"];
+  const [open, close] = weekday === 0 ? [15.5, 21] : weekday === 6 ? [16.5, 22] : [17, 22];
+  const times: string[] = [];
+  for (let t = open; t + 1.5 <= close; t += 0.5) {
+    times.push(`${String(Math.floor(t)).padStart(2, "0")}:${t % 1 ? "30" : "00"}`);
+  }
+  return times;
 }
