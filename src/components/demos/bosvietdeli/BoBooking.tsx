@@ -5,7 +5,6 @@ import { bo, seatingsFor } from "@/demos/bosvietdeli/content";
 import { dayKey, isTaken, upcomingDays } from "@/demos/shared/schedule";
 import { cn } from "@/lib/cn";
 
-const shortDate = new Intl.DateTimeFormat("de-DE", { weekday: "short", day: "numeric", month: "short" });
 const longDate = new Intl.DateTimeFormat("de-DE", { weekday: "long", day: "numeric", month: "long" });
 const serif = { fontFamily: "var(--font-fraunces), serif" };
 const label = "text-xs font-medium tracking-[0.22em] text-[#a9c79a] uppercase";
@@ -130,23 +129,14 @@ function BookingForm({ days }: { days: Date[] }) {
 
             <fieldset className="min-w-0">
               <legend className={label}>Tag</legend>
-              <div className="mt-3 flex gap-2 overflow-x-auto pb-3 [scrollbar-color:rgba(255,255,255,0.25)_transparent] [scrollbar-width:thin]">
-                {days.map((d, i) => (
-                  <label key={dayKey(d)} className={cn(choice, "shrink-0 rounded-full px-4 py-2.5 text-sm")}>
-                    <input
-                      type="radio"
-                      name="day"
-                      checked={i === dayIndex}
-                      onChange={() => {
-                        setDayIndex(i);
-                        setTime(null);
-                      }}
-                      className="sr-only"
-                    />
-                    {shortDate.format(d)}
-                  </label>
-                ))}
-              </div>
+              <DayCalendar
+                days={days}
+                selected={dayIndex}
+                onSelect={(i) => {
+                  setDayIndex(i);
+                  setTime(null);
+                }}
+              />
             </fieldset>
 
             <fieldset className="min-w-0">
@@ -259,6 +249,66 @@ function Field({ id, text, value, error, type = "text", autoComplete, onChange }
         className={inputClass}
       />
       {error && <p id={`bo-${id}-error`} className="mt-2 text-sm text-[#ff8f7a]">{error}</p>}
+    </div>
+  );
+}
+
+const monthTitle = new Intl.DateTimeFormat("de-DE", { month: "long", year: "numeric" });
+const weekdayNames = ["Mo", "Di", "Mi", "Do", "Fr", "Sa", "So"];
+
+/** Month grid (Monday first). Only the bookable `days` can be picked; arrows switch between their months. */
+function DayCalendar({ days, selected, onSelect }: { days: Date[]; selected: number; onSelect: (index: number) => void }) {
+  const months = Array.from(new Set(days.map((d) => `${d.getFullYear()}-${d.getMonth()}`))).map((k) => {
+    const [y, m] = k.split("-").map(Number);
+    return new Date(y, m, 1, 12);
+  });
+  const [monthIndex, setMonthIndex] = useState(0);
+  const month = months[monthIndex];
+  const bookable = new Map(days.map((d, i) => [dayKey(d), i]));
+  const leading = (month.getDay() + 6) % 7;
+  const daysInMonth = new Date(month.getFullYear(), month.getMonth() + 1, 0).getDate();
+  const cells = Array.from({ length: daysInMonth }, (_, i) => new Date(month.getFullYear(), month.getMonth(), i + 1, 12));
+  const arrow = "grid size-10 place-items-center rounded-full border border-white/20 hover:border-white/60 disabled:pointer-events-none disabled:opacity-25";
+
+  return (
+    <div className="mt-3 max-w-md rounded-2xl border border-white/10 p-4 sm:p-5">
+      <div className="flex items-center justify-between">
+        <button type="button" aria-label="Vorheriger Monat" disabled={monthIndex === 0} onClick={() => setMonthIndex(monthIndex - 1)} className={arrow}>
+          ←
+        </button>
+        <p className="text-lg capitalize" style={serif} aria-live="polite">
+          {monthTitle.format(month)}
+        </p>
+        <button type="button" aria-label="Nächster Monat" disabled={monthIndex === months.length - 1} onClick={() => setMonthIndex(monthIndex + 1)} className={arrow}>
+          →
+        </button>
+      </div>
+      <div className="mt-4 grid grid-cols-7 gap-1 text-center">
+        {weekdayNames.map((name) => (
+          <span key={name} aria-hidden className="pb-2 text-xs text-[var(--bo-cream)]/50">
+            {name}
+          </span>
+        ))}
+        {Array.from({ length: leading }, (_, i) => (
+          <span key={`blank-${i}`} />
+        ))}
+        {cells.map((d) => {
+          const index = bookable.get(dayKey(d));
+          if (index === undefined) {
+            return (
+              <span key={dayKey(d)} aria-hidden className="grid aspect-square place-items-center text-sm text-[var(--bo-cream)]/25 tabular-nums">
+                {d.getDate()}
+              </span>
+            );
+          }
+          return (
+            <label key={dayKey(d)} className={cn(choice, "grid aspect-square place-items-center rounded-full border-transparent text-sm tabular-nums")}>
+              <input type="radio" name="day" aria-label={longDate.format(d)} checked={index === selected} onChange={() => onSelect(index)} className="sr-only" />
+              {d.getDate()}
+            </label>
+          );
+        })}
+      </div>
     </div>
   );
 }
