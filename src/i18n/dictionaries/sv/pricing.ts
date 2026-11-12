@@ -9,6 +9,10 @@ const pricing = {
   from: "Från",
   vat: "exkl. moms",
   perMonth: "/ mån",
+  currency: {
+    label: "Valuta",
+    note: "Priser i andra valutor än SEK är avrundade riktpriser.",
+  },
   recommended: "Rekommenderas",
   timelineLabel: "Leveranstid",
   cta: "Kom igång",

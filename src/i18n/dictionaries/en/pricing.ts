@@ -11,6 +11,10 @@ const pricing: Dictionary["pricing"] = {
   from: "From",
   vat: "excl. VAT",
   perMonth: "/ month",
+  currency: {
+    label: "Currency",
+    note: "Prices in currencies other than SEK are rounded guide prices.",
+  },
   recommended: "Recommended",
   timelineLabel: "Delivery",
   cta: "Get started",

@@ -4,7 +4,8 @@ import { Container } from "@/components/ui/Container";
 import { Eyebrow } from "@/components/ui/Eyebrow";
 import { Reveal } from "@/components/ui/Reveal";
 import { SectionHeading } from "@/components/ui/SectionHeading";
-import { carePrice, formatPrice, packagePrices, recommendedPackage, type PackageId } from "@/content/pricing";
+import { CurrencyProvider, CurrencySwitcher, Price } from "@/components/pricing/Currency";
+import { carePrice, packagePrices, recommendedPackage, type PackageId } from "@/content/pricing";
 import { getDictionary, getLocale } from "@/i18n/get-dictionary";
 import { cn } from "@/lib/cn";
 import { pageMetadata } from "@/lib/page-metadata";
@@ -22,7 +23,9 @@ export default async function PricingPage() {
     <>
       <PageHero eyebrow={t.hero.eyebrow} title={t.hero.title} lead={t.hero.lead} />
 
+      <CurrencyProvider locale={locale}>
       <Container className="py-20 sm:py-24 lg:py-32">
+        <CurrencySwitcher label={t.currency.label} note={t.currency.note} className="mb-8" />
         <ul className="grid gap-4 lg:grid-cols-3 lg:gap-6">
           {ids.map((id, i) => {
             const pkg = t.packages[id];
@@ -52,9 +55,7 @@ export default async function PricingPage() {
                     <span className={cn("block text-xs tracking-[0.12em] uppercase", featured ? "text-silver" : "text-silver-deep")}>
                       {t.from}
                     </span>
-                    <span className="mt-1 block font-display text-display-md font-semibold tabular-nums">
-                      {formatPrice(packagePrices[id], locale)}
-                    </span>
+                    <Price prices={packagePrices[id]} className="mt-1 block font-display text-display-md font-semibold tabular-nums" />
                     <span className={cn("text-xs", featured ? "text-paper/50" : "text-silver-deep")}>{t.vat}</span>
                   </p>
 
@@ -89,7 +90,7 @@ export default async function PricingPage() {
               <p className="mt-4 text-[0.9375rem] leading-relaxed text-ink/65">{t.care.summary}</p>
               <p className="mt-6">
                 <span className="text-xs tracking-[0.12em] text-silver-deep uppercase">{t.from} </span>
-                <span className="font-display text-2xl font-semibold tabular-nums">{formatPrice(carePrice, locale)}</span>
+                <Price prices={carePrice} className="font-display text-2xl font-semibold tabular-nums" />
                 <span className="text-sm text-silver-deep"> {t.perMonth}</span>
               </p>
             </div>
@@ -127,6 +128,7 @@ export default async function PricingPage() {
           {t.note}
         </p>
       </Container>
+      </CurrencyProvider>
 
       <section className="border-t border-ink/8">
         <Container className="grid gap-12 py-20 sm:py-24 lg:grid-cols-12 lg:gap-8 lg:py-32">
