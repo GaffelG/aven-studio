@@ -3,22 +3,26 @@
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { useId, useState } from "react";
-import { ferrum, ferrumPaths } from "@/demos/ferrum/content";
+import { DemoLanguageSwitch } from "@/components/demos/DemoLocale";
+import { isDemoSection } from "@/demos/shared/routing";
 import { cn } from "@/lib/cn";
 import { FerrumLogo } from "./FerrumLogo";
+import { useFerrum } from "./useFerrum";
 
 export function FerrumHeader() {
+  const ferrum = useFerrum();
+  const ferrumPaths = ferrum.paths;
   const [open, setOpen] = useState(false);
   const pathname = usePathname();
   const panelId = useId();
-  const isActive = (href: string) => pathname === href || pathname.startsWith(`${href}/`);
+  const isActive = (href: string) => isDemoSection(pathname, href);
 
   return (
     <header className="sticky top-0 z-40 border-b border-ferrum-line bg-ferrum-ink/95">
       <div className="mx-auto flex h-16 max-w-site items-center justify-between gap-6 px-5 sm:px-8 lg:h-20 lg:px-10">
         <FerrumLogo />
 
-        <nav aria-label="Huvudmeny" className="hidden lg:block">
+        <nav aria-label={ferrum.ui.mainNav} className="hidden lg:block">
           <ul className="flex gap-8 font-ferrum text-lg font-semibold tracking-wide uppercase">
             {ferrum.nav.map((item) => (
               <li key={item.href}>
@@ -35,7 +39,8 @@ export function FerrumHeader() {
         </nav>
 
         <div className="hidden items-center gap-6 lg:flex">
-          <a href={ferrum.phone.href} className="text-sm text-ferrum-muted transition-colors hover:text-ferrum-text">
+          <DemoLanguageSwitch label={ferrum.ui.language} className="text-ferrum-text" />
+          <a href={ferrum.phone.href} className="hidden text-sm whitespace-nowrap text-ferrum-muted transition-colors hover:text-ferrum-text xl:inline">
             {ferrum.phone.label}
           </a>
           <Link
@@ -53,7 +58,7 @@ export function FerrumHeader() {
           onClick={() => setOpen((v) => !v)}
           className="-mr-2 flex h-10 items-center gap-3 px-2 font-ferrum text-lg font-semibold tracking-wide uppercase lg:hidden"
         >
-          {open ? "Stäng" : "Meny"}
+          {open ? ferrum.ui.close : ferrum.ui.menu}
           <span aria-hidden className="relative block h-3 w-6">
             <span className={cn("absolute inset-x-0 top-0 h-0.5 bg-current transition-transform", open && "translate-y-[5px] rotate-45")} />
             <span className={cn("absolute inset-x-0 bottom-0 h-0.5 bg-current transition-transform", open && "-translate-y-[5px] -rotate-45")} />
@@ -61,7 +66,7 @@ export function FerrumHeader() {
         </button>
       </div>
 
-      <nav id={panelId} aria-label="Huvudmeny" hidden={!open} className="border-t border-ferrum-line lg:hidden">
+      <nav id={panelId} aria-label={ferrum.ui.mainNav} hidden={!open} className="border-t border-ferrum-line lg:hidden">
         <ul className="px-5 py-4 sm:px-8">
           {ferrum.nav.map((item) => (
             <li key={item.href} className="border-b border-ferrum-line last:border-b-0">
@@ -80,6 +85,7 @@ export function FerrumHeader() {
           <a href={ferrum.phone.href} className="text-sm text-ferrum-muted">
             {ferrum.phone.label}
           </a>
+          <DemoLanguageSwitch label={ferrum.ui.language} />
           <Link
             href={ferrumPaths.booking}
             onClick={() => setOpen(false)}

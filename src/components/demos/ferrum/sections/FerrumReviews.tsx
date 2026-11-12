@@ -1,10 +1,11 @@
 import { Reveal } from "@/components/ui/Reveal";
-import { ferrum } from "@/demos/ferrum/content";
+import { getFerrum } from "@/demos/ferrum/server";
 import { FerrumHeading } from "../FerrumHeading";
 
-const t = ferrum.reviews;
+export async function FerrumReviews() {
+  const ferrum = await getFerrum();
+  const t = ferrum.reviews;
 
-export function FerrumReviews() {
   return (
     <section aria-labelledby="omdomen-title" className="border-t border-ferrum-line bg-ferrum-surface">
       <div className="mx-auto max-w-site px-5 py-24 sm:px-8 lg:px-10 lg:py-32">
@@ -14,7 +15,7 @@ export function FerrumReviews() {
             <li key={review.name}>
               <Reveal delay={i * 100} className="flex h-full flex-col border border-ferrum-line bg-ferrum-ink p-7 sm:p-9">
                 <div className="flex items-center justify-between gap-4">
-                  <p aria-label="5 av 5 stjärnor" className="tracking-[0.2em] text-ferrum-accent">
+                  <p aria-label={ferrum.ui.stars} className="tracking-[0.2em] text-ferrum-accent">
                     ★★★★★
                   </p>
                   <span className="border border-ferrum-line px-2 py-0.5 text-[0.6875rem] text-ferrum-muted">{t.badge}</span>

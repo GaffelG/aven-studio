@@ -1,5 +1,6 @@
 import { NextResponse, type NextRequest } from "next/server";
-import { bergsten } from "@/demos/bergsten/content";
+import { projectSlugs as bergstenProjectSlugs } from "@/demos/bergsten/content";
+import { parseDemoPath } from "@/demos/shared/routing";
 import { defaultLocale, hasLocale, localeCookie, type Locale } from "@/i18n/config";
 
 /** Picks a locale from the saved cookie, then Accept-Language, then the default. */
@@ -20,18 +21,38 @@ function detectLocale(request: NextRequest): Locale {
   return match ? (match.lang as Locale) : defaultLocale;
 }
 
-const projectPath = /^\/demo\/bergsten\/projekt\/([^/]+)\/?$/;
-const projectSlugs = new Set(bergsten.projects.map((p) => p.slug));
+const projectSlugs = new Set(bergstenProjectSlugs);
+
+/**
+ * Bilingual demos: public URLs (Swedish slugs, or /en/ + English slugs) are rewritten onto
+ * app/demo/<demo>/[lang]/<swedish-slug>. Explicit /sv/ URLs redirect to the clean Swedish URL.
+ */
+function routeDemo(request: NextRequest, pathname: string) {
+  if (pathname.split("/").pop()?.includes(".")) return; // icons and other files inside the demo tree
+  const parsed = parseDemoPath(pathname);
+  if (!parsed) return;
+  const { demo, locale, segments } = parsed;
+
+  if (pathname.split("/")[3] === "sv") {
+    const url = request.nextUrl.clone();
+    url.pathname = ["", "demo", demo, ...segments].join("/");
+    return NextResponse.redirect(url);
+  }
+
+  // Unknown project slugs: with Cache Components the page streams, so it can't set a 404 itself.
+  if (demo === "bergsten" && segments[0] === "projekt" && segments[1] && !projectSlugs.has(decodeURIComponent(segments[1]))) {
+    segments.splice(0, segments.length, "finns-inte");
+  }
+
+  const url = request.nextUrl.clone();
+  url.pathname = ["", "demo", demo, locale, ...segments].join("/");
+  return NextResponse.rewrite(url);
+}
 
 export function proxy(request: NextRequest) {
   const { pathname } = request.nextUrl;
 
-  // Unknown project slugs: with Cache Components the page streams, so it can't set a 404 itself.
-  const project = pathname.match(projectPath);
-  if (project) {
-    if (projectSlugs.has(decodeURIComponent(project[1]))) return;
-    return NextResponse.rewrite(new URL("/demo/bergsten/finns-inte", request.url));
-  }
+  if (pathname.startsWith("/demo/")) return routeDemo(request, pathname);
 
   if (hasLocale(pathname.split("/")[1])) return;
 
@@ -42,6 +63,6 @@ export function proxy(request: NextRequest) {
 
 export const config = {
   // Skip Next internals, API routes, demo sites, extensionless metadata routes and anything that looks like a file.
-  // Bergsten project pages are matched separately so unknown slugs can return a real 404.
-  matcher: ["/((?!_next|api|demo|apple-icon|.*\\..*).*)", "/demo/bergsten/projekt/:slug"],
+  // The bilingual demos are matched separately and rewritten by routeDemo (bosvietdeli is German-only and untouched).
+  matcher: ["/((?!_next|api|demo|apple-icon|.*\\..*).*)", "/demo/(ferrum|bergsten|sora)", "/demo/(ferrum|bergsten|sora)/:path*"],
 };

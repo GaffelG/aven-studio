@@ -2,13 +2,21 @@
 
 import { useEffect, useMemo, useRef, useState, type ReactNode } from "react";
 import { formatPrice } from "@/content/pricing";
-import { allTreatments, sora } from "@/demos/sora/content";
-import { dayKey, hoursToSlots, isTaken, longDate, shortDate, upcomingDays, type Slot } from "@/demos/shared/schedule";
+import type { Locale } from "@/i18n/config";
+import { allTreatments } from "@/demos/sora/content";
+import { dateFormats, dayKey, hoursToSlots, isTaken, upcomingDays, type Slot } from "@/demos/shared/schedule";
 import { cn } from "@/lib/cn";
+import { useSora } from "./useSora";
 
-const t = sora.booking;
 type StylistOption = { id: string; name: string; role: string; focus?: string };
-const stylistOptions: StylistOption[] = [sora.stylists.noPreference, ...sora.stylists.items];
+
+/** Language-dependent pieces every step needs. */
+function useBookingText() {
+  const sora = useSora();
+  const formats = dateFormats(sora.locale);
+  const stylistOptions: StylistOption[] = [sora.stylists.noPreference, ...sora.stylists.items];
+  return { sora, t: sora.booking, stylistOptions, shortDate: formats.short, longDate: formats.long };
+}
 const phonePattern = /^[0-9 +()-]{7,}$/;
 const emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 
@@ -17,12 +25,14 @@ type DetailErrors = Partial<Record<keyof Details, string>>;
 const emptyDetails: Details = { name: "", phone: "", email: "", message: "" };
 
 /** Salon hours: closed Sunday–Monday, shorter Saturdays. */
-const slotsFor = (day: Date) => hoursToSlots(day.getDay() === 6 ? [10, 11, 12, 13, 14, 15] : [10, 11, 12, 13, 14, 15, 16, 17, 18]);
+const slotsFor = (day: Date, locale: Locale) =>
+  hoursToSlots(day.getDay() === 6 ? [10, 11, 12, 13, 14, 15] : [10, 11, 12, 13, 14, 15, 16, 17, 18], locale);
 
 const choice =
   "relative cursor-pointer border border-sora-line bg-sora-shell transition-colors hover:border-sora-clay has-checked:border-sora-espresso has-checked:bg-sora-espresso has-checked:text-sora-shell has-focus-visible:outline-2 has-focus-visible:outline-offset-2 has-focus-visible:outline-sora-clay-deep";
 
 export function SoraBooking() {
+  const { sora, t, stylistOptions, shortDate, longDate } = useBookingText();
   const [step, setStep] = useState(0);
   const [treatmentId, setTreatmentId] = useState<string | null>(null);
   const [stylistId, setStylistId] = useState<string | null>(null);
@@ -34,7 +44,7 @@ export function SoraBooking() {
   const headingRef = useRef<HTMLHeadingElement>(null);
   const firstRender = useRef(true);
 
-  const treatment = allTreatments.find((x) => x.id === treatmentId) ?? null;
+  const treatment = allTreatments(sora).find((x) => x.id === treatmentId) ?? null;
   const stylist = stylistOptions.find((x) => x.id === stylistId) ?? null;
 
   useEffect(() => {
@@ -79,15 +89,15 @@ export function SoraBooking() {
   if (done && treatment && stylist && slot) {
     return (
       <div role="status" className="mx-auto max-w-2xl bg-sora-shell px-8 py-14 text-center sm:px-14">
-        <p className="font-sora text-xs tracking-[0.3em] text-sora-clay-deep uppercase">Bokningsbekräftelse</p>
+        <p className="font-sora text-xs tracking-[0.3em] text-sora-clay-deep uppercase">{sora.ui.confirmation}</p>
         <h2 ref={headingRef} tabIndex={-1} className="mt-6 font-sora-serif text-5xl italic outline-none sm:text-6xl">
           {t.success.title}
         </h2>
         <p className="mt-6 text-lg">
           {treatment.name}
           <br />
-          <span className="first-letter:uppercase">{longDate.format(slot.day)}</span> kl. {slot.time}
-          {stylist.id !== "any" && <> hos {stylist.name}</>}
+          <span className="first-letter:uppercase">{longDate.format(slot.day)}</span> {sora.ui.at} {slot.time}
+          {stylist.id !== "any" && <> {sora.ui.with} {stylist.name}</>}
         </p>
         <p className="mx-auto mt-4 max-w-md text-sora-muted">{t.success.body}</p>
         <p className="mx-auto mt-8 max-w-md border-t border-sora-line pt-6 text-sm text-sora-muted">{sora.demoNotice}</p>
@@ -168,7 +178,7 @@ export function SoraBooking() {
                           </span>
                           <span className="text-sm whitespace-nowrap">
                             {item.from && <span className="opacity-70">{sora.treatments.fromLabel} </span>}
-                            {formatPrice(item.price, "sv")}
+                            {formatPrice(item.price, sora.locale)}
                           </span>
                         </label>
                       ))}
@@ -261,12 +271,12 @@ export function SoraBooking() {
           <dl className="mt-6 space-y-5">
             <Row label={t.steps[0]}>{treatment?.name ?? "–"}</Row>
             <Row label={t.steps[1]}>{stylist?.name ?? "–"}</Row>
-            <Row label={t.steps[2]}>{slot ? `${shortDate.format(slot.day)} kl. ${slot.time}` : "–"}</Row>
+            <Row label={t.steps[2]}>{slot ? `${shortDate.format(slot.day)} ${sora.ui.at} ${slot.time}` : "–"}</Row>
           </dl>
           {treatment && (
             <p className="mt-6 border-t border-sora-line pt-6">
               {treatment.from && <span className="text-sm text-sora-muted">{sora.treatments.fromLabel} </span>}
-              <span className="font-sora-serif text-4xl">{formatPrice(treatment.price, "sv")}</span>
+              <span className="font-sora-serif text-4xl">{formatPrice(treatment.price, sora.locale)}</span>
               <span className="block text-xs text-sora-muted">
                 {treatment.minutes} {sora.treatments.minutesLabel}
               </span>
@@ -288,6 +298,7 @@ function Row({ label, children }: { label: string; children: ReactNode }) {
 }
 
 function TimeStep({ stylistId, selected, onSelect }: { stylistId: string; selected: Slot | null; onSelect: (slot: Slot) => void }) {
+  const { sora, t, shortDate } = useBookingText();
   const days = useMemo(() => upcomingDays(10, [0, 1]), []);
   const [active, setActive] = useState(() => (selected ? Math.max(days.findIndex((d) => dayKey(d) === dayKey(selected.day)), 0) : 0));
   const day = days[active];
@@ -309,7 +320,7 @@ function TimeStep({ stylistId, selected, onSelect }: { stylistId: string; select
       <fieldset className="mt-8 min-w-0">
         <legend className="font-sora text-xs tracking-[0.28em] text-sora-clay-deep uppercase">{t.time}</legend>
         <div className="mt-4 grid grid-cols-3 gap-2 sm:grid-cols-5">
-          {slotsFor(day).map((time) => {
+          {slotsFor(day, sora.locale).map((time) => {
             const taken = isTaken(key, time, stylistId);
             const checked = !!selected && dayKey(selected.day) === key && selected.time === time;
             return (
@@ -342,6 +353,7 @@ type InputProps = {
 };
 
 function Input({ id, label, value, error, type = "text", autoComplete, optional, className, onChange }: InputProps) {
+  const { t } = useBookingText();
   return (
     <div className={className}>
       <label htmlFor={`sora-${id}`} className="flex justify-between text-sm">

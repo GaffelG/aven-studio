@@ -1,15 +1,18 @@
 import Link from "next/link";
 import type { ReactNode } from "react";
-import { sora, soraPaths } from "@/demos/sora/content";
+import type { Sora } from "@/demos/sora/content";
 import { cn } from "@/lib/cn";
 
-/** Shared building blocks for the Salong Sora demo. */
+/**
+ * Shared building blocks for the Salong Sora demo. Used from both Server and Client Components,
+ * so anything language-dependent takes the content object `s` as a prop.
+ */
 
 export const soraContainer = "mx-auto max-w-site px-5 sm:px-8 lg:px-10";
 
-export function SoraLogo({ tone = "dark" }: { tone?: "dark" | "light" }) {
+export function SoraLogo({ s, tone = "dark" }: { s: Sora; tone?: "dark" | "light" }) {
   return (
-    <Link href={soraPaths.home} aria-label={`${sora.name} – startsida`} className="flex w-fit items-baseline gap-2">
+    <Link href={s.paths.home} aria-label={`${s.name} – ${s.ui.home}`} className="flex w-fit items-baseline gap-2">
       <span className="font-sora-serif text-3xl leading-none font-medium italic">Sora</span>
       <span
         className={cn(
@@ -73,23 +76,23 @@ export function SoraPageHero({ eyebrow, title, lead, children }: PageHeroProps) 
   );
 }
 
-export function SoraBookBand() {
+export function SoraBookBand({ s }: { s: Sora }) {
   return (
     <section aria-labelledby="sora-book" className="bg-sora-espresso text-sora-shell">
       <div className={cn(soraContainer, "py-24 text-center lg:py-32")}>
-        <p className="font-sora text-xs tracking-[0.3em] text-sora-blush/80 uppercase">{sora.bookCta}</p>
+        <p className="font-sora text-xs tracking-[0.3em] text-sora-blush/80 uppercase">{s.bookCta}</p>
         <h2 id="sora-book" className="mx-auto mt-6 max-w-3xl font-sora-serif text-5xl leading-[1.05] italic sm:text-7xl">
-          Unna dig en stund för dig själv.
+          {s.ui.bookBandTitle}
         </h2>
         <div className="mt-10 flex flex-wrap justify-center gap-3">
-          <SoraButton href={soraPaths.booking} variant="light">
-            {sora.bookCta}
+          <SoraButton href={s.paths.booking} variant="light">
+            {s.bookCta}
           </SoraButton>
           <a
-            href={sora.phone.href}
+            href={s.phone.href}
             className="inline-flex items-center rounded-full border border-sora-shell/30 px-7 py-3.5 font-sora text-sm tracking-[0.12em] uppercase transition-colors hover:border-sora-shell"
           >
-            {sora.phone.label}
+            {s.phone.label}
           </a>
         </div>
       </div>

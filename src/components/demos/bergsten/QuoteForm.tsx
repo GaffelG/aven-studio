@@ -1,11 +1,8 @@
 "use client";
 
 import { useRef, useState, type ReactNode } from "react";
-import { bergsten } from "@/demos/bergsten/content";
 import { cn } from "@/lib/cn";
-
-const t = bergsten.quote;
-const f = t.fields;
+import { useBergsten } from "./useBergsten";
 const emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 const phonePattern = /^[0-9 +()-]{7,}$/;
 
@@ -18,6 +15,9 @@ const chipClass =
 
 /** Demo-only quote request: validated in the browser, never sent. */
 export function QuoteForm() {
+  const bergsten = useBergsten();
+  const t = bergsten.quote;
+  const f = t.fields;
   const [errors, setErrors] = useState<Partial<Record<Field, string>>>({});
   const [sent, setSent] = useState(false);
   const formRef = useRef<HTMLFormElement>(null);
@@ -164,11 +164,12 @@ function Labelled({
   className?: string;
   children: ReactNode;
 }) {
+  const optionalLabel = useBergsten().quote.fields.optional;
   return (
     <div className={className}>
       <label htmlFor={id} className="flex justify-between text-sm font-medium">
         {label}
-        {optional && <span className="text-xs font-normal text-bergsten-muted">{f.optional}</span>}
+        {optional && <span className="text-xs font-normal text-bergsten-muted">{optionalLabel}</span>}
       </label>
       {children}
     </div>

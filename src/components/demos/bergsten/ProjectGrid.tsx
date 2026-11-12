@@ -1,12 +1,14 @@
 "use client";
 
 import { useState } from "react";
-import { bergsten, projectCategories, type ProjectCategory } from "@/demos/bergsten/content";
+import { projectCategories, type ProjectCategory } from "@/demos/bergsten/content";
 import { cn } from "@/lib/cn";
 import { ProjectCard } from "./BergstenUi";
+import { useBergsten } from "./useBergsten";
 
 /** Project portfolio with category filter (client-side, all projects are in the HTML). */
 export function ProjectGrid() {
+  const bergsten = useBergsten();
   const [filter, setFilter] = useState<ProjectCategory | null>(null);
   const t = bergsten.projectsSection;
   const projects = filter ? bergsten.projects.filter((p) => p.category === filter) : bergsten.projects;
@@ -29,7 +31,7 @@ export function ProjectGrid() {
                 active ? "border-bergsten-ink bg-bergsten-ink text-bergsten-paper" : "border-bergsten-line hover:border-bergsten-ink",
               )}
             >
-              {option ?? t.filterAll} <span className="opacity-60">({count})</span>
+              {option ? bergsten.labels.categories[option] : t.filterAll} <span className="opacity-60">({count})</span>
             </button>
           );
         })}
@@ -38,7 +40,7 @@ export function ProjectGrid() {
       <ul className="mt-12 grid gap-x-8 gap-y-16 md:grid-cols-2">
         {projects.map((project, i) => (
           <li key={project.slug}>
-            <ProjectCard project={project} priority={i < 2} sizes="(min-width: 768px) 50vw, 100vw" />
+            <ProjectCard b={bergsten} project={project} priority={i < 2} sizes="(min-width: 768px) 50vw, 100vw" />
           </li>
         ))}
       </ul>

@@ -1,9 +1,12 @@
 import Link from "next/link";
-import { ferrum, ferrumPaths } from "@/demos/ferrum/content";
+import { getFerrum } from "@/demos/ferrum/server";
 
-const t = ferrum.booking;
 
-export function FerrumBooking() {
+export async function FerrumBooking() {
+
+  const ferrum = await getFerrum();
+  const ferrumPaths = ferrum.paths;
+  const t = ferrum.booking;
   return (
     <section id="boka" aria-labelledby="boka-title" className="scroll-mt-20 bg-ferrum-accent text-ferrum-ink">
       <div className="mx-auto flex max-w-site flex-col gap-10 px-5 py-16 sm:px-8 lg:flex-row lg:items-end lg:justify-between lg:px-10 lg:py-20">

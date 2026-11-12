@@ -1,10 +1,12 @@
-import { ferrum } from "@/demos/ferrum/content";
+import { getFerrum } from "@/demos/ferrum/server";
 import { FerrumHeading } from "../FerrumHeading";
 
-const t = ferrum.contact;
 const label = "text-xs font-semibold tracking-[0.2em] text-ferrum-muted uppercase";
 
-export function FerrumContact() {
+export async function FerrumContact() {
+
+  const ferrum = await getFerrum();
+  const t = ferrum.contact;
   return (
     <section id="kontakt" aria-labelledby="kontakt-title" className="scroll-mt-20">
       <div className="mx-auto grid max-w-site gap-14 px-5 py-24 sm:px-8 lg:grid-cols-12 lg:gap-8 lg:px-10 lg:py-32">

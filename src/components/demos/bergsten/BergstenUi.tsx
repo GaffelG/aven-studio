@@ -1,17 +1,20 @@
 import Image from "next/image";
 import Link from "next/link";
 import type { ReactNode } from "react";
-import { bergsten, bergstenPaths, type BergstenProject } from "@/demos/bergsten/content";
+import { projectHref, type Bergsten, type BergstenProject } from "@/demos/bergsten/content";
 import { bergstenImages } from "@/demos/bergsten/images";
 import { cn } from "@/lib/cn";
 
-/** Shared building blocks for the Bergsten Bygg demo. */
+/**
+ * Shared building blocks for the Bergsten Bygg demo. Used from both Server and Client Components,
+ * so anything language-dependent takes the content object `b` as a prop instead of looking it up.
+ */
 
 export const bergstenContainer = "mx-auto max-w-site px-5 sm:px-8 lg:px-10";
 
-export function BergstenLogo({ tone = "dark", className }: { tone?: "dark" | "light"; className?: string }) {
+export function BergstenLogo({ b, tone = "dark", className }: { b: Bergsten; tone?: "dark" | "light"; className?: string }) {
   return (
-    <Link href={bergstenPaths.home} aria-label={`${bergsten.name} – startsida`} className={cn("flex w-fit items-center gap-3", className)}>
+    <Link href={b.paths.home} aria-label={`${b.name} – ${b.ui.home}`} className={cn("flex w-fit items-center gap-3", className)}>
       <svg aria-hidden viewBox="0 0 32 32" className={cn("size-8", tone === "dark" ? "text-bergsten-green" : "text-bergsten-green-light")}>
         <path d="M2 30V14L16 3l14 11v16h-9v-9h-10v9H2Z" fill="currentColor" />
       </svg>
@@ -67,29 +70,31 @@ export function BergstenButton({ href, children, variant = "primary", className 
   );
 }
 
-export function ProjectCard({ project, priority, sizes }: { project: BergstenProject; priority?: boolean; sizes: string }) {
+type ProjectCardProps = { b: Bergsten; project: BergstenProject; priority?: boolean; sizes: string };
+
+export function ProjectCard({ b, project, priority, sizes }: ProjectCardProps) {
   const image = bergstenImages[project.image];
   return (
-    <Link href={bergstenPaths.project(project.slug)} className="group block">
+    <Link href={projectHref(b, project.slug)} className="group block">
       <div className="relative aspect-[4/3] overflow-hidden bg-bergsten-stone">
         <Image
           src={image.src}
-          alt={image.alt}
+          alt={b.imageAlt[project.image]}
           placeholder="blur"
           priority={priority}
           sizes={sizes}
           className="h-full w-full object-cover transition-transform duration-[1.2s] ease-out-soft group-hover:scale-[1.04]"
         />
-        {project.status === "Pågående" && (
+        {project.status === "ongoing" && (
           <span className="absolute top-4 left-4 bg-bergsten-paper/95 px-3 py-1 font-bergsten text-[0.6875rem] font-medium tracking-[0.16em] uppercase">
-            {project.status}
+            {b.labels.status[project.status]}
           </span>
         )}
       </div>
       <div className="mt-5 flex items-start justify-between gap-6">
         <div>
           <p className="font-bergsten text-xs tracking-[0.18em] text-bergsten-muted uppercase">
-            {project.category} · {project.year}
+            {b.labels.categories[project.category]} · {project.year}
           </p>
           <h3 className="mt-2 font-bergsten text-2xl font-semibold tracking-[-0.01em]">{project.name}</h3>
           <p className="mt-2 max-w-md text-[0.9375rem] leading-relaxed text-bergsten-muted">{project.summary}</p>
@@ -102,8 +107,8 @@ export function ProjectCard({ project, priority, sizes }: { project: BergstenPro
   );
 }
 
-export function BergstenCtaBand() {
-  const t = bergsten.ctaBand;
+export function BergstenCtaBand({ b }: { b: Bergsten }) {
+  const t = b.ctaBand;
   return (
     <section aria-labelledby="bergsten-cta" className="bg-bergsten-green text-bergsten-paper">
       <div className={cn(bergstenContainer, "flex flex-col gap-10 py-20 lg:flex-row lg:items-end lg:justify-between lg:py-24")}>
@@ -114,14 +119,14 @@ export function BergstenCtaBand() {
           <p className="mt-5 text-lg text-bergsten-paper/75">{t.text}</p>
         </div>
         <div className="flex flex-wrap gap-3">
-          <BergstenButton href={bergstenPaths.quote} variant="light">
-            {bergsten.quoteCta}
+          <BergstenButton href={b.paths.quote} variant="light">
+            {b.quoteCta}
           </BergstenButton>
           <a
-            href={bergsten.phone.href}
+            href={b.phone.href}
             className="inline-flex items-center border border-bergsten-paper/40 px-6 py-3.5 font-bergsten text-sm font-medium tracking-[0.08em] uppercase transition-colors hover:border-bergsten-paper"
           >
-            {bergsten.phone.label}
+            {b.phone.label}
           </a>
         </div>
       </div>

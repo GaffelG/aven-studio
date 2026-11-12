@@ -1,36 +1,32 @@
 /*
- * Content for the Ferrum Verkstad concept demo.
+ * Content for the Ferrum Verkstad concept demo, in Swedish and English.
  * Ferrum is a fictional company: contact details are deliberately placeholder values
- * and reviews are labelled as examples on the page.
+ * and reviews are labelled as examples on the page. The business is Swedish in both
+ * languages, so prices stay in SEK and the address stays Swedish.
  */
 
-const basePath = "/demo/ferrum";
-const path = (segment = "") => (segment ? `${basePath}/${segment}` : basePath);
-
-export const ferrumPaths = {
-  home: path(),
-  services: path("tjanster"),
-  prices: path("priser"),
-  about: path("om-oss"),
-  contact: path("kontakt"),
-  booking: path("boka"),
-};
+import type { Locale } from "@/i18n/config";
+import { backToWork, demoPaths } from "@/demos/shared/routing";
 
 export type FerrumServiceId = "service" | "dack" | "diagnos" | "bromsar" | "ac" | "besiktning";
 
-export const ferrum = {
+const svPaths = demoPaths("ferrum", "sv");
+const enPaths = demoPaths("ferrum", "en");
+
+const sv = {
+  locale: "sv" as Locale,
+  paths: svPaths,
   name: "Ferrum Verkstad",
-  basePath,
   phone: { label: "070-000 00 00", href: "tel:+46700000000" },
   email: "kontakt@ferrum.example",
   address: ["Exempelgatan 12", "123 45 Exempelstad"],
   demoNotice: "Det här är en konceptdemo – inga tider bokas och inga uppgifter skickas.",
 
   nav: [
-    { label: "Tjänster", href: ferrumPaths.services },
-    { label: "Priser", href: ferrumPaths.prices },
-    { label: "Om oss", href: ferrumPaths.about },
-    { label: "Kontakt", href: ferrumPaths.contact },
+    { label: "Tjänster", href: svPaths.services },
+    { label: "Priser", href: svPaths.prices },
+    { label: "Om oss", href: svPaths.about },
+    { label: "Kontakt", href: svPaths.contact },
   ],
 
   hero: {
@@ -301,8 +297,345 @@ export const ferrum = {
     label: "Konceptdemo av Aven Studio",
     body: "Ferrum Verkstad är ett fiktivt företag.",
     back: "Tillbaka till Aven Studio",
-    backHref: "/sv/work#automotive",
+    backHref: backToWork("ferrum", "sv"),
+  },
+
+  meta: {
+    title: "Konceptdemo av Aven Studio",
+    description: "Konceptdemo av en webbplats för en bilverkstad, skapad av Aven Studio. Företaget är fiktivt.",
+    pages: { services: "Tjänster", prices: "Priser", about: "Om oss", contact: "Kontakt", booking: "Boka tid" },
+  },
+
+  ui: {
+    mainNav: "Huvudmeny",
+    menu: "Meny",
+    close: "Stäng",
+    home: "startsida",
+    language: "Språk",
+    job: "Jobb",
+    price: "Pris",
+    servicesOnPage: "Tjänster på sidan",
+    from: "från",
+    book: "Boka",
+    at: "kl.",
+    day: "Dag",
+    time: "Tid",
+    stars: "5 av 5 stjärnor",
   },
 };
 
-export type FerrumService = (typeof ferrum.services.items)[number];
+export type Ferrum = typeof sv;
+export type FerrumService = Ferrum["services"]["items"][number];
+
+const en: Ferrum = {
+  locale: "en",
+  paths: enPaths,
+  name: "Ferrum Verkstad",
+  phone: { label: "070-000 00 00", href: "tel:+46700000000" },
+  email: "kontakt@ferrum.example",
+  address: ["Exempelgatan 12", "123 45 Exempelstad"],
+  demoNotice: "This is a concept demo – no appointments are booked and no details are sent.",
+
+  nav: [
+    { label: "Services", href: enPaths.services },
+    { label: "Prices", href: enPaths.prices },
+    { label: "About", href: enPaths.about },
+    { label: "Contact", href: enPaths.contact },
+  ],
+
+  hero: {
+    eyebrow: "Car workshop in Exempelstad · All makes",
+    headline: "Service you can trust",
+    lead: "Fixed prices, clear answers and mechanics who look after your car as if it were their own.",
+    primaryCta: "Book now",
+    secondaryCta: "See prices",
+    trust: ["Fixed price before we start", "12-month warranty", "Courtesy car for bigger jobs"],
+    nextSlot: { label: "Next available slot", value: "Tomorrow 08:00" },
+    quick: ["Service", "Tyre change", "Diagnostics"],
+  },
+
+  services: {
+    eyebrow: "Services",
+    title: "What we do",
+    lead: "From routine servicing to diagnosing modern systems. You always get the price and time before we start.",
+    includesLabel: "Included",
+    items: [
+      {
+        id: "service",
+        title: "Service",
+        description: "Full service to the manufacturer's schedule. Your service history is kept intact.",
+        details:
+          "We follow the manufacturer's service programme and stamp the digital service book, so your new-car warranty stays valid even if you don't use a dealer workshop.",
+        includes: ["Oil and filter change", "Check of fluids, belts and lights", "Fault code reading", "Digital service book"],
+        from: 2495,
+        duration: "approx. 2 h",
+      },
+      {
+        id: "dack",
+        title: "Tyres",
+        description: "Changing, balancing and storage. We help you choose the right tyres.",
+        details: "Book a seasonal change or let us store your wheels – washed, checked and ready for next time.",
+        includes: ["Wheel change and torquing", "Balancing", "Tread depth check", "Tyre hotel"],
+        from: 499,
+        duration: "approx. 30 min",
+      },
+      {
+        id: "diagnos",
+        title: "Diagnostics",
+        description: "Fault-finding with modern equipment – you get a clear answer on what's needed.",
+        details: "A warning light on, or a noise you don't recognise? We find the cause and explain what's urgent and what can wait.",
+        includes: ["Fault code reading", "Test drive", "Written report", "Quote before any work"],
+        from: 695,
+        duration: "approx. 1 h",
+      },
+      {
+        id: "bromsar",
+        title: "Brakes",
+        description: "Inspection and replacement of pads, discs and brake fluid.",
+        details: "Brakes are your car's most important safety system. We check wear and replace parts with original-quality components.",
+        includes: ["Pad and disc inspection", "Replacement of worn parts", "Brake fluid change", "Test drive"],
+        from: 1495,
+        duration: "approx. 1.5 h",
+      },
+      {
+        id: "ac",
+        title: "AC service",
+        description: "Inspection, cleaning and recharging of the air conditioning.",
+        details: "A well-maintained AC cools better, smells fresher and keeps the windows clear of mist all year round.",
+        includes: ["Leak check", "Refrigerant recharge", "Cabin filter change", "System cleaning"],
+        from: 995,
+        duration: "approx. 1 h",
+      },
+      {
+        id: "besiktning",
+        title: "Pre-MOT check",
+        description: "We go over the car and fix anything that could fail the inspection.",
+        details: "Avoid a re-inspection. We check the same points as the official inspection and fix what's needed – once you approve.",
+        includes: ["Check against inspection points", "Lights and wipers", "Brakes and steering", "Repair suggestions"],
+        from: 595,
+        duration: "approx. 45 min",
+      },
+    ],
+  },
+
+  prices: {
+    eyebrow: "Price guide",
+    title: "Fixed prices. No surprises.",
+    lead: "Common jobs at a fixed price. You see the exact price for your car as soon as you book.",
+    note: "Example prices including VAT for a passenger car in a concept demo.",
+    allPrices: "See all prices",
+    items: [
+      { job: "Oil change incl. filter", price: 895 },
+      { job: "Tyre change, 4 wheels", price: 499 },
+      { job: "Diagnostics, first hour", price: 695 },
+      { job: "Front brake pad replacement", price: 1495 },
+      { job: "AC service", price: 995 },
+      { job: "Pre-MOT check", price: 595 },
+    ],
+    page: {
+      title: "Prices",
+      lead: "All prices are fixed and include labour, parts and VAT for a standard passenger car. If your car needs more than you booked, we'll tell you before doing anything.",
+      promiseTitle: "Our price promise",
+      promise: [
+        "You get the price before we start – no surprises on the invoice.",
+        "Extra work is only done with your approval.",
+        "12-month warranty on labour and parts.",
+      ],
+      categories: [
+        {
+          title: "Service and maintenance",
+          rows: [
+            { job: "Oil change incl. filter", price: 895 },
+            { job: "Minor service", price: 2495 },
+            { job: "Major service", price: 4495 },
+            { job: "Wiper blade replacement", price: 295 },
+          ],
+        },
+        {
+          title: "Tyres and wheels",
+          rows: [
+            { job: "Tyre change, 4 wheels", price: 499 },
+            { job: "Balancing, 4 wheels", price: 595 },
+            { job: "Tyre hotel per season", price: 795 },
+          ],
+        },
+        {
+          title: "Brakes",
+          rows: [
+            { job: "Front brake pad replacement", price: 1495 },
+            { job: "Front discs and pads", price: 3295 },
+            { job: "Brake fluid change", price: 795 },
+          ],
+        },
+        {
+          title: "Diagnostics, climate and inspection",
+          rows: [
+            { job: "Diagnostics, first hour", price: 695 },
+            { job: "AC service", price: 995 },
+            { job: "Pre-MOT check", price: 595 },
+          ],
+        },
+      ],
+    },
+  },
+
+  reasons: {
+    eyebrow: "Why Ferrum",
+    title: "A workshop without the hassle",
+    items: [
+      { value: "Fixed price", label: "You get the price before we start – and that's what you pay." },
+      { value: "12 months", label: "Warranty on all work carried out and every part we fit." },
+      { value: "Courtesy car", label: "A free courtesy car when the job takes more than a day." },
+      { value: "All makes", label: "Trained mechanics and original or equivalent-quality parts." },
+    ],
+  },
+
+  about: {
+    eyebrow: "About us",
+    title: "A workshop built on trust",
+    lead: "We believe a good workshop shows in how it communicates. That's why you always know what needs doing, what it costs and why – before we start.",
+    paragraphs: [
+      "Ferrum is an independent workshop for all makes. We use modern diagnostic equipment and original-quality parts, and we stamp the digital service book so your warranty stays valid.",
+      "How we treat people matters as much as the technology. We explain things in a way that makes sense, give honest advice about what can wait, and stand behind our work with a twelve-month warranty.",
+    ],
+    visitEyebrow: "Your visit",
+    visitTitle: "How a visit works",
+    visit: [
+      { title: "Book", description: "Choose a service and time online, or give us a call." },
+      { title: "Drop off", description: "Leave the key at reception or in the key drop box." },
+      { title: "Get updates", description: "If we find anything else, we contact you before doing it." },
+      { title: "Collect", description: "Pay easily and get a summary of the work carried out." },
+    ],
+  },
+
+  reviews: {
+    eyebrow: "Reviews",
+    title: "What customers say",
+    badge: "Example review",
+    note: "These reviews are examples in a concept demo and do not come from real customers.",
+    items: [
+      { quote: "Got a fixed price straight away and the car was ready the same day. Exactly how it should work.", name: "Anna L.", car: "Volvo V60" },
+      { quote: "Clear about what needed doing – and what could wait. Feels honest.", name: "Jonas K.", car: "Volkswagen Golf" },
+      { quote: "Easy online booking and friendly service. I'll be back before winter.", name: "Sara M.", car: "Toyota RAV4" },
+    ],
+  },
+
+  booking: {
+    title: "Book in under a minute",
+    lead: "Choose a service and time online – or call us and we'll help.",
+    cta: "Book online",
+    call: "Call us",
+    page: {
+      eyebrow: "Book now",
+      title: "Book your appointment",
+      lead: "Four quick steps. You get a confirmation straight away.",
+    },
+    steps: ["Service", "Time", "Details", "Confirm"],
+    stepLabel: "Step",
+    chooseService: "What does the car need?",
+    chooseTime: "Choose a day and time",
+    noSlots: "No free slots on this day.",
+    taken: "Booked",
+    yourDetails: "Your details",
+    review: "Check and confirm",
+    summary: "Summary",
+    from: "from",
+    next: "Continue",
+    back: "Back",
+    confirm: "Confirm booking",
+    edit: "Change",
+    fields: {
+      name: "Name",
+      phone: "Phone",
+      email: "Email",
+      plate: "Registration number",
+      platePlaceholder: "ABC 123",
+      message: "Anything we should know?",
+      optional: "optional",
+    },
+    errors: {
+      service: "Choose a service to continue.",
+      slot: "Choose a day and a time.",
+      required: "Please fill in this field.",
+      phone: "Enter a valid phone number.",
+      email: "Enter a valid email address.",
+      plate: "Enter a registration number, e.g. ABC 123.",
+    },
+    success: {
+      title: "Done! Your appointment is booked.",
+      body: "In a real booking you would now get a confirmation by text and email.",
+      again: "Make another booking",
+    },
+  },
+
+  contact: {
+    eyebrow: "Find us",
+    title: "Contact and opening hours",
+    hoursLabel: "Opening hours",
+    hours: [
+      { days: "Monday–Friday", time: "07:00–17:00" },
+      { days: "Saturday", time: "09:00–13:00" },
+      { days: "Sunday", time: "Closed" },
+    ],
+    addressLabel: "Address",
+    reachLabel: "Contact",
+    mapLabel: "Map (example)",
+    page: {
+      title: "Contact",
+      lead: "Call, email or send us a question here. Booking online is the quickest way to get an appointment.",
+    },
+    form: {
+      title: "Send a question",
+      name: "Name",
+      email: "Email",
+      message: "Your question",
+      submit: "Send",
+      required: "Please fill in this field.",
+      email_invalid: "Enter a valid email address.",
+      success: "Thanks for your question! In a real version we would reply within one working day.",
+    },
+  },
+
+  footer: {
+    tagline: "Car workshop with fixed prices and clear answers.",
+    legal: "Ferrum Verkstad is a fictional company.",
+  },
+
+  notFound: {
+    title: "Page not found",
+    body: "The page you're looking for doesn't exist in this demo.",
+    back: "Back to the homepage",
+  },
+
+  demo: {
+    label: "Concept demo by Aven Studio",
+    body: "Ferrum Verkstad is a fictional company.",
+    back: "Back to Aven Studio",
+    backHref: backToWork("ferrum", "en"),
+  },
+
+  meta: {
+    title: "Concept demo by Aven Studio",
+    description: "Concept demo of a website for a car workshop, made by Aven Studio. The company is fictional.",
+    pages: { services: "Services", prices: "Prices", about: "About", contact: "Contact", booking: "Book now" },
+  },
+
+  ui: {
+    mainNav: "Main menu",
+    menu: "Menu",
+    close: "Close",
+    home: "home",
+    language: "Language",
+    job: "Job",
+    price: "Price",
+    servicesOnPage: "Services on this page",
+    from: "from",
+    book: "Book",
+    at: "at",
+    day: "Day",
+    time: "Time",
+    stars: "5 out of 5 stars",
+  },
+};
+
+export const ferrumContent: Record<Locale, Ferrum> = { sv, en };

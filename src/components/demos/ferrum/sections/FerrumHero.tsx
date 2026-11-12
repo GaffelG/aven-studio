@@ -1,9 +1,12 @@
 import Link from "next/link";
-import { ferrum, ferrumPaths } from "@/demos/ferrum/content";
+import { getFerrum } from "@/demos/ferrum/server";
 
-const t = ferrum.hero;
 
-export function FerrumHero() {
+export async function FerrumHero() {
+
+  const ferrum = await getFerrum();
+  const ferrumPaths = ferrum.paths;
+  const t = ferrum.hero;
   return (
     <section aria-labelledby="ferrum-hero" className="relative overflow-hidden">
       {/* Oversized outline lettering as texture behind the content. */}

@@ -8,17 +8,17 @@ import products from "../../../public/demos/sora/sora-products.jpg";
 import stations from "../../../public/demos/sora/sora-stations.jpg";
 import stylists from "../../../public/demos/sora/sora-stylists.jpg";
 
-/** Static imports give next/image dimensions and blur placeholders. Credits: src/demos/CREDITS.md. */
+/** Static imports give next/image dimensions and blur placeholders. Alt texts are per language in content.ts. Credits: src/demos/CREDITS.md. */
 export const soraImages = {
-  hero: { src: hero, alt: "Kvinna vid salongens receptionsdisk i varma, ljusa toner" },
-  interior: { src: interior, alt: "Ljus salong med välvd öppning och hyllor med hårprodukter" },
-  stations: { src: stations, alt: "Frisörplatser med speglar och stolar i beige" },
-  products: { src: products, alt: "Pumpflaskor med schampo och balsam mot en vägg av träribbor" },
-  curls: { src: curls, alt: "Frisör som formar lockar med locktång" },
-  stylists: { src: stylists, alt: "Två frisörer som arbetar med en kunds hår" },
-  cut: { src: cut, alt: "Frisör som klipper vått hår med sax" },
-  colour: { src: colour, alt: "Frisör som färgar hår med folieslingor" },
-  brush: { src: brush, alt: "Rundborste som formar långt blont hår" },
+  hero: { src: hero },
+  interior: { src: interior },
+  stations: { src: stations },
+  products: { src: products },
+  curls: { src: curls },
+  stylists: { src: stylists },
+  cut: { src: cut },
+  colour: { src: colour },
+  brush: { src: brush },
 };
 
 export type SoraImageKey = keyof typeof soraImages;

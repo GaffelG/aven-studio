@@ -1,7 +1,9 @@
-import { ferrum } from "@/demos/ferrum/content";
+import { getFerrum } from "@/demos/ferrum/server";
 import { FerrumLogo } from "./FerrumLogo";
 
-export function FerrumFooter() {
+export async function FerrumFooter() {
+
+  const ferrum = await getFerrum();
   return (
     <footer className="border-t border-ferrum-line bg-ferrum-ink">
       <div className="mx-auto grid max-w-site gap-10 px-5 py-14 sm:grid-cols-2 sm:px-8 lg:grid-cols-4 lg:px-10">

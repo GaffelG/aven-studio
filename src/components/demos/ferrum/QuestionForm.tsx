@@ -1,9 +1,8 @@
 "use client";
 
 import { useRef, useState } from "react";
-import { ferrum } from "@/demos/ferrum/content";
+import { useFerrum } from "./useFerrum";
 
-const t = ferrum.contact.form;
 const emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 type Field = "name" | "email" | "message";
 
@@ -12,6 +11,8 @@ const inputClass =
 
 /** Demo-only question form: validates in the browser and never sends anything. */
 export function QuestionForm() {
+  const ferrum = useFerrum();
+  const t = ferrum.contact.form;
   const [errors, setErrors] = useState<Partial<Record<Field, string>>>({});
   const [sent, setSent] = useState(false);
   const statusRef = useRef<HTMLParagraphElement>(null);

@@ -1,12 +1,14 @@
 import Link from "next/link";
 import { Reveal } from "@/components/ui/Reveal";
 import { formatPrice } from "@/content/pricing";
-import { ferrum, ferrumPaths } from "@/demos/ferrum/content";
+import { getFerrum } from "@/demos/ferrum/server";
 import { FerrumHeading } from "../FerrumHeading";
 
-const t = ferrum.prices;
+export async function FerrumPrices() {
+  const ferrum = await getFerrum();
+  const ferrumPaths = ferrum.paths;
+  const t = ferrum.prices;
 
-export function FerrumPrices() {
   return (
     <section id="priser" aria-labelledby="priser-title" className="scroll-mt-20 bg-ferrum-paper text-ferrum-ink">
       <div className="mx-auto grid max-w-site gap-14 px-5 py-24 sm:px-8 lg:grid-cols-12 lg:gap-8 lg:px-10 lg:py-32">
@@ -26,8 +28,8 @@ export function FerrumPrices() {
             <caption className="sr-only">{t.eyebrow}</caption>
             <thead className="sr-only">
               <tr>
-                <th scope="col">Jobb</th>
-                <th scope="col">Pris</th>
+                <th scope="col">{ferrum.ui.job}</th>
+                <th scope="col">{ferrum.ui.price}</th>
               </tr>
             </thead>
             <tbody>
@@ -37,7 +39,7 @@ export function FerrumPrices() {
                     {item.job}
                   </th>
                   <td className="py-5 text-right font-ferrum text-2xl font-bold whitespace-nowrap tabular-nums sm:text-3xl">
-                    {formatPrice(item.price, "sv")}
+                    {formatPrice(item.price, ferrum.locale)}
                   </td>
                 </tr>
               ))}

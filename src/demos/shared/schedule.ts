@@ -1,3 +1,5 @@
+import type { Locale } from "@/i18n/config";
+
 /*
  * Calendar helpers shared by the demo booking flows. Everything runs in the browser
  * after the visitor interacts, so dates always match the visitor's day.
@@ -17,9 +19,9 @@ export function upcomingDays(count = 10, closed: number[] = [0]): Date[] {
   return days;
 }
 
-/** Formats whole hours as Swedish clock times ("09.00"). */
-export function hoursToSlots(hours: number[]): string[] {
-  return hours.map((h) => `${String(h).padStart(2, "0")}.00`);
+/** Formats whole hours as clock times: Swedish "09.00", English "09:00". */
+export function hoursToSlots(hours: number[], locale: Locale = "sv"): string[] {
+  return hours.map((h) => `${String(h).padStart(2, "0")}${locale === "sv" ? "." : ":"}00`);
 }
 
 /** Deterministic "already booked" pattern so calendars look realistic without a backend. */
@@ -31,5 +33,17 @@ export function isTaken(dayKey: string, slot: string, salt = ""): boolean {
 
 export const dayKey = (day: Date) => day.toISOString().slice(0, 10);
 
-export const shortDate = new Intl.DateTimeFormat("sv-SE", { weekday: "short", day: "numeric", month: "short" });
-export const longDate = new Intl.DateTimeFormat("sv-SE", { weekday: "long", day: "numeric", month: "long" });
+const formats = {
+  sv: {
+    short: new Intl.DateTimeFormat("sv-SE", { weekday: "short", day: "numeric", month: "short" }),
+    long: new Intl.DateTimeFormat("sv-SE", { weekday: "long", day: "numeric", month: "long" }),
+  },
+  en: {
+    short: new Intl.DateTimeFormat("en-GB", { weekday: "short", day: "numeric", month: "short" }),
+    long: new Intl.DateTimeFormat("en-GB", { weekday: "long", day: "numeric", month: "long" }),
+  },
+} satisfies Record<Locale, { short: Intl.DateTimeFormat; long: Intl.DateTimeFormat }>;
+
+/** Short ("tis 12 nov" / "Tue 12 Nov") and long date formats for a demo's language. */
+export const dateFormats = (locale: Locale) => formats[locale];
+

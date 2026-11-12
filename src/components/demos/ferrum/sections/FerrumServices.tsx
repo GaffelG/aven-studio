@@ -1,12 +1,14 @@
 import Link from "next/link";
 import { Reveal } from "@/components/ui/Reveal";
 import { formatPrice } from "@/content/pricing";
-import { ferrum, ferrumPaths } from "@/demos/ferrum/content";
+import { getFerrum } from "@/demos/ferrum/server";
 import { FerrumHeading } from "../FerrumHeading";
 
-const t = ferrum.services;
+export async function FerrumServices() {
+  const ferrum = await getFerrum();
+  const ferrumPaths = ferrum.paths;
+  const t = ferrum.services;
 
-export function FerrumServices() {
   return (
     <section id="tjanster" aria-labelledby="tjanster-title" className="scroll-mt-20">
       <div className="mx-auto max-w-site px-5 py-24 sm:px-8 lg:px-10 lg:py-32">
@@ -27,8 +29,8 @@ export function FerrumServices() {
                   <p className="mt-3 flex-1 text-[0.9375rem] leading-relaxed text-ferrum-muted">{item.description}</p>
                   <p className="mt-8 flex items-center justify-between border-t border-ferrum-line pt-5 text-sm">
                     <span>
-                      <span className="text-ferrum-muted">från </span>
-                      <span className="font-ferrum text-xl font-bold">{formatPrice(item.from, "sv")}</span>
+                      <span className="text-ferrum-muted">{ferrum.ui.from} </span>
+                      <span className="font-ferrum text-xl font-bold">{formatPrice(item.from, ferrum.locale)}</span>
                       <span className="text-ferrum-muted"> · {item.duration}</span>
                     </span>
                     <span

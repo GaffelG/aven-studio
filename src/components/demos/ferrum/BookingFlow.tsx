@@ -2,12 +2,11 @@
 
 import { useEffect, useMemo, useRef, useState, type ReactNode } from "react";
 import { formatPrice } from "@/content/pricing";
-import { ferrum, type FerrumServiceId } from "@/demos/ferrum/content";
-import { dayKey, hoursToSlots, isTaken, longDate, shortDate, upcomingDays } from "@/demos/shared/schedule";
+import type { Locale } from "@/i18n/config";
+import type { FerrumServiceId } from "@/demos/ferrum/content";
+import { dateFormats, dayKey, hoursToSlots, isTaken, upcomingDays } from "@/demos/shared/schedule";
 import { cn } from "@/lib/cn";
-
-const t = ferrum.booking;
-const services = ferrum.services.items;
+import { useFerrum } from "./useFerrum";
 
 type Details = { name: string; phone: string; email: string; plate: string; message: string };
 type DetailErrors = Partial<Record<keyof Details, string>>;
@@ -17,15 +16,20 @@ const phonePattern = /^[0-9 +()-]{7,}$/;
 const emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 const platePattern = /^[A-ZÅÄÖ]{3}\s?\d{2}[A-Z0-9]$/i;
 
-const dateFormat = shortDate;
-const longDateFormat = longDate;
-
 /** Workshop hours: shorter on Saturdays. */
-function slotsFor(day: Date): string[] {
-  return hoursToSlots(day.getDay() === 6 ? [9, 10, 11, 12] : [7, 8, 9, 10, 11, 13, 14, 15, 16]);
+function slotsFor(day: Date, locale: Locale): string[] {
+  return hoursToSlots(day.getDay() === 6 ? [9, 10, 11, 12] : [7, 8, 9, 10, 11, 13, 14, 15, 16], locale);
+}
+
+/** Language-dependent pieces every step needs. */
+function useBookingText() {
+  const ferrum = useFerrum();
+  const formats = dateFormats(ferrum.locale);
+  return { ferrum, t: ferrum.booking, services: ferrum.services.items, dateFormat: formats.short, longDateFormat: formats.long };
 }
 
 export function BookingFlow() {
+  const { ferrum, t, services, dateFormat, longDateFormat } = useBookingText();
   const [step, setStep] = useState(0);
   const [serviceId, setServiceId] = useState<FerrumServiceId | null>(null);
   const [slot, setSlot] = useState<{ day: Date; time: string } | null>(null);
@@ -87,7 +91,7 @@ export function BookingFlow() {
           {t.success.title}
         </h2>
         <p className="mt-6 text-lg">
-          {service.title} · {longDateFormat.format(slot.day)} kl. {slot.time}
+          {service.title} · {longDateFormat.format(slot.day)} {ferrum.ui.at} {slot.time}
         </p>
         <p className="mt-4 max-w-lg text-ferrum-muted">{t.success.body}</p>
         <p className="mt-8 border-l-2 border-ferrum-accent pl-4 text-sm text-ferrum-text/80">{ferrum.demoNotice}</p>
@@ -182,12 +186,12 @@ export function BookingFlow() {
           <h2 className="text-xs font-semibold tracking-[0.2em] text-ferrum-muted uppercase">{t.summary}</h2>
           <dl className="mt-6 space-y-5">
             <SummaryRow label={t.steps[0]}>{service ? service.title : "–"}</SummaryRow>
-            <SummaryRow label={t.steps[1]}>{slot ? `${dateFormat.format(slot.day)} kl. ${slot.time}` : "–"}</SummaryRow>
+            <SummaryRow label={t.steps[1]}>{slot ? `${dateFormat.format(slot.day)} ${ferrum.ui.at} ${slot.time}` : "–"}</SummaryRow>
           </dl>
           {service && (
             <p className="mt-6 border-t border-ferrum-line pt-6">
               <span className="text-sm text-ferrum-muted">{t.from} </span>
-              <span className="font-ferrum text-4xl font-bold">{formatPrice(service.from, "sv")}</span>
+              <span className="font-ferrum text-4xl font-bold">{formatPrice(service.from, ferrum.locale)}</span>
               <span className="block text-xs text-ferrum-muted">{service.duration}</span>
             </p>
           )}
@@ -211,6 +215,7 @@ const choiceClass =
   "relative cursor-pointer border border-ferrum-line bg-ferrum-ink transition-colors hover:border-ferrum-muted has-checked:border-ferrum-accent has-checked:bg-ferrum-surface has-focus-visible:outline-2 has-focus-visible:outline-offset-2 has-focus-visible:outline-ferrum-accent";
 
 function ServiceStep({ selected, onSelect }: { selected: FerrumServiceId | null; onSelect: (id: FerrumServiceId) => void }) {
+  const { ferrum, t, services } = useBookingText();
   return (
     <fieldset>
       <legend className="sr-only">{t.chooseService}</legend>
@@ -229,7 +234,7 @@ function ServiceStep({ selected, onSelect }: { selected: FerrumServiceId | null;
               <span className="font-ferrum text-2xl font-bold uppercase">{item.title}</span>
               <span className="text-sm whitespace-nowrap">
                 <span className="text-ferrum-muted">{t.from} </span>
-                <span className="font-semibold">{formatPrice(item.from, "sv")}</span>
+                <span className="font-semibold">{formatPrice(item.from, ferrum.locale)}</span>
               </span>
             </span>
             <span className="mt-2 text-sm text-ferrum-muted">{item.description}</span>
@@ -248,19 +253,20 @@ function TimeStep({
   selected: { day: Date; time: string } | null;
   onSelect: (value: { day: Date; time: string }) => void;
 }) {
+  const { ferrum, t, dateFormat } = useBookingText();
   const days = useMemo(() => upcomingDays(), []);
   const [activeDay, setActiveDay] = useState(() =>
     selected ? days.findIndex((d) => dayKey(d) === dayKey(selected.day)) : 0,
   );
   const day = days[Math.max(activeDay, 0)];
   const key = dayKey(day);
-  const slots = slotsFor(day);
+  const slots = slotsFor(day, ferrum.locale);
 
   return (
     <div>
       {/* Fieldsets default to min-width: min-content; min-w-0 lets the day list scroll instead. */}
       <fieldset className="min-w-0">
-        <legend className="text-xs font-semibold tracking-[0.2em] text-ferrum-muted uppercase">Dag</legend>
+        <legend className="text-xs font-semibold tracking-[0.2em] text-ferrum-muted uppercase">{ferrum.ui.day}</legend>
         <div className="mt-3 flex gap-2 overflow-x-auto pb-3 [scrollbar-color:var(--color-ferrum-line)_transparent] [scrollbar-width:thin]">
           {days.map((d, i) => (
             <label key={dayKey(d)} className={cn(choiceClass, "shrink-0 px-4 py-3 text-center")}>
@@ -278,7 +284,7 @@ function TimeStep({
       </fieldset>
 
       <fieldset className="mt-8">
-        <legend className="text-xs font-semibold tracking-[0.2em] text-ferrum-muted uppercase">Tid</legend>
+        <legend className="text-xs font-semibold tracking-[0.2em] text-ferrum-muted uppercase">{ferrum.ui.time}</legend>
         <div className="mt-3 grid grid-cols-3 gap-2 sm:grid-cols-5">
           {slots.map((time) => {
             const taken = isTaken(key, time);
@@ -320,6 +326,7 @@ function DetailsStep({
   errors: DetailErrors;
   onChange: (details: Details) => void;
 }) {
+  const { t } = useBookingText();
   const field = (key: keyof Details, label: string, props: Record<string, string | number | boolean> = {}, optional = false) => (
     <div className={key === "message" ? "sm:col-span-2" : undefined}>
       <label htmlFor={`booking-${key}`} className="flex justify-between text-sm font-medium">
@@ -375,9 +382,10 @@ function ReviewStep({
   details: Details;
   onEdit: (step: number) => void;
 }) {
+  const { ferrum, t, longDateFormat } = useBookingText();
   const rows: Array<{ label: string; value: string; step: number }> = [
     { label: t.steps[0], value: service, step: 0 },
-    { label: t.steps[1], value: `${longDateFormat.format(slot.day)} kl. ${slot.time}`, step: 1 },
+    { label: t.steps[1], value: `${longDateFormat.format(slot.day)} ${ferrum.ui.at} ${slot.time}`, step: 1 },
     { label: t.fields.name, value: details.name, step: 2 },
     { label: t.fields.phone, value: details.phone, step: 2 },
     { label: t.fields.plate, value: details.plate.toUpperCase(), step: 2 },

@@ -1,10 +1,13 @@
+"use client";
+
 import Link from "next/link";
-import { ferrum } from "@/demos/ferrum/content";
+import { useFerrum } from "./useFerrum";
 
 /** Wordmark: an accent square followed by the condensed name. */
 export function FerrumLogo() {
+  const ferrum = useFerrum();
   return (
-    <Link href={ferrum.basePath} aria-label={`${ferrum.name} – startsida`} className="flex items-center gap-2.5">
+    <Link href={ferrum.paths.home} aria-label={`${ferrum.name} – ${ferrum.ui.home}`} className="flex items-center gap-2.5">
       <span aria-hidden className="grid size-7 place-items-center bg-ferrum-accent font-ferrum text-lg font-bold text-ferrum-ink">
         F
       </span>

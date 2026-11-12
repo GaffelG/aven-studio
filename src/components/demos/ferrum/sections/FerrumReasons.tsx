@@ -1,10 +1,12 @@
 import { Reveal } from "@/components/ui/Reveal";
-import { ferrum } from "@/demos/ferrum/content";
+import { getFerrum } from "@/demos/ferrum/server";
 import { FerrumHeading } from "../FerrumHeading";
 
-const t = ferrum.reasons;
 
-export function FerrumReasons() {
+export async function FerrumReasons() {
+
+  const ferrum = await getFerrum();
+  const t = ferrum.reasons;
   return (
     <section id="varfor" aria-labelledby="varfor-title" className="scroll-mt-20">
       <div className="mx-auto max-w-site px-5 py-24 sm:px-8 lg:px-10 lg:py-32">

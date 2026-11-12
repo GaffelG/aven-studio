@@ -4,7 +4,8 @@ import { Container } from "@/components/ui/Container";
 import { Reveal } from "@/components/ui/Reveal";
 import { ConceptPreview } from "@/components/work/ConceptPreview";
 import { concepts } from "@/content/projects";
-import { getDictionary } from "@/i18n/get-dictionary";
+import { demoBase } from "@/demos/shared/routing";
+import { getDictionary, getLocale } from "@/i18n/get-dictionary";
 import { cn } from "@/lib/cn";
 import { pageMetadata } from "@/lib/page-metadata";
 
@@ -13,7 +14,8 @@ export const generateMetadata = () => pageMetadata("work");
 const label = "text-xs font-medium tracking-[0.18em] text-silver-deep uppercase";
 
 export default async function WorkPage() {
-  const t = (await getDictionary()).work;
+  const [dict, locale] = await Promise.all([getDictionary(), getLocale()]);
+  const t = dict.work;
 
   return (
     <>
@@ -94,8 +96,8 @@ export default async function WorkPage() {
                           ))}
                         </dd>
                       </div>
-                      {concept.demoHref ? (
-                        <Button href={concept.demoHref} size="sm" arrow>
+                      {concept.demo ? (
+                        <Button href={demoBase(concept.demo, locale)} size="sm" arrow>
                           {t.demoCta}
                         </Button>
                       ) : (

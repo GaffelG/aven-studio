@@ -1,20 +1,22 @@
 import Link from "next/link";
-import { sora, soraPaths } from "@/demos/sora/content";
+import { getSora } from "@/demos/sora/server";
 import { cn } from "@/lib/cn";
 import { SoraLogo, soraContainer } from "./SoraUi";
 
 const heading = "font-sora text-xs tracking-[0.28em] text-sora-blush/70 uppercase";
 
-export function SoraFooter() {
+export async function SoraFooter() {
+  const sora = await getSora();
+  const soraPaths = sora.paths;
   return (
     <footer className="bg-sora-espresso text-sora-shell">
       <div className={cn(soraContainer, "grid gap-12 border-t border-sora-shell/10 py-16 sm:grid-cols-2 lg:grid-cols-4")}>
         <div>
-          <SoraLogo tone="light" />
+          <SoraLogo s={sora} tone="light" />
           <p className="mt-5 max-w-xs text-sm leading-relaxed text-sora-shell/60">{sora.footer.tagline}</p>
         </div>
         <div>
-          <p className={heading}>Öppettider</p>
+          <p className={heading}>{sora.ui.hours}</p>
           <dl className="mt-5 space-y-2 text-sm text-sora-shell/75">
             {sora.visit.hours.map((row) => (
               <div key={row.days} className="flex justify-between gap-6">
@@ -25,7 +27,7 @@ export function SoraFooter() {
           </dl>
         </div>
         <div>
-          <p className={heading}>Hitta hit</p>
+          <p className={heading}>{sora.ui.findUs}</p>
           <address className="mt-5 text-sm leading-relaxed text-sora-shell/75 not-italic">
             {sora.address.map((line) => (
               <span key={line} className="block">
@@ -35,7 +37,7 @@ export function SoraFooter() {
           </address>
         </div>
         <div>
-          <p className={heading}>Kontakt</p>
+          <p className={heading}>{sora.ui.contact}</p>
           <ul className="mt-5 space-y-2 text-sm text-sora-shell/75">
             <li>
               <a href={sora.phone.href} className="hover:text-sora-shell">
@@ -49,7 +51,7 @@ export function SoraFooter() {
             </li>
             <li>
               <Link href={soraPaths.booking} className="hover:text-sora-shell">
-                {sora.bookCta} online →
+                {sora.ui.bookOnline} →
               </Link>
             </li>
           </ul>
