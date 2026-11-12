@@ -36,6 +36,7 @@ function BookingForm({ days }: { days: Date[] }) {
   const t = bo.booking;
   const seats = t.seats;
   const longDate = dates(bo).long;
+  const money = new Intl.NumberFormat(bo.intl, { style: "currency", currency: "EUR" });
   const [step, setStep] = useState(0);
   const [guests, setGuests] = useState(2);
   const [seat, setSeat] = useState("band");
@@ -225,6 +226,15 @@ function BookingForm({ days }: { days: Date[] }) {
             <Row term={t.summaryRows.guests} value={String(guests)} />
             <Row term={t.summaryRows.seat} value={seats.find((s) => s.id === seat)?.short ?? "–"} />
           </dl>
+          <div className="mt-6 border-t border-white/10 pt-5">
+            <p className="text-xs text-[var(--bo-cream)]/55">{t.summaryRows.price}</p>
+            <p className="mt-1 text-3xl" style={serif}>
+              {money.format(bo.price * guests)}
+            </p>
+            <p className="mt-1 text-xs text-[var(--bo-cream)]/55">
+              {guests} × {money.format(bo.price)} · {t.priceNote}
+            </p>
+          </div>
         </div>
       </aside>
     </form>

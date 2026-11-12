@@ -17,6 +17,8 @@ export const boAdmin = (locale: BoLocale) => `${boHome(locale)}/admin`;
 
 const shared = {
   name: "bo´s viet deli",
+  /** All-you-can-eat price per person, from their Tripadvisor listing. */
+  price: 28.9,
   address: { street: "Martin-Luther-Str. 8", city: "81539 München-Giesing" },
   phone: "089 89 54 60 34",
   phoneHref: "tel:+498989546034",
@@ -40,7 +42,7 @@ const de = {
   language: "Sprache",
   nav: { menu: "Speisen", hours: "Öffnungszeiten", vouchers: "Gutscheine", reserve: "Tisch reservieren" },
   hero: {
-    eyebrow: "100 % pflanzlich · München-Giesing",
+    eyebrow: "Asiatisch · Japanese Fusion · München-Giesing",
     titleStart: "Sushi, das ",
     titleAccent: "vorbeirollt",
     lead: "Veganes Running Sushi – 90 Minuten all you can eat, direkt vom Band. Reserviere deinen Platz jetzt online, in unter einer Minute.",
@@ -49,7 +51,7 @@ const de = {
     stats: [
       ["90 min", "All you can eat"],
       ["30 Tage", "im Voraus buchbar"],
-      ["0 %", "Tierisches"],
+      ["28,90 €", "pro Person"],
       ["7 Tage", "geöffnet"],
     ] as [string, string][],
   },
@@ -65,9 +67,9 @@ const de = {
     titleAccent: "sofort bestätigt",
     lead: "Kein Warten auf eine Antwort im Chat. Wähle deinen Slot, und du bekommst direkt eine Bestätigung.",
   },
-  menuSection: { eyebrow: "Speisen", titleStart: "Alles ", titleAccent: "pflanzlich", titleEnd: ", alles frisch." },
+  menuSection: { eyebrow: "Speisen", titleStart: "Frisch ", titleAccent: "gerollt", titleEnd: ", direkt vom Band." },
   menu: [
-    { title: "Running Sushi", body: "All you can eat für 90 Minuten – direkt vom Band, mit warmen Häppchen auf pflanzlicher Basis." },
+    { title: "Running Sushi", body: "All you can eat für 90 Minuten – 28,90 € pro Person. Direkt vom Band, mit warmen Häppchen auf pflanzlicher Basis." },
     { title: "Tempura Sushi Rolls", body: "Ura Maki mit veganem Lachs- und Thunfischersatz, Avocado und veganem Frischkäse." },
     { title: "Big Rolls", body: "Große Rollen mit wechselnden Füllungen." },
     { title: "Desserts", body: "Gebackene Bananen, Sesambällchen und mehr." },
@@ -103,7 +105,8 @@ const de = {
     submit: "Verbindlich reservieren",
     back: "← Zurück",
     summary: "Deine Auswahl",
-    summaryRows: { day: "Tag", time: "Uhrzeit", guests: "Personen", seat: "Sitzplatz" },
+    summaryRows: { day: "Tag", time: "Uhrzeit", guests: "Personen", seat: "Sitzplatz", price: "Preis" },
+    priceNote: "All you can eat, zahlbar vor Ort.",
     timeSuffix: " Uhr",
     person: "Person",
     persons: "Personen",
@@ -180,7 +183,7 @@ const en: Bo = {
   language: "Language",
   nav: { menu: "Menu", hours: "Opening hours", vouchers: "Vouchers", reserve: "Book a table" },
   hero: {
-    eyebrow: "100 % plant-based · Munich-Giesing",
+    eyebrow: "Asian · Japanese fusion · Munich-Giesing",
     titleStart: "Sushi that ",
     titleAccent: "rolls by",
     lead: "Vegan running sushi – 90 minutes all you can eat, straight from the belt. Book your seat online now, in under a minute.",
@@ -189,7 +192,7 @@ const en: Bo = {
     stats: [
       ["90 min", "All you can eat"],
       ["30 days", "bookable ahead"],
-      ["0 %", "animal products"],
+      ["€28.90", "per person"],
       ["7 days", "a week"],
     ],
   },
@@ -205,9 +208,9 @@ const en: Bo = {
     titleAccent: "confirmed instantly",
     lead: "No waiting for a reply in a chat. Choose your slot and you get a confirmation right away.",
   },
-  menuSection: { eyebrow: "Menu", titleStart: "All ", titleAccent: "plant-based", titleEnd: ", all fresh." },
+  menuSection: { eyebrow: "Menu", titleStart: "Freshly ", titleAccent: "rolled", titleEnd: ", straight off the belt." },
   menu: [
-    { title: "Running Sushi", body: "All you can eat for 90 minutes – straight from the belt, with warm plant-based bites." },
+    { title: "Running Sushi", body: "All you can eat for 90 minutes – €28.90 per person. Straight from the belt, with warm plant-based bites." },
     { title: "Tempura Sushi Rolls", body: "Ura maki with vegan salmon and tuna alternatives, avocado and vegan cream cheese." },
     { title: "Big Rolls", body: "Large rolls with changing fillings." },
     { title: "Desserts", body: "Fried bananas, sesame balls and more." },
@@ -243,7 +246,8 @@ const en: Bo = {
     submit: "Confirm booking",
     back: "← Back",
     summary: "Your selection",
-    summaryRows: { day: "Day", time: "Time", guests: "Guests", seat: "Seat" },
+    summaryRows: { day: "Day", time: "Time", guests: "Guests", seat: "Seat", price: "Price" },
+    priceNote: "All you can eat, paid at the restaurant.",
     timeSuffix: "",
     person: "guest",
     persons: "guests",
