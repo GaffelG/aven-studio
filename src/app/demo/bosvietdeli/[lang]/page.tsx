@@ -191,11 +191,11 @@ export default async function BoPage() {
 function ConveyorBelt() {
   // One set is ~3,600px, wider than any common screen (incl. 2560px monitors). Two identical sets (each with the same
   // trailing gap) slide by exactly one set width, so the loop is seamless and never shows an end.
-  const colors = ["#8fbf5a", "#8e2f55", "#e8893a", "#e8b04a"];
+  const colors = ["#8fd96a", "#8f2bd6", "#e8893a", "#e04fd0"];
   const set = Array.from({ length: 24 }, (_, i) => colors[i % colors.length]);
 
   return (
-    <div aria-hidden className="overflow-hidden border-y-[10px] border-[#cdc8a2] bg-[#e9e6cc] py-6">
+    <div aria-hidden className="overflow-hidden border-y-[10px] border-[#a9d892] bg-[#dcf3cd] py-6">
       <style>{`@keyframes bo-belt{to{transform:translateX(-50%)}}@media (prefers-reduced-motion:reduce){.bo-belt{animation:none!important}}`}</style>
       <div className="bo-belt flex w-max" style={{ animation: "bo-belt 90s linear infinite" }}>
         {[0, 1].map((copy) => (

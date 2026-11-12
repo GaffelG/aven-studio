@@ -8,7 +8,7 @@ import "../../../globals.css";
 
 export const generateStaticParams = boStaticParams;
 
-export const viewport: Viewport = { themeColor: "#1c3324" };
+export const viewport: Viewport = { themeColor: "#2a1038" };
 
 export async function generateMetadata(): Promise<Metadata> {
   const bo = await getBo();
@@ -20,17 +20,20 @@ export async function generateMetadata(): Promise<Metadata> {
   };
 }
 
-/** Plant-based palette: oat, forest, leaf and sprout greens, with beetroot for vouchers. */
+/**
+ * Their own brand colours (from bosvietdeli.de): light lime green tiles and deep purple with a neon-violet
+ * accent like the "deli" sign. Token names are kept from the first draft; values are what matter.
+ */
 const palette = {
-  "--bo-cream": "#f4f2e4",
-  "--bo-paper": "#fbfaf1",
-  "--bo-ink": "#1c3324",
-  "--bo-muted": "#5a6a56",
-  "--bo-line": "#d8dbc1",
-  "--bo-matcha": "#4f7d2f",
-  "--bo-accent": "#3d7a2a",
-  "--bo-sprout": "#b9de87",
-  "--bo-beet": "#8e2f55",
+  "--bo-cream": "#eef9e6",
+  "--bo-paper": "#f8fdf4",
+  "--bo-ink": "#2a1038",
+  "--bo-muted": "#5f5168",
+  "--bo-line": "#cfe8bf",
+  "--bo-matcha": "#7a2db0",
+  "--bo-accent": "#6d22a8",
+  "--bo-sprout": "#bff5a8",
+  "--bo-beet": "#8f2bd6",
 } as CSSProperties;
 
 export default async function BoLayout({ children }: LayoutProps<"/demo/bosvietdeli/[lang]">) {
