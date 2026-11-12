@@ -3,11 +3,16 @@
 import Link from "next/link";
 import { useEffect, useRef, useState } from "react";
 import { addBooking, type Seat } from "@/demos/bosvietdeli/bookings";
-import { bo, seatingsFor } from "@/demos/bosvietdeli/content";
+import { boAdmin, seatingsFor, type Bo } from "@/demos/bosvietdeli/content";
 import { dayKey, isTaken, upcomingDays } from "@/demos/shared/schedule";
 import { cn } from "@/lib/cn";
+import { useBo } from "./BoLocale";
 
-const longDate = new Intl.DateTimeFormat("de-DE", { weekday: "long", day: "numeric", month: "long" });
+/** Date formats follow the page language. */
+const dates = (bo: Bo) => ({
+  long: new Intl.DateTimeFormat(bo.intl, { weekday: "long", day: "numeric", month: "long" }),
+  month: new Intl.DateTimeFormat(bo.intl, { month: "long", year: "numeric" }),
+});
 const serif = { fontFamily: "var(--font-fraunces), serif" };
 const label = "text-xs font-medium tracking-[0.22em] text-[var(--bo-sprout)] uppercase";
 const choice =
@@ -16,11 +21,6 @@ const inputClass =
   "mt-2 w-full rounded-lg border border-white/20 bg-white/5 px-4 py-3 text-base text-[var(--bo-cream)] focus:border-[var(--bo-sprout)] focus:outline-none aria-invalid:border-[#ff8f7a]";
 
 const guestOptions = [1, 2, 3, 4, 5, 6];
-const seats = [
-  { id: "band", name: "Direkt am Sushi-Band", short: "Am Band", note: "Die Teller fahren direkt an dir vorbei." },
-  { id: "tisch", name: "Am Tisch", short: "Am Tisch", note: "Gemütlicher und ideal für Gruppen – das Band ist in Reichweite." },
-  { id: "egal", name: "Egal", short: "Egal", note: "Wir geben euch den besten freien Platz." },
-];
 
 /** Dates depend on the visitor's "today", so the calendar only renders in the browser. */
 export function BoBooking() {
@@ -32,6 +32,10 @@ export function BoBooking() {
 }
 
 function BookingForm({ days }: { days: Date[] }) {
+  const bo = useBo();
+  const t = bo.booking;
+  const seats = t.seats;
+  const longDate = dates(bo).long;
   const [step, setStep] = useState(0);
   const [guests, setGuests] = useState(2);
   const [seat, setSeat] = useState("band");
@@ -57,13 +61,13 @@ function BookingForm({ days }: { days: Date[] }) {
 
   const submit = () => {
     if (step === 0) {
-      if (!time) return setErrors({ time: "Bitte wähle eine Uhrzeit." });
+      if (!time) return setErrors({ time: t.errors.time });
       setErrors({});
       return setStep(1);
     }
     const next: typeof errors = {};
-    if (!name.trim()) next.name = "Bitte gib deinen Namen an.";
-    if (!/^[0-9 +()/-]{6,}$/.test(phone.trim())) next.phone = "Bitte gib eine gültige Telefonnummer an.";
+    if (!name.trim()) next.name = t.errors.name;
+    if (!/^[0-9 +()/-]{6,}$/.test(phone.trim())) next.phone = t.errors.phone;
     setErrors(next);
     if (Object.keys(next).length === 0) {
       addBooking({ day: key, time: time!, guests, seat: seat as Seat, name: name.trim(), phone: phone.trim() });
@@ -83,27 +87,28 @@ function BookingForm({ days }: { days: Date[] }) {
   if (done && time) {
     return (
       <div role="status" className="mx-auto max-w-2xl rounded-2xl bg-[var(--bo-cream)] px-8 py-14 text-center text-[var(--bo-ink)] sm:px-14">
-        <p className="text-xs font-medium tracking-[0.22em] text-[var(--bo-matcha)] uppercase">Reservierung bestätigt</p>
+        <p className="text-xs font-medium tracking-[0.22em] text-[var(--bo-matcha)] uppercase">{t.confirmed}</p>
         <h3 ref={headingRef} tabIndex={-1} className="mt-5 text-5xl font-semibold outline-none" style={serif}>
-          Bis bald, {name.trim().split(" ")[0]}!
+          {t.seeYou}, {name.trim().split(" ")[0]}!
         </h3>
         <p className="mt-6 text-lg">
-          <span className="first-letter:uppercase">{longDate.format(day)}</span>, {time} Uhr
+          <span className="first-letter:uppercase">{longDate.format(day)}</span>, {time}
+          {t.timeSuffix}
           <br />
-          {guests} {guests === 1 ? "Person" : "Personen"} · {seats.find((s) => s.id === seat)?.short}
+          {guests} {guests === 1 ? t.person : t.persons} · {seats.find((s) => s.id === seat)?.short}
         </p>
         <p className="mx-auto mt-4 max-w-md text-[var(--bo-muted)]">
-          Die Bestätigung kommt per SMS. Euer Slot dauert 90 Minuten.
+          {t.smsNote}
         </p>
         <p className="mx-auto mt-8 max-w-md border-t border-[var(--bo-line)] pt-6 text-sm text-[var(--bo-muted)]">
-          {bo.notice} Im{" "}
-          <Link href="/demo/bosvietdeli/admin" className="underline underline-offset-4">
-            Team-Bereich
+          {bo.notice} {t.teamBefore}{" "}
+          <Link href={boAdmin(bo.locale)} className="underline underline-offset-4">
+            {t.teamLink}
           </Link>{" "}
-          siehst du, wie die Reservierung beim Restaurant ankommt.
+          {t.teamAfter}
         </p>
         <button type="button" onClick={reset} className="mt-6 rounded-full border border-[var(--bo-ink)]/30 px-6 py-3 text-sm hover:border-[var(--bo-ink)]">
-          Neue Reservierung
+          {t.again}
         </button>
       </div>
     );
@@ -120,13 +125,13 @@ function BookingForm({ days }: { days: Date[] }) {
     >
       <div className="min-w-0 lg:col-span-8">
         <h3 ref={headingRef} tabIndex={-1} className="text-3xl font-semibold outline-none" style={serif}>
-          {step === 0 ? "1. Wann und wie viele?" : "2. Deine Kontaktdaten"}
+          {t.headings[step]}
         </h3>
 
         {step === 0 ? (
           <div className="mt-8 space-y-8">
             <fieldset className="min-w-0">
-              <legend className={label}>Personen</legend>
+              <legend className={label}>{t.guests}</legend>
               <div className="mt-3 flex flex-wrap gap-2">
                 {guestOptions.map((n) => (
                   <label key={n} className={cn(choice, "grid size-12 place-items-center rounded-full tabular-nums")}>
@@ -135,11 +140,11 @@ function BookingForm({ days }: { days: Date[] }) {
                   </label>
                 ))}
               </div>
-              <p className="mt-2 text-sm text-[var(--bo-cream)]/60">Mehr als 6? Ruf uns kurz an: {bo.phone}</p>
+              <p className="mt-2 text-sm text-[var(--bo-cream)]/60">{t.moreThanSix} {bo.phone}</p>
             </fieldset>
 
             <fieldset className="min-w-0">
-              <legend className={label}>Tag</legend>
+              <legend className={label}>{t.day}</legend>
               <DayCalendar
                 days={days}
                 selected={dayIndex}
@@ -151,7 +156,7 @@ function BookingForm({ days }: { days: Date[] }) {
             </fieldset>
 
             <fieldset className="min-w-0">
-              <legend className={label}>Uhrzeit – ihr habt 90 Minuten</legend>
+              <legend className={label}>{t.time}</legend>
               <div className="mt-3 grid grid-cols-3 gap-2 sm:grid-cols-4 lg:grid-cols-5">
                 {seatingsFor(day).map((slot, i) => {
                   // The first seating is usually free at the belt, so it is never shown as full.
@@ -170,7 +175,7 @@ function BookingForm({ days }: { days: Date[] }) {
                         className="sr-only"
                       />
                       <span className="block text-xl tabular-nums" style={serif}>{slot}</span>
-                      <span className="block text-xs opacity-75">{taken ? "ausgebucht" : i === 0 ? "viele Plätze frei" : "frei"}</span>
+                      <span className="block text-xs opacity-75">{taken ? t.slot.taken : i === 0 ? t.slot.plenty : t.slot.free}</span>
                     </label>
                   );
                 })}
@@ -179,7 +184,7 @@ function BookingForm({ days }: { days: Date[] }) {
             </fieldset>
 
             <fieldset className="min-w-0">
-              <legend className={label}>Wo möchtet ihr sitzen?</legend>
+              <legend className={label}>{t.seat}</legend>
               <div className="mt-3 grid gap-2 sm:grid-cols-3">
                 {seats.map((s) => (
                   <label key={s.id} className={cn(choice, "rounded-xl px-5 py-4")}>
@@ -193,32 +198,32 @@ function BookingForm({ days }: { days: Date[] }) {
           </div>
         ) : (
           <div className="mt-8 grid gap-6 sm:grid-cols-2">
-            <Field id="name" text="Name" value={name} error={errors.name} autoComplete="name" onChange={setName} />
-            <Field id="phone" text="Handynummer (für die SMS)" value={phone} error={errors.phone} type="tel" autoComplete="tel" onChange={setPhone} />
+            <Field id="name" text={t.fields.name} value={name} error={errors.name} autoComplete="name" onChange={setName} />
+            <Field id="phone" text={t.fields.phone} value={phone} error={errors.phone} type="tel" autoComplete="tel" onChange={setPhone} />
           </div>
         )}
 
         <div className="mt-10 flex flex-wrap items-center gap-4">
           <button type="submit" className="rounded-full bg-[var(--bo-sprout)] px-8 py-4 font-medium text-[var(--bo-ink)] hover:bg-white hover:text-[var(--bo-ink)]">
-            {step === 0 ? "Weiter →" : "Verbindlich reservieren"}
+            {step === 0 ? t.next : t.submit}
           </button>
           {step === 1 && (
             <button type="button" onClick={() => setStep(0)} className="text-sm text-[var(--bo-cream)]/70 hover:text-white">
-              ← Zurück
+              {t.back}
             </button>
           )}
         </div>
         <p className="mt-6 text-xs text-[var(--bo-cream)]/50">{bo.notice}</p>
       </div>
 
-      <aside aria-label="Deine Auswahl" className="lg:col-span-4">
+      <aside aria-label={t.summary} className="lg:col-span-4">
         <div className="rounded-2xl bg-white/[0.06] p-7 lg:sticky lg:top-6">
-          <p className={label}>Deine Auswahl</p>
+          <p className={label}>{t.summary}</p>
           <dl className="mt-6 space-y-4">
-            <Row term="Tag" value={longDate.format(day)} />
-            <Row term="Uhrzeit" value={time ? `${time} Uhr · 90 min` : "–"} />
-            <Row term="Personen" value={String(guests)} />
-            <Row term="Sitzplatz" value={seats.find((s) => s.id === seat)?.short ?? "–"} />
+            <Row term={t.summaryRows.day} value={longDate.format(day)} />
+            <Row term={t.summaryRows.time} value={time ? `${time}${t.timeSuffix} · 90 min` : "–"} />
+            <Row term={t.summaryRows.guests} value={String(guests)} />
+            <Row term={t.summaryRows.seat} value={seats.find((s) => s.id === seat)?.short ?? "–"} />
           </dl>
         </div>
       </aside>
@@ -264,11 +269,13 @@ function Field({ id, text, value, error, type = "text", autoComplete, onChange }
   );
 }
 
-const monthTitle = new Intl.DateTimeFormat("de-DE", { month: "long", year: "numeric" });
-const weekdayNames = ["Mo", "Di", "Mi", "Do", "Fr", "Sa", "So"];
 
 /** Month grid (Monday first). Only the bookable `days` can be picked; arrows switch between their months. */
 function DayCalendar({ days, selected, onSelect }: { days: Date[]; selected: number; onSelect: (index: number) => void }) {
+  const bo = useBo();
+  const t = bo.booking;
+  const { long: longDate, month: monthTitle } = dates(bo);
+  const weekdayNames = t.weekdays;
   const months = Array.from(new Set(days.map((d) => `${d.getFullYear()}-${d.getMonth()}`))).map((k) => {
     const [y, m] = k.split("-").map(Number);
     return new Date(y, m, 1, 12);
@@ -284,13 +291,13 @@ function DayCalendar({ days, selected, onSelect }: { days: Date[]; selected: num
   return (
     <div className="mt-3 max-w-md rounded-2xl border border-white/10 p-4 sm:p-5">
       <div className="flex items-center justify-between">
-        <button type="button" aria-label="Vorheriger Monat" disabled={monthIndex === 0} onClick={() => setMonthIndex(monthIndex - 1)} className={arrow}>
+        <button type="button" aria-label={t.prevMonth} disabled={monthIndex === 0} onClick={() => setMonthIndex(monthIndex - 1)} className={arrow}>
           ←
         </button>
         <p className="text-lg capitalize" style={serif} aria-live="polite">
           {monthTitle.format(month)}
         </p>
-        <button type="button" aria-label="Nächster Monat" disabled={monthIndex === months.length - 1} onClick={() => setMonthIndex(monthIndex + 1)} className={arrow}>
+        <button type="button" aria-label={t.nextMonth} disabled={monthIndex === months.length - 1} onClick={() => setMonthIndex(monthIndex + 1)} className={arrow}>
           →
         </button>
       </div>

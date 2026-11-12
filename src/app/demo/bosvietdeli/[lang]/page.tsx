@@ -1,13 +1,17 @@
 import Link from "next/link";
 import { BoBooking } from "@/components/demos/bosvietdeli/BoBooking";
+import { BoLanguageSwitch } from "@/components/demos/bosvietdeli/BoLocale";
 import { BoVoucher } from "@/components/demos/bosvietdeli/BoVoucher";
-import { bo } from "@/demos/bosvietdeli/content";
+import { boAdmin } from "@/demos/bosvietdeli/content";
+import { getBo } from "@/demos/bosvietdeli/server";
 
 const container = "mx-auto w-full max-w-6xl px-5 sm:px-8";
 const serif = { fontFamily: "var(--font-fraunces), serif" };
 const eyebrow = "text-xs font-medium tracking-[0.22em] uppercase";
 
-export default function BoPage() {
+export default async function BoPage() {
+  const bo = await getBo();
+
   return (
     <>
       <header className="bg-[var(--bo-ink)] text-[var(--bo-cream)]">
@@ -20,13 +24,16 @@ export default function BoPage() {
             </span>
           </a>
           <nav className="hidden gap-8 text-sm md:flex">
-            <a href="#speisen" className="hover:text-[var(--bo-sprout)]">Speisen</a>
-            <a href="#zeiten" className="hover:text-[var(--bo-sprout)]">Öffnungszeiten</a>
-            <a href="#gutscheine" className="hover:text-[var(--bo-sprout)]">Gutscheine</a>
+            <a href="#speisen" className="hover:text-[var(--bo-sprout)]">{bo.nav.menu}</a>
+            <a href="#zeiten" className="hover:text-[var(--bo-sprout)]">{bo.nav.hours}</a>
+            <a href="#gutscheine" className="hover:text-[var(--bo-sprout)]">{bo.nav.vouchers}</a>
           </nav>
-          <a href="#reservieren" className="rounded-full bg-[var(--bo-sprout)] px-5 py-2.5 text-sm font-medium text-[var(--bo-ink)] hover:bg-white">
-            Tisch reservieren
-          </a>
+          <div className="flex items-center gap-4">
+            <BoLanguageSwitch />
+            <a href="#reservieren" className="rounded-full bg-[var(--bo-sprout)] px-5 py-2.5 text-sm font-medium whitespace-nowrap text-[var(--bo-ink)] hover:bg-white">
+              {bo.nav.reserve}
+            </a>
+          </div>
         </div>
       </header>
 
@@ -34,30 +41,25 @@ export default function BoPage() {
         {/* Hero */}
         <section className={`${container} grid gap-12 pt-16 pb-12 lg:grid-cols-12 lg:items-end lg:pt-24`}>
           <div className="lg:col-span-7">
-            <p className={`${eyebrow} text-[var(--bo-matcha)]`}>100 % pflanzlich · München-Giesing</p>
+            <p className={`${eyebrow} text-[var(--bo-matcha)]`}>{bo.hero.eyebrow}</p>
             <h1 className="mt-6 text-6xl leading-[0.95] font-semibold tracking-[-0.03em] sm:text-7xl lg:text-8xl" style={serif}>
-              Sushi, das <em className="text-[var(--bo-accent)]">vorbeirollt</em>.
+              {bo.hero.titleStart}
+              <em className="text-[var(--bo-accent)]">{bo.hero.titleAccent}</em>.
             </h1>
             <p className="mt-8 max-w-xl text-lg leading-relaxed text-[var(--bo-muted)]">
-              Veganes Running Sushi – 90 Minuten all you can eat, direkt vom Band. Reserviere deinen Platz jetzt online, in
-              unter einer Minute.
+              {bo.hero.lead}
             </p>
             <div className="mt-10 flex flex-wrap gap-3">
               <a href="#reservieren" className="rounded-full bg-[var(--bo-accent)] px-7 py-4 font-medium text-white hover:bg-[var(--bo-ink)]">
-                Platz reservieren →
+                {bo.hero.primary}
               </a>
               <a href="#speisen" className="rounded-full border border-[var(--bo-ink)]/25 px-7 py-4 font-medium hover:border-[var(--bo-ink)]">
-                Was es gibt
+                {bo.hero.secondary}
               </a>
             </div>
           </div>
           <dl className="grid grid-cols-2 gap-px overflow-hidden rounded-2xl bg-[var(--bo-line)] lg:col-span-4 lg:col-start-9">
-            {[
-              ["90 min", "All you can eat"],
-              ["30 Tage", "im Voraus buchbar"],
-              ["0 %", "Tierisches"],
-              ["7 Tage", "geöffnet"],
-            ].map(([value, label]) => (
+            {bo.hero.stats.map(([value, label]) => (
               <div key={label} className="bg-[var(--bo-paper)] p-5">
                 <dt className="sr-only">{label}</dt>
                 <dd>
@@ -73,7 +75,7 @@ export default function BoPage() {
 
         {/* How it works */}
         <section className={`${container} py-20 lg:py-28`}>
-          <p className={`${eyebrow} text-[var(--bo-matcha)]`}>So einfach geht’s</p>
+          <p className={`${eyebrow} text-[var(--bo-matcha)]`}>{bo.stepsEyebrow}</p>
           <ol className="mt-10 grid gap-10 sm:grid-cols-3">
             {bo.steps.map((step, i) => (
               <li key={step.title} className="border-t border-[var(--bo-ink)]/20 pt-6">
@@ -88,12 +90,13 @@ export default function BoPage() {
         {/* Booking */}
         <section id="reservieren" className="scroll-mt-6 bg-[var(--bo-ink)] py-20 text-[var(--bo-cream)] lg:py-28">
           <div className={container}>
-            <p className={`${eyebrow} text-[var(--bo-sprout)]`}>Online reservieren</p>
+            <p className={`${eyebrow} text-[var(--bo-sprout)]`}>{bo.bookingSection.eyebrow}</p>
             <h2 className="mt-4 max-w-2xl text-5xl leading-none font-semibold tracking-[-0.02em] sm:text-6xl" style={serif}>
-              Dein Platz am Band – <em className="text-[var(--bo-sprout)]">sofort bestätigt</em>.
+              {bo.bookingSection.titleStart}
+              <em className="text-[var(--bo-sprout)]">{bo.bookingSection.titleAccent}</em>.
             </h2>
             <p className="mt-6 max-w-xl text-[var(--bo-cream)]/70">
-              Kein Warten auf eine Antwort im Chat. Wähle deinen Slot, und du bekommst direkt eine Bestätigung.
+              {bo.bookingSection.lead}
             </p>
             <div className="mt-12">
               <BoBooking />
@@ -105,9 +108,11 @@ export default function BoPage() {
         <section id="speisen" className={`${container} scroll-mt-6 py-20 lg:py-28`}>
           <div className="grid gap-12 lg:grid-cols-12">
             <div className="lg:col-span-4">
-              <p className={`${eyebrow} text-[var(--bo-matcha)]`}>Speisen</p>
+              <p className={`${eyebrow} text-[var(--bo-matcha)]`}>{bo.menuSection.eyebrow}</p>
               <h2 className="mt-4 text-5xl font-semibold tracking-[-0.02em]" style={serif}>
-                Alles <em>pflanzlich</em>, alles frisch.
+                {bo.menuSection.titleStart}
+                <em>{bo.menuSection.titleAccent}</em>
+                {bo.menuSection.titleEnd}
               </h2>
             </div>
             <ul className="grid gap-px overflow-hidden rounded-2xl bg-[var(--bo-line)] sm:grid-cols-2 lg:col-span-8">
@@ -125,7 +130,7 @@ export default function BoPage() {
         <section id="zeiten" className={`${container} scroll-mt-6 pb-20 lg:pb-28`}>
           <div className="grid gap-4 lg:grid-cols-3">
             <div className="rounded-2xl bg-[var(--bo-paper)] p-8">
-              <p className={`${eyebrow} text-[var(--bo-matcha)]`}>Öffnungszeiten</p>
+              <p className={`${eyebrow} text-[var(--bo-matcha)]`}>{bo.hoursTitle}</p>
               <dl className="mt-6 space-y-3">
                 {bo.hours.map((row) => (
                   <div key={row.days} className="flex justify-between gap-4 border-b border-[var(--bo-line)] pb-3">
@@ -134,10 +139,10 @@ export default function BoPage() {
                   </div>
                 ))}
               </dl>
-              <p className="mt-4 text-sm text-[var(--bo-muted)]">Kein Ruhetag. Feiertage werden hier aktuell angezeigt.</p>
+              <p className="mt-4 text-sm text-[var(--bo-muted)]">{bo.hoursNote}</p>
             </div>
             <div className="rounded-2xl bg-[var(--bo-paper)] p-8">
-              <p className={`${eyebrow} text-[var(--bo-matcha)]`}>So findest du uns</p>
+              <p className={`${eyebrow} text-[var(--bo-matcha)]`}>{bo.findUs}</p>
               <address className="mt-6 text-2xl leading-snug not-italic" style={serif}>
                 {bo.address.street}
                 <br />
@@ -148,9 +153,10 @@ export default function BoPage() {
               </a>
             </div>
             <div id="gutscheine" className="rounded-2xl bg-[var(--bo-beet)] p-8 text-[var(--bo-cream)]">
-              <p className={`${eyebrow} text-[var(--bo-cream)]/70`}>Gutscheine</p>
+              <p className={`${eyebrow} text-[var(--bo-cream)]/70`}>{bo.vouchersSection.eyebrow}</p>
               <p className="mt-6 text-3xl leading-tight font-semibold" style={serif}>
-                Verschenke 90 Minuten <em>Sushi-Glück</em>.
+                {bo.vouchersSection.titleStart}
+                <em>{bo.vouchersSection.titleAccent}</em>.
               </p>
               <BoVoucher />
             </div>
@@ -170,8 +176,10 @@ export default function BoPage() {
             </span>
           </div>
           <span className="flex gap-6">
-            <Link href="/demo/bosvietdeli/admin" className="underline-offset-4 hover:underline">Für das Team</Link>
-            <span>Entwurf: Aven Studio</span>
+            <Link href={boAdmin(bo.locale)} className="underline-offset-4 hover:underline">
+              {bo.footer.team}
+            </Link>
+            <span>{bo.footer.credit}</span>
           </span>
         </div>
       </footer>

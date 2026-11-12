@@ -49,9 +49,27 @@ function routeDemo(request: NextRequest, pathname: string) {
   return NextResponse.rewrite(url);
 }
 
+/**
+ * bo´s viet deli mock-up (German / English): /demo/bosvietdeli(/admin) is German and rewritten onto /de,
+ * /demo/bosvietdeli/en(/admin) is English. Explicit /de/ URLs redirect to the clean German URL.
+ */
+function routeBo(request: NextRequest, pathname: string) {
+  if (pathname.split("/").pop()?.includes(".")) return;
+  const [, , , first, ...rest] = pathname.split("/");
+  const url = request.nextUrl.clone();
+  if (first === "de") {
+    url.pathname = ["/demo/bosvietdeli", ...rest].filter(Boolean).join("/");
+    return NextResponse.redirect(url);
+  }
+  if (first === "en") return;
+  url.pathname = ["/demo/bosvietdeli/de", first, ...rest].filter(Boolean).join("/");
+  return NextResponse.rewrite(url);
+}
+
 export function proxy(request: NextRequest) {
   const { pathname } = request.nextUrl;
 
+  if (pathname === "/demo/bosvietdeli" || pathname.startsWith("/demo/bosvietdeli/")) return routeBo(request, pathname);
   if (pathname.startsWith("/demo/")) return routeDemo(request, pathname);
 
   if (hasLocale(pathname.split("/")[1])) return;
@@ -63,6 +81,10 @@ export function proxy(request: NextRequest) {
 
 export const config = {
   // Skip Next internals, API routes, demo sites, extensionless metadata routes and anything that looks like a file.
-  // The bilingual demos are matched separately and rewritten by routeDemo (bosvietdeli is German-only and untouched).
-  matcher: ["/((?!_next|api|demo|apple-icon|.*\\..*).*)", "/demo/(ferrum|bergsten|sora)", "/demo/(ferrum|bergsten|sora)/:path*"],
+  // The bilingual demos are matched separately and rewritten by routeDemo / routeBo.
+  matcher: [
+    "/((?!_next|api|demo|apple-icon|.*\\..*).*)",
+    "/demo/(ferrum|bergsten|sora|bosvietdeli)",
+    "/demo/(ferrum|bergsten|sora|bosvietdeli)/:path*",
+  ],
 };
