@@ -1,14 +1,18 @@
 import Image from "next/image";
 import type { Concept } from "@/content/projects";
+import { getLocale } from "@/i18n/get-dictionary";
 
 type Props = { concept: Concept; label: string; priority?: boolean };
 
 /**
  * A browser-framed screenshot of the concept's live demo (first screen at 1440×900).
- * Screenshots live in /public/work and include the 36px demo banner, which object-bottom crops away.
+ * Screenshots live in /public/work, one per language (<name>.png for Swedish, <name>-en.png for English),
+ * and include the 36px demo banner, which object-bottom crops away.
  * Re-capture them whenever a demo's first screen changes.
  */
-export function ConceptPreview({ concept, label, priority }: Props) {
+export async function ConceptPreview({ concept, label, priority }: Props) {
+  const locale = await getLocale();
+  const suffix = locale === "sv" ? "" : `-${locale}`;
   return (
     <figure className="@container overflow-hidden rounded-md bg-paper-dim shadow-[0_1px_0_rgba(17,19,24,0.04),0_30px_60px_-30px_rgba(17,19,24,0.35)] ring-1 ring-ink/8">
       {/* Browser chrome */}
@@ -21,7 +25,7 @@ export function ConceptPreview({ concept, label, priority }: Props) {
 
       <div className="relative aspect-[16/10] overflow-hidden" style={{ backgroundColor: concept.palette.background }}>
         <Image
-          src={`/work/${concept.screenshot}.png`}
+          src={`/work/${concept.screenshot}${suffix}.png`}
           alt={`${label}: ${concept.name}`}
           fill
           priority={priority}
