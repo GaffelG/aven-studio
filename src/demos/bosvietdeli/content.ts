@@ -42,7 +42,7 @@ const de = {
   language: "Sprache",
   nav: { menu: "Speisen", hours: "Öffnungszeiten", vouchers: "Gutscheine", reserve: "Tisch reservieren" },
   hero: {
-    eyebrow: "Asiatisch · Japanese Fusion · München-Giesing",
+    eyebrow: "100 % vegan · Japanese Fusion · München-Giesing",
     titleStart: "Sushi, das ",
     titleAccent: "vorbeirollt",
     lead: "Veganes Running Sushi – 90 Minuten all you can eat, direkt vom Band. Reserviere deinen Platz jetzt online, in unter einer Minute.",
@@ -183,7 +183,7 @@ const en: Bo = {
   language: "Language",
   nav: { menu: "Menu", hours: "Opening hours", vouchers: "Vouchers", reserve: "Book a table" },
   hero: {
-    eyebrow: "Asian · Japanese fusion · Munich-Giesing",
+    eyebrow: "100 % vegan · Japanese fusion · Munich-Giesing",
     titleStart: "Sushi that ",
     titleAccent: "rolls by",
     lead: "Vegan running sushi – 90 minutes all you can eat, straight from the belt. Book your seat online now, in under a minute.",
