@@ -3,6 +3,7 @@
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { useId, useState } from "react";
+import { DemoCurrencySwitch } from "@/components/demos/DemoCurrency";
 import { DemoLanguageSwitch } from "@/components/demos/DemoLocale";
 import { isDemoSection } from "@/demos/shared/routing";
 import { cn } from "@/lib/cn";
@@ -40,6 +41,7 @@ export function BergstenHeader() {
 
         <div className="hidden items-center gap-6 lg:flex">
           <DemoLanguageSwitch label={bergsten.ui.language} />
+          <DemoCurrencySwitch />
           <a href={bergsten.phone.href} className="hidden text-sm whitespace-nowrap text-bergsten-muted transition-colors hover:text-bergsten-ink xl:inline">
             {bergsten.phone.label}
           </a>
@@ -81,8 +83,9 @@ export function BergstenHeader() {
             </li>
           ))}
         </ul>
-        <div className={cn(bergstenContainer, "border-t border-bergsten-line py-3")}>
+        <div className={cn(bergstenContainer, "flex items-center gap-4 border-t border-bergsten-line py-3")}>
           <DemoLanguageSwitch label={bergsten.ui.language} />
+          <DemoCurrencySwitch />
         </div>
       </nav>
     </header>

@@ -59,6 +59,25 @@ export function DemoCurrencyProvider({ children }: { children: ReactNode }) {
   return <CurrencyContext.Provider value={{ currency, setCurrency }}>{children}</CurrencyContext.Provider>;
 }
 
+/** Rounds to `digits` significant digits, for large amounts such as budgets (43 478 → 43 000). */
+const roundSignificant = (value: number, digits: number) => {
+  const factor = 10 ** Math.max(Math.floor(Math.log10(Math.abs(value))) - digits + 1, 0);
+  return Math.round(value / factor) * factor;
+};
+
+/**
+ * Formats SEK amounts in the visitor's currency, for text that isn't a single price (e.g. budget ranges).
+ * `approx` is true when the amounts are conversions, so callers can add one "≈" to the whole label.
+ */
+export function useSekFormatter() {
+  const { currency } = useDemoCurrency();
+  const locale = useDemoLocale();
+  return {
+    approx: currency !== "SEK",
+    format: (sek: number) => formatPrice(currency === "SEK" ? sek : roundSignificant(sek / sekPer[currency], 2), locale, currency),
+  };
+}
+
 /** A SEK price shown in the visitor's currency; converted prices get a "≈" prefix. */
 export function DemoPrice({ sek, className }: { sek: number; className?: string }) {
   const { currency } = useDemoCurrency();

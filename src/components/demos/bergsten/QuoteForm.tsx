@@ -1,6 +1,8 @@
 "use client";
 
 import { useRef, useState, type ReactNode } from "react";
+import { useSekFormatter } from "@/components/demos/DemoCurrency";
+import { budgetLimits } from "@/demos/bergsten/content";
 import { cn } from "@/lib/cn";
 import { useBergsten } from "./useBergsten";
 const emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
@@ -18,6 +20,17 @@ export function QuoteForm() {
   const bergsten = useBergsten();
   const t = bergsten.quote;
   const f = t.fields;
+  const money = useSekFormatter();
+  // Budget bands follow the selected currency; one "≈" marks a converted label.
+  const approx = (label: string) => (money.approx ? `≈ ${label}` : label);
+  const [low, mid, high] = budgetLimits;
+  const budgetOptions = [
+    approx(`${f.budgetBands.under} ${money.format(low)}`),
+    approx(`${money.format(low)} – ${money.format(mid)}`),
+    approx(`${money.format(mid)} – ${money.format(high)}`),
+    approx(`${f.budgetBands.over} ${money.format(high)}`),
+    f.budgetBands.unknown,
+  ];
   const [errors, setErrors] = useState<Partial<Record<Field, string>>>({});
   const [sent, setSent] = useState(false);
   const formRef = useRef<HTMLFormElement>(null);
@@ -106,7 +119,7 @@ export function QuoteForm() {
       <Labelled id="quote-budget" label={f.budget} optional className="sm:col-span-2">
         <select id="quote-budget" name="budget" defaultValue="" className={inputClass}>
           <option value="">–</option>
-          {f.budgets.map((option) => (
+          {budgetOptions.map((option) => (
             <option key={option}>{option}</option>
           ))}
         </select>

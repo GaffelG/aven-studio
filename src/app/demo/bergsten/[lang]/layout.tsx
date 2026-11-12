@@ -1,5 +1,6 @@
 import type { Metadata, Viewport } from "next";
 import { DemoBanner } from "@/components/demos/DemoBanner";
+import { DemoCurrencyProvider } from "@/components/demos/DemoCurrency";
 import { DemoLocaleProvider } from "@/components/demos/DemoLocale";
 import { BergstenFooter } from "@/components/demos/bergsten/BergstenFooter";
 import { BergstenHeader } from "@/components/demos/bergsten/BergstenHeader";
@@ -37,12 +38,14 @@ export default async function BergstenLayout({ children }: LayoutProps<"/demo/be
       </head>
       <body className="flex min-h-dvh flex-col bg-bergsten-sand text-bergsten-ink selection:bg-bergsten-green selection:text-bergsten-paper [&_:focus-visible]:outline-bergsten-green">
         <DemoLocaleProvider locale={bergsten.locale}>
-          <DemoBanner {...bergsten.demo} />
-          <BergstenHeader />
-          <main id="main" className="flex-1">
-            {children}
-          </main>
-          <BergstenFooter />
+          <DemoCurrencyProvider>
+            <DemoBanner {...bergsten.demo} />
+            <BergstenHeader />
+            <main id="main" className="flex-1">
+              {children}
+            </main>
+            <BergstenFooter />
+          </DemoCurrencyProvider>
         </DemoLocaleProvider>
       </body>
     </html>

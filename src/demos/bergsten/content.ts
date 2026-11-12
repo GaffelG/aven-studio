@@ -6,13 +6,16 @@ import type { BergstenImageKey } from "./images";
  * Content for the Bergsten Bygg concept demo, in Swedish and English.
  * Bergsten is a fictional company: contact details are placeholder values,
  * and figures, projects and the review are illustrative only. The business is
- * Swedish in both languages, so the address and budgets stay Swedish.
+ * Swedish in both languages, so the address stays Swedish; budget ranges are SEK amounts shown in the visitor's currency.
  */
 
 /** Language-neutral keys; labels live in each locale's `labels`. */
 export type ProjectCategory = "nybyggnation" | "renovering" | "tillbyggnad";
 export type ProjectStatus = "done" | "ongoing";
 export const projectCategories: ProjectCategory[] = ["nybyggnation", "renovering", "tillbyggnad"];
+
+/** Budget band limits in SEK for the quote form: under 0.5 M, 0.5–1.5 M, 1.5–4 M, over 4 M. */
+export const budgetLimits = [500_000, 1_500_000, 4_000_000];
 
 export type BergstenProject = {
   slug: string;
@@ -261,7 +264,7 @@ const sv = {
       start: "Önskad start",
       starts: ["Så snart som möjligt", "Inom 3 månader", "Inom 6 månader", "Senare / vet inte"],
       budget: "Ungefärlig budget",
-      budgets: ["Under 500 000 kr", "500 000 – 1,5 mkr", "1,5 – 4 mkr", "Över 4 mkr", "Vet inte än"],
+      budgetBands: { under: "Under", over: "Över", unknown: "Vet inte än" },
       description: "Beskriv projektet",
       descriptionHint: "Till exempel storlek, önskemål och om ritningar eller bygglov redan finns.",
       name: "Namn",
@@ -580,7 +583,7 @@ const en: Bergsten = {
       start: "Preferred start",
       starts: ["As soon as possible", "Within 3 months", "Within 6 months", "Later / not sure"],
       budget: "Approximate budget",
-      budgets: ["Under SEK 500,000", "SEK 500,000 – 1.5 million", "SEK 1.5 – 4 million", "Over SEK 4 million", "Not sure yet"],
+      budgetBands: { under: "Under", over: "Over", unknown: "Not sure yet" },
       description: "Describe the project",
       descriptionHint: "For example size, wishes and whether drawings or planning permission already exist.",
       name: "Name",
