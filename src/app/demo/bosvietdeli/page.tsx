@@ -181,14 +181,18 @@ export default function BoPage() {
 
 /** Decorative running-sushi belt drawn in CSS; pauses for visitors who prefer reduced motion. */
 function ConveyorBelt() {
-  const plates = ["#8fbf5a", "#8e2f55", "#e8893a", "#e8b04a", "#8fbf5a", "#8e2f55", "#e8893a", "#e8b04a"];
-  const row = [...plates, ...plates];
+  // One set is ~3,600px, wider than any common screen (incl. 2560px monitors). Two identical sets (each with the same
+  // trailing gap) slide by exactly one set width, so the loop is seamless and never shows an end.
+  const colors = ["#8fbf5a", "#8e2f55", "#e8893a", "#e8b04a"];
+  const set = Array.from({ length: 24 }, (_, i) => colors[i % colors.length]);
 
   return (
     <div aria-hidden className="overflow-hidden border-y-[10px] border-[#cdc8a2] bg-[#e9e6cc] py-6">
       <style>{`@keyframes bo-belt{to{transform:translateX(-50%)}}@media (prefers-reduced-motion:reduce){.bo-belt{animation:none!important}}`}</style>
-      <div className="bo-belt flex w-max gap-10 px-5" style={{ animation: "bo-belt 40s linear infinite" }}>
-        {row.map((color, i) => (
+      <div className="bo-belt flex w-max" style={{ animation: "bo-belt 90s linear infinite" }}>
+        {[0, 1].map((copy) => (
+          <div key={copy} className="flex shrink-0 gap-10 pr-10">
+            {set.map((color, i) => (
           <div key={i} className="grid size-24 shrink-0 place-items-center rounded-full bg-white shadow-[0_6px_0_rgba(0,0,0,0.08)] ring-4 ring-[var(--bo-cream)] sm:size-28">
             <div className="flex gap-1.5">
               {[0, 1].map((n) => (
@@ -199,6 +203,8 @@ function ConveyorBelt() {
                 </span>
               ))}
             </div>
+          </div>
+            ))}
           </div>
         ))}
       </div>
