@@ -1,6 +1,6 @@
 import Link from "next/link";
 import { Reveal } from "@/components/ui/Reveal";
-import { formatPrice } from "@/content/pricing";
+import { DemoPrice } from "@/components/demos/DemoCurrency";
 import { getFerrum } from "@/demos/ferrum/server";
 import { FerrumHeading } from "../FerrumHeading";
 
@@ -39,7 +39,7 @@ export async function FerrumPrices() {
                     {item.job}
                   </th>
                   <td className="py-5 text-right font-ferrum text-2xl font-bold whitespace-nowrap tabular-nums sm:text-3xl">
-                    {formatPrice(item.price, ferrum.locale)}
+                    <DemoPrice sek={item.price} />
                   </td>
                 </tr>
               ))}

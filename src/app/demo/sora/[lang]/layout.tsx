@@ -1,5 +1,6 @@
 import type { Metadata, Viewport } from "next";
 import { DemoBanner } from "@/components/demos/DemoBanner";
+import { DemoCurrencyProvider } from "@/components/demos/DemoCurrency";
 import { DemoLocaleProvider } from "@/components/demos/DemoLocale";
 import { SoraFooter } from "@/components/demos/sora/SoraFooter";
 import { SoraHeader } from "@/components/demos/sora/SoraHeader";
@@ -36,12 +37,14 @@ export default async function SoraLayout({ children }: LayoutProps<"/demo/sora/[
       </head>
       <body className="flex min-h-dvh flex-col bg-sora-cream font-sora text-sora-espresso selection:bg-sora-clay selection:text-sora-shell [&_:focus-visible]:outline-sora-clay-deep">
         <DemoLocaleProvider locale={sora.locale}>
-          <DemoBanner {...sora.demo} />
-          <SoraHeader />
-          <main id="main" className="flex-1">
-            {children}
-          </main>
-          <SoraFooter />
+          <DemoCurrencyProvider>
+            <DemoBanner {...sora.demo} />
+            <SoraHeader />
+            <main id="main" className="flex-1">
+              {children}
+            </main>
+            <SoraFooter />
+          </DemoCurrencyProvider>
         </DemoLocaleProvider>
       </body>
     </html>

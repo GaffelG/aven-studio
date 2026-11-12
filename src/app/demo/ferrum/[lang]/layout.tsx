@@ -1,5 +1,6 @@
 import type { Metadata, Viewport } from "next";
 import { DemoBanner } from "@/components/demos/DemoBanner";
+import { DemoCurrencyProvider } from "@/components/demos/DemoCurrency";
 import { DemoLocaleProvider } from "@/components/demos/DemoLocale";
 import { FerrumFooter } from "@/components/demos/ferrum/FerrumFooter";
 import { FerrumHeader } from "@/components/demos/ferrum/FerrumHeader";
@@ -36,12 +37,14 @@ export default async function FerrumLayout({ children }: LayoutProps<"/demo/ferr
       </head>
       <body className="flex min-h-dvh flex-col bg-ferrum-ink text-ferrum-text selection:bg-ferrum-accent selection:text-ferrum-ink [&_:focus-visible]:outline-ferrum-accent">
         <DemoLocaleProvider locale={ferrum.locale}>
-          <DemoBanner {...ferrum.demo} />
-          <FerrumHeader />
-          <main id="main" className="flex-1">
-            {children}
-          </main>
-          <FerrumFooter />
+          <DemoCurrencyProvider>
+            <DemoBanner {...ferrum.demo} />
+            <FerrumHeader />
+            <main id="main" className="flex-1">
+              {children}
+            </main>
+            <FerrumFooter />
+          </DemoCurrencyProvider>
         </DemoLocaleProvider>
       </body>
     </html>

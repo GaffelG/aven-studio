@@ -1,7 +1,7 @@
 "use client";
 
 import { useEffect, useMemo, useRef, useState, type ReactNode } from "react";
-import { formatPrice } from "@/content/pricing";
+import { DemoPrice } from "@/components/demos/DemoCurrency";
 import type { Locale } from "@/i18n/config";
 import type { FerrumServiceId } from "@/demos/ferrum/content";
 import { dateFormats, dayKey, hoursToSlots, isTaken, upcomingDays } from "@/demos/shared/schedule";
@@ -191,7 +191,7 @@ export function BookingFlow() {
           {service && (
             <p className="mt-6 border-t border-ferrum-line pt-6">
               <span className="text-sm text-ferrum-muted">{t.from} </span>
-              <span className="font-ferrum text-4xl font-bold">{formatPrice(service.from, ferrum.locale)}</span>
+              <span className="font-ferrum text-4xl font-bold"><DemoPrice sek={service.from} /></span>
               <span className="block text-xs text-ferrum-muted">{service.duration}</span>
             </p>
           )}
@@ -215,7 +215,7 @@ const choiceClass =
   "relative cursor-pointer border border-ferrum-line bg-ferrum-ink transition-colors hover:border-ferrum-muted has-checked:border-ferrum-accent has-checked:bg-ferrum-surface has-focus-visible:outline-2 has-focus-visible:outline-offset-2 has-focus-visible:outline-ferrum-accent";
 
 function ServiceStep({ selected, onSelect }: { selected: FerrumServiceId | null; onSelect: (id: FerrumServiceId) => void }) {
-  const { ferrum, t, services } = useBookingText();
+  const { t, services } = useBookingText();
   return (
     <fieldset>
       <legend className="sr-only">{t.chooseService}</legend>
@@ -234,7 +234,7 @@ function ServiceStep({ selected, onSelect }: { selected: FerrumServiceId | null;
               <span className="font-ferrum text-2xl font-bold uppercase">{item.title}</span>
               <span className="text-sm whitespace-nowrap">
                 <span className="text-ferrum-muted">{t.from} </span>
-                <span className="font-semibold">{formatPrice(item.from, ferrum.locale)}</span>
+                <span className="font-semibold"><DemoPrice sek={item.from} /></span>
               </span>
             </span>
             <span className="mt-2 text-sm text-ferrum-muted">{item.description}</span>

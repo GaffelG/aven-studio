@@ -2,7 +2,7 @@ import Image from "next/image";
 import Link from "next/link";
 import { SoraBookBand, SoraButton, SoraEyebrow, SoraHeading, soraContainer } from "@/components/demos/sora/SoraUi";
 import { Reveal } from "@/components/ui/Reveal";
-import { formatPrice } from "@/content/pricing";
+import { DemoPrice } from "@/components/demos/DemoCurrency";
 import { getSora } from "@/demos/sora/server";
 import { soraImages } from "@/demos/sora/images";
 import { cn } from "@/lib/cn";
@@ -104,7 +104,7 @@ export default async function SoraHome() {
                       <h3 className="mt-6 font-sora-serif text-3xl">{category.title}</h3>
                       <p className="mt-1 text-sm text-sora-muted">
                         {item.name} · {item.from ? `${treatments.fromLabel} ` : ""}
-                        {formatPrice(item.price, sora.locale)}
+                        <DemoPrice sek={item.price} />
                       </p>
                     </Link>
                   </Reveal>

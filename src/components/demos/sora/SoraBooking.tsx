@@ -1,7 +1,7 @@
 "use client";
 
 import { useEffect, useMemo, useRef, useState, type ReactNode } from "react";
-import { formatPrice } from "@/content/pricing";
+import { DemoPrice } from "@/components/demos/DemoCurrency";
 import type { Locale } from "@/i18n/config";
 import { allTreatments } from "@/demos/sora/content";
 import { dateFormats, dayKey, hoursToSlots, isTaken, upcomingDays, type Slot } from "@/demos/shared/schedule";
@@ -178,7 +178,7 @@ export function SoraBooking() {
                           </span>
                           <span className="text-sm whitespace-nowrap">
                             {item.from && <span className="opacity-70">{sora.treatments.fromLabel} </span>}
-                            {formatPrice(item.price, sora.locale)}
+                            <DemoPrice sek={item.price} />
                           </span>
                         </label>
                       ))}
@@ -276,7 +276,7 @@ export function SoraBooking() {
           {treatment && (
             <p className="mt-6 border-t border-sora-line pt-6">
               {treatment.from && <span className="text-sm text-sora-muted">{sora.treatments.fromLabel} </span>}
-              <span className="font-sora-serif text-4xl">{formatPrice(treatment.price, sora.locale)}</span>
+              <span className="font-sora-serif text-4xl"><DemoPrice sek={treatment.price} /></span>
               <span className="block text-xs text-sora-muted">
                 {treatment.minutes} {sora.treatments.minutesLabel}
               </span>

@@ -3,6 +3,7 @@
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { useId, useState } from "react";
+import { DemoCurrencySwitch } from "@/components/demos/DemoCurrency";
 import { DemoLanguageSwitch } from "@/components/demos/DemoLocale";
 import { isDemoSection } from "@/demos/shared/routing";
 import { cn } from "@/lib/cn";
@@ -40,6 +41,7 @@ export function FerrumHeader() {
 
         <div className="hidden items-center gap-6 lg:flex">
           <DemoLanguageSwitch label={ferrum.ui.language} className="text-ferrum-text" />
+          <DemoCurrencySwitch className="text-ferrum-text" />
           <a href={ferrum.phone.href} className="hidden text-sm whitespace-nowrap text-ferrum-muted transition-colors hover:text-ferrum-text xl:inline">
             {ferrum.phone.label}
           </a>
@@ -85,7 +87,10 @@ export function FerrumHeader() {
           <a href={ferrum.phone.href} className="text-sm text-ferrum-muted">
             {ferrum.phone.label}
           </a>
-          <DemoLanguageSwitch label={ferrum.ui.language} />
+          <span className="flex items-center gap-3">
+            <DemoLanguageSwitch label={ferrum.ui.language} />
+            <DemoCurrencySwitch />
+          </span>
           <Link
             href={ferrumPaths.booking}
             onClick={() => setOpen(false)}

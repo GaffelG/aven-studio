@@ -3,6 +3,7 @@
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { useId, useState } from "react";
+import { DemoCurrencySwitch } from "@/components/demos/DemoCurrency";
 import { DemoLanguageSwitch } from "@/components/demos/DemoLocale";
 import { isDemoSection } from "@/demos/shared/routing";
 import { cn } from "@/lib/cn";
@@ -40,6 +41,7 @@ export function SoraHeader() {
 
         <div className="hidden flex-1 items-center justify-end gap-6 lg:flex">
           <DemoLanguageSwitch label={sora.ui.language} />
+          <DemoCurrencySwitch />
           <a href={sora.phone.href} className="hidden text-sm whitespace-nowrap text-sora-muted transition-colors hover:text-sora-espresso xl:inline">
             {sora.phone.label}
           </a>
@@ -77,7 +79,10 @@ export function SoraHeader() {
             </li>
           ))}
         </ul>
-        <DemoLanguageSwitch label={sora.ui.language} className="justify-center pb-4" />
+        <div className="flex items-center justify-center gap-4 pb-4">
+          <DemoLanguageSwitch label={sora.ui.language} />
+          <DemoCurrencySwitch />
+        </div>
       </nav>
     </header>
   );

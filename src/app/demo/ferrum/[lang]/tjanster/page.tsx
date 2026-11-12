@@ -3,7 +3,7 @@ import Link from "next/link";
 import { FerrumPageHero } from "@/components/demos/ferrum/FerrumPageHero";
 import { FerrumBooking } from "@/components/demos/ferrum/sections/FerrumBooking";
 import { Reveal } from "@/components/ui/Reveal";
-import { formatPrice } from "@/content/pricing";
+import { DemoPrice } from "@/components/demos/DemoCurrency";
 import { getFerrum } from "@/demos/ferrum/server";
 
 export async function generateMetadata(): Promise<Metadata> {
@@ -48,7 +48,7 @@ export default async function FerrumServicesPage() {
               </h2>
               <p className="mt-6">
                 <span className="text-sm text-ferrum-muted">{ferrum.ui.from} </span>
-                <span className="font-ferrum text-3xl font-bold">{formatPrice(item.from, ferrum.locale)}</span>
+                <span className="font-ferrum text-3xl font-bold"><DemoPrice sek={item.from} /></span>
                 <span className="text-sm text-ferrum-muted"> · {item.duration}</span>
               </p>
             </div>

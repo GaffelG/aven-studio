@@ -2,7 +2,7 @@ import type { Metadata } from "next";
 import Image from "next/image";
 import { SoraBookBand, SoraButton, SoraPageHero, soraContainer } from "@/components/demos/sora/SoraUi";
 import { Reveal } from "@/components/ui/Reveal";
-import { formatPrice } from "@/content/pricing";
+import { DemoPrice } from "@/components/demos/DemoCurrency";
 import { getSora } from "@/demos/sora/server";
 import { soraImages } from "@/demos/sora/images";
 import { cn } from "@/lib/cn";
@@ -71,7 +71,7 @@ export default async function SoraTreatmentsPage() {
                         </td>
                         <td className="py-5 text-right font-sora-serif text-2xl whitespace-nowrap">
                           {item.from && <span className="font-sora text-xs text-sora-muted">{t.fromLabel} </span>}
-                          {formatPrice(item.price, sora.locale)}
+                          <DemoPrice sek={item.price} />
                         </td>
                       </tr>
                     ))}

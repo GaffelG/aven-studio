@@ -2,7 +2,7 @@ import type { Metadata } from "next";
 import { FerrumPageHero } from "@/components/demos/ferrum/FerrumPageHero";
 import { FerrumBooking } from "@/components/demos/ferrum/sections/FerrumBooking";
 import { Reveal } from "@/components/ui/Reveal";
-import { formatPrice } from "@/content/pricing";
+import { DemoPrice } from "@/components/demos/DemoCurrency";
 import { getFerrum } from "@/demos/ferrum/server";
 
 export async function generateMetadata(): Promise<Metadata> {
@@ -37,7 +37,7 @@ export default async function FerrumPricesPage() {
                           {row.job}
                         </th>
                         <td className="py-4 text-right font-ferrum text-2xl font-bold whitespace-nowrap tabular-nums">
-                          {formatPrice(row.price, ferrum.locale)}
+                          <DemoPrice sek={row.price} />
                         </td>
                       </tr>
                     ))}

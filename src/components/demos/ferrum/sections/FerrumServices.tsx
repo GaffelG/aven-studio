@@ -1,6 +1,6 @@
 import Link from "next/link";
 import { Reveal } from "@/components/ui/Reveal";
-import { formatPrice } from "@/content/pricing";
+import { DemoPrice } from "@/components/demos/DemoCurrency";
 import { getFerrum } from "@/demos/ferrum/server";
 import { FerrumHeading } from "../FerrumHeading";
 
@@ -30,7 +30,7 @@ export async function FerrumServices() {
                   <p className="mt-8 flex items-center justify-between border-t border-ferrum-line pt-5 text-sm">
                     <span>
                       <span className="text-ferrum-muted">{ferrum.ui.from} </span>
-                      <span className="font-ferrum text-xl font-bold">{formatPrice(item.from, ferrum.locale)}</span>
+                      <span className="font-ferrum text-xl font-bold"><DemoPrice sek={item.from} /></span>
                       <span className="text-ferrum-muted"> · {item.duration}</span>
                     </span>
                     <span
